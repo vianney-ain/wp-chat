@@ -74,11 +74,15 @@
          <div class="wp-chat-dialog-popup-title"><input type="text" placeholder="Titre de la conversation"></div>
        </div>
        <div class="wp-chat-dialog-popup-content">
-         <ul class="wp-chat-dialog-popup-participants-list">
-         </ul>
+        <div class="wp-chat-dialog-popup-content-row">
+          Conversation publique : <label class="wp-chat-switch"><input type="checkbox" name="room-public-checkbox" /><span></span></label>
+        </div>
+        <div class="wp-chat-dialog-popup-content-row">
+          Archiver la conversation : <label class="wp-chat-switch"><input type="checkbox" name="room-archived-checkbox" /><span></span></label>
+        </div>
        </div>
        <div class="wp-chat-dialog-popup-footer">
-         <button>Modifier</button>
+         <button>Enregistrer les modifications</button>
        </div>
      </div>
      <?php

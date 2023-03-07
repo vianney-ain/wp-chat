@@ -660,8 +660,6 @@
   margin-left:0;
 }
 
-
-
 .wp-chat-dialog-popup {
   position:absolute;
   top:0;
@@ -669,6 +667,7 @@
   height:100%;
   width:100%;
 }
+
 .wp-chat-dialog-popup .wp-chat-dialog-popup-header {
   display: flex;
   flex-direction: row;
@@ -677,6 +676,7 @@
   overflow: hidden;
   border-radius: 10px 10px 0 0;
 }
+
 .wp-chat-dialog-popup .wp-chat-dialog-popup-header .wp-chat-dialog-popup-title {
   font-size: 15px;
   padding: 0 10px 0 10px;
@@ -687,11 +687,13 @@
   display: flex;
   align-items: center;
 }
+
 .wp-chat-dialog-popup .wp-chat-dialog-popup-header .wp-chat-dialog-header-popup-actions {
   display: flex;
   flex-direction: row;
   margin-left:10px;
 }
+
 .wp-chat-dialog-popup .wp-chat-dialog-popup-header .wp-chat-dialog-header-popup-actions .wp-chat-dialog-header-popup-action {
   width: 25px;
   height: 25px;
@@ -700,13 +702,16 @@
   padding: 5px;
   border-radius: 5px;
 }
+
 .wp-chat-dialog-popup .wp-chat-dialog-popup-header .wp-chat-dialog-header-popup-actions .wp-chat-dialog-header-popup-action:hover {
   background: #dddddd;
 }
+
 .wp-chat-dialog-popup .wp-chat-dialog-popup-header .wp-chat-dialog-header-popup-actions .wp-chat-dialog-header-popup-action .wp-chat-icon {
   width:100%;
   height:100%;
 }
+
 .wp-chat-dialog-popup .wp-chat-dialog-popup-content {
   max-height: 300px;
   min-height: 300px;
@@ -714,11 +719,13 @@
   overflow-y: auto;
   padding: 10px;
 }
+
 .wp-chat-dialog-popup .wp-chat-dialog-popup-content .wp-chat-dialog-popup-participants-list {
   list-style:none;
   margin:0;
   padding:0;
 }
+
 .wp-chat-dialog-popup .wp-chat-dialog-popup-content .wp-chat-dialog-popup-participants-list .wp-chat-dialog-popup-participant {
   display:flex;
   flex-direction:row;
@@ -727,12 +734,15 @@
   border-bottom:1px solid #ccc;
   padding:10px;
 }
+
 .wp-chat-dialog-popup .wp-chat-dialog-popup-content .wp-chat-dialog-popup-participants-list .wp-chat-dialog-popup-participant:last-child {
   border-bottom:0;
 }
+
 .wp-chat-dialog-popup .wp-chat-dialog-popup-content .wp-chat-dialog-popup-participants-list .wp-chat-dialog-popup-participant span {
   font-size:14px;
 }
+
 .wp-chat-dialog-popup .wp-chat-dialog-popup-content .wp-chat-dialog-popup-participants-list .wp-chat-dialog-popup-participant .delete,
 .wp-chat-dialog-popup .wp-chat-dialog-popup-content .wp-chat-dialog-popup-participants-list .wp-chat-dialog-popup-participant .ownership {
   width: 25px;
@@ -751,14 +761,74 @@
 .wp-chat-dialog-popup .wp-chat-dialog-popup-content .wp-chat-dialog-popup-participants-list .wp-chat-dialog-popup-participant .delete:hover {
   background:#dddddd;
 }
+
 .wp-chat-dialog-popup .wp-chat-dialog-popup-content .wp-chat-dialog-popup-participants-list .wp-chat-dialog-popup-participant .delete .wp-chat-icon,
 .wp-chat-dialog-popup .wp-chat-dialog-popup-content .wp-chat-dialog-popup-participants-list .wp-chat-dialog-popup-participant .ownership .wp-chat-icon {
   width:100%;
   height:100%;
 }
+
 .wp-chat-dialog-popup .wp-chat-dialog-popup-content .wp-chat-dialog-popup-participants-list .wp-chat-dialog-popup-participant-input {
 
 }
+
+.wp-chat-dialog-popup .wp-chat-dialog-popup-content .wp-chat-dialog-popup-content-row {
+  display:flex;
+  flex-direction:row;
+  align-items:center;
+  margin-bottom:10px;
+}
+
+.wp-chat-dialog-popup .wp-chat-dialog-popup-content .wp-chat-switch {
+	display: inline-block;
+	position: relative;
+	width: 35px;
+	height: 20px;
+	cursor: pointer;
+	overflow: hidden;
+  margin-left:10px;
+}
+
+.wp-chat-switch input {
+	position: absolute;
+	top: -15px;
+	left: -15px;
+	width: 0;
+	height: 0;
+}
+
+.wp-chat-switch input + span {
+  position: absolute;
+ top: 0;
+ bottom: 0;
+ left: 0;
+ right: 0;
+ background: #9d9d9d;
+ border-radius: 10px;
+}
+
+.wp-chat-switch input:checked + span {
+	background: #ED253C;
+}
+
+.wp-chat-switch input + span:before {
+	content: "";
+	display: inline-block;
+	position: absolute;
+	top: 50%;
+	left: 2px;
+	width: 16px;
+	height: 16px;
+	background: white;
+	border-radius: 50%;
+	transform: translateY(-50%);
+	transition: all .25s;
+}
+
+.wp-chat-switch input:checked + span:before {
+	left: 18px;
+}
+
 .wp-chat-dialog-popup .wp-chat-dialog-popup-footer {
   display:flex;
   align-items:center;

@@ -10,12 +10,15 @@ name varchar(200)
 created datetime
 ownerID int
 lastMessage datetime
+public boolean
+archived boolean
 
 participant
 -
 id PK int
 userID int FK >- user.id
 roomID int FK >- room.id
+lastSeen datetime
 
 message
 -
@@ -24,12 +27,3 @@ roomID int FK >- room.id
 userID int FK >- user.id
 message text
 type varchar(200)
-created datetime
-
-read
--
-id PK int
-messageID int FK >- message.id
-roomID int FK >- room.id
-participantID int FK >- participant.id
-created datetime

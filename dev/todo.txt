@@ -6,6 +6,7 @@
 - affichage des messages au scroll en ajax
 - n'afficher les messages que 30 par 30
 - devoir nommer quelqu'un d'autre owner pour pouvoir quitter la conversation
+- pouvoir join une room publique
 
 -- menu admin --
 - pouvoir choisir si on active ou non le chat
@@ -19,3 +20,4 @@
 - pouvoir changer le nom d'une conversation
 - pouvoir rechercher dans ses conversations
 - pouvoir quitter une conversation
+- système de rooms publiques

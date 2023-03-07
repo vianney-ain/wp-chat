@@ -181,7 +181,7 @@ class Wp_Chat {
 		$this->loader->add_action( 'wp_ajax_wp_chat_create_room', $plugin_public, 'wp_chat_create_room' );
 		$this->loader->add_action( 'wp_ajax_wp_chat_open_room', $plugin_public, 'wp_chat_open_room' );
 		$this->loader->add_action( 'wp_ajax_wp_chat_leave_room', $plugin_public, 'wp_chat_leave_room' );
-		$this->loader->add_action( 'wp_ajax_wp_chat_edit_room_title', $plugin_public, 'wp_chat_edit_room_title' );
+		$this->loader->add_action( 'wp_ajax_wp_chat_edit_room_details', $plugin_public, 'wp_chat_edit_room_details' );
 		$this->loader->add_action( 'wp_ajax_wp_chat_send_message', $plugin_public, 'wp_chat_send_message' );
 		$this->loader->add_action( 'wp_ajax_wp_chat_refresh_view', $plugin_public, 'wp_chat_refresh_view' );
 		$this->loader->add_action( 'wp_ajax_wp_chat_get_room_participants', $plugin_public, 'wp_chat_get_room_participants' );

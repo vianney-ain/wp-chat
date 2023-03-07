@@ -62,8 +62,6 @@ class Wp_Chat_Public {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/partials/wp-chat-public-display.php';
 		$this->view = new Wp_Chat_Public_View();
 
-		var_dump($this->model->check_tables());
-
 	}
 
 	/**
@@ -490,7 +488,7 @@ class Wp_Chat_Public {
 				$message .= ' par '.$user['display_name'];
 			}
 			$message.= '.';
-			$this->model->send_message($room->id, null, $message, 'system');
+			$this->model->send_message($room->id, -1, $message, 'system');
 
 			$response = array(
 				'success' => true,
@@ -586,7 +584,7 @@ class Wp_Chat_Public {
 				$message .= ' par '.$user['display_name'];
 			}
 			$message.= '.';
-			$this->model->send_message($room->id, null, $message, 'system');
+			$this->model->send_message($room->id, -1, $message, 'system');
 			$response = array(
 				'success' => true,
 			);
@@ -702,7 +700,7 @@ class Wp_Chat_Public {
 					$message = 'Un participant a a quitté la conversation';
 				}
 				$message.= '.';
-				$this->model->send_message($room->id, null, $message, 'system');
+				$this->model->send_message($room->id, -1, $message, 'system');
 				$response = array(
 					'success' => true,
 				);
@@ -793,7 +791,7 @@ class Wp_Chat_Public {
 		die(json_encode($response));
 	}
 
-	public function wp_chat_edit_room_title(){
+	public function wp_chat_edit_room_details(){
 		$this->user_id = get_current_user_id();
 		if (!isset($this->user_id) || empty($this->user_id)){
 			$response = array(
@@ -826,7 +824,9 @@ class Wp_Chat_Public {
 			);
 			die(json_encode($response));
 		}
+		
 		$room = $this->model->get_room_by_id(esc_attr($_REQUEST['room_id']));
+
 		if (!isset($room) || empty($room)){
 			$response = array(
 				'success' => false,
@@ -834,14 +834,25 @@ class Wp_Chat_Public {
 			);
 			die(json_encode($response));
 		}
-		if ($this->model->edit_room_name($room->id, esc_attr($_REQUEST['room_name']) ) ){
+
+		$public = '0';
+		$archived = '0';
+		
+		if (esc_attr($_REQUEST['public']) == 'true'){
+			$public = '1';
+		}
+		if (esc_attr($_REQUEST['archived']) == 'true'){
+			$archived = '1';
+		}
+
+		if ($this->model->edit_room_details($room->id, esc_attr($_REQUEST['room_name']), $public, $archived ) ){
 			if (empty($_REQUEST['room_name'])){
 				$message = $user['display_name'].' a retiré le titre de la conversation.';
 			}
 			else {
 				$message = $user['display_name'].' a changé le titre de la conversation en "'.$_REQUEST['room_name'].'"';
 			}
-			$this->model->send_message($room->id, null, $message, 'system');
+			$this->model->send_message($room->id, -1, $message, 'system');
 			$response = array(
 				'success' => true,
 				'room' => $room,

@@ -163,6 +163,7 @@
 					},
 					beforeSend: function (jqXHR, settings) {
 							let url = settings.url + "?" + settings.data;
+							console.log(url);
 					},
 					success: function(data) {
 						if (data.success == true){
@@ -732,10 +733,10 @@
 
 			$('body').on('click', '.wp-chat-dialog .wp-chat-dialog-title', function(){
 				var room_id = $(this).closest('.wp-chat-dialog').attr('data-room-id');
-				show_room_title_popup(room_id);
+				show_room_details_popup(room_id);
 			});
 
-			function show_room_title_popup(room_id){
+			function show_room_details_popup(room_id){
 				$.ajax({
 					type: 'post',
 					url: wp_chat_ajax.ajax_url,
@@ -766,10 +767,18 @@
 					},
 					beforeSend: function (jqXHR, settings) {
 							let url = settings.url + "?" + settings.data;
+							console.log(url);
 					},
 					success: function(data) {
+						console.log(data);
 						if (data.success == true){
 							jQuery('.wp-chat-dialog[data-room-id='+room_id+']').find('.wp-chat-dialog-popup.popup-room .wp-chat-dialog-popup-title input').val(data.room.name);
+							if (data.room.public == "1"){
+								jQuery('.wp-chat-dialog[data-room-id='+room_id+']').find('.wp-chat-dialog-popup.popup-room input[name="room-public-checkbox"]').prop( "checked", true );
+							}
+							if (data.room.archived == "1"){
+								jQuery('.wp-chat-dialog[data-room-id='+room_id+']').find('.wp-chat-dialog-popup.popup-room input[name="room-archived-checkbox"]').prop( "checked", true );
+							}
 						}
 						else {
 							alert(data.message);
@@ -786,7 +795,10 @@
 			jQuery('body').on('click', '.wp-chat-dialog-popup.popup-room .wp-chat-dialog-popup-footer button', function(){
 				let room_id = jQuery(this).closest('.wp-chat-dialog').attr('data-room-id');
 				let room_name = jQuery('.wp-chat-dialog[data-room-id='+room_id+']').find('.wp-chat-dialog-popup.popup-room .wp-chat-dialog-popup-title input').val();
-				edit_room_name(room_id, room_name);
+				let public_checkbox = jQuery('.wp-chat-dialog[data-room-id='+room_id+']').find('.wp-chat-dialog-popup.popup-room input[name="room-public-checkbox"]').is(':checked');
+				let archived_checkbox = jQuery('.wp-chat-dialog[data-room-id='+room_id+']').find('.wp-chat-dialog-popup.popup-room input[name="room-archived-checkbox"]').is(':checked');
+				console.log(public_checkbox);
+				edit_room_details(room_id, room_name, public_checkbox, archived_checkbox);
 			});
 
 			jQuery('body').on('keypress', '.wp-chat-dialog-popup.popup-room .wp-chat-dialog-popup-title input', function(event){
@@ -794,11 +806,13 @@
 				if(keycode == '13'){
 					let room_id = jQuery(this).closest('.wp-chat-dialog').data('room-id');
 					let room_name = jQuery('.wp-chat-dialog[data-room-id='+room_id+']').find('.wp-chat-dialog-popup.popup-room .wp-chat-dialog-popup-title input').val();
-					edit_room_name(room_id, room_name);
+					let public_checkbox = jQuery('.wp-chat-dialog[data-room-id='+room_id+']').find('.wp-chat-dialog-popup.popup-room input[name="room-public-checkbox"]').is(':checked');
+					let archived_checkbox = jQuery('.wp-chat-dialog[data-room-id='+room_id+']').find('.wp-chat-dialog-popup.popup-room input[name="room-archived-checkbox"]').is(':checked');
+					edit_room_details(room_id, room_name, public_checkbox, archived_checkbox);
 				}
 			});
 
-			function edit_room_name(room_id, room_name){
+			function edit_room_details(room_id, room_name, public_checkbox, archived_checkbox){
 				if (!room_id){
 					console.warn('Warn room cannot be found.');
 					return;
@@ -808,14 +822,18 @@
 					dataType: 'json',
 					url: wp_chat_ajax.ajax_url,
 					data: {
-						'action': 'wp_chat_edit_room_title',
+						'action': 'wp_chat_edit_room_details',
 						'room_name': room_name,
 						'room_id': room_id,
+						'public': public_checkbox,
+						'archived': archived_checkbox
 					},
 					beforeSend: function (jqXHR, settings) {
 							let url = settings.url + "?" + settings.data;
+							console.log(url);
 					},
 					success: function(data) {
+						console.log(data);
 						if (data.success == true){
 							refresh_view();
 							jQuery('.wp-chat-dialog[data-room-id='+room_id+']').find('.wp-chat-dialog-popup.popup-room').remove();

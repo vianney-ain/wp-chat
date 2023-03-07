@@ -3,7 +3,7 @@
 class Wp_Chat_Model_Database {
 
   public function check_tables(){
-    if ($this->create_room_table() && $this->create_participants_table() && $this->create_messages_table() && $this->create_read_table()){
+    if ($this->create_room_table() && $this->create_participants_table() && $this->create_messages_table()){
       return true;
     }
     return false;
@@ -83,7 +83,7 @@ class Wp_Chat_Model_Database {
     $table = $wpdb->prefix.'chat_message';
     $data = array('userID' => $user_id, 'roomID' => $room_id, 'message' => $message, 'created' => current_time('mysql', 1), 'type' => $type);
     $format = array('%d','%d','%s','%s', '%s');
-    $wpdb->insert($table,$data,$format);
+    $result = $wpdb->insert($table,$data,$format);
     $message_id = $wpdb->insert_id;
     $this->update_room_last_message($room_id);
     return $message_id;
@@ -235,8 +235,8 @@ class Wp_Chat_Model_Database {
   public function create_room($to, $from){
     global $wpdb;
     $table = $wpdb->prefix.'chat_room';
-    $data = array('name' => '', 'created' => current_time('mysql', 1), 'ownerID' => $from);
-    $format = array('%s','%s','%d');
+    $data = array('name' => '', 'created' => current_time('mysql', 1), 'ownerID' => $from, 'public' => true, 'archived' => false);
+    $format = array('%s','%s','%d', '%d', '%d');
     $wpdb->insert($table,$data,$format);
     $room_id = $wpdb->insert_id;
     if (isset($room_id) && !empty($room_id)){
@@ -256,18 +256,18 @@ class Wp_Chat_Model_Database {
     return $participant_id;
   }
 
-  public function edit_room_name($room_id, $room_name){
+  public function edit_room_details($room_id, $room_name, $public, $archived){
     global $wpdb;
     $table = $wpdb->prefix.'chat_room';
-    $data = array('name' => $room_name);
+    $data = array('name' => $room_name, 'public' => $public, 'archived' => $archived);
     $where = array('id' => $room_id);
-    $format = array('%s');
+    $format = array('%s', '%d', '%d');
     $where_format = array('%d');
-    $wpdb->update($table,$data,$where,$format,$where_format);
-    if ($wpdb->rows_affected == 1){
-      return true;
+    $result = $wpdb->update($table,$data,$where,$format,$where_format);
+    if ($wpdb->last_error !== ''){
+      return false;
     }
-    return false;
+    return true;
   }
 
 
@@ -282,6 +282,8 @@ class Wp_Chat_Model_Database {
       created datetime,
       ownerID bigint(20),
       lastMessage datetime,
+      public BOOLEAN,
+      archived BOOLEAN,
       PRIMARY KEY (id),
       FOREIGN KEY (ownerID) REFERENCES {$wpdb->base_prefix}users.id
     )";
