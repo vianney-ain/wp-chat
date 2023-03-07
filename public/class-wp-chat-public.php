@@ -826,6 +826,18 @@ class Wp_Chat_Public {
 		}
 		
 		$room = $this->model->get_room_by_id(esc_attr($_REQUEST['room_id']));
+		$participants = $this->model->get_room_participants(esc_attr($_REQUEST['room_id']), $this->user_id, true);
+
+		//if there is more than 2 participants, we check if current user is owner
+		/*if (sizeof($participants) > 2){
+			if ($this->user_id != $room->ownerID){
+				$response = array(
+					'success' => false,
+					'message' => "You don't have the permission to do that."
+				);
+				die(json_encode($response));
+			}
+		}*/
 
 		if (!isset($room) || empty($room)){
 			$response = array(
