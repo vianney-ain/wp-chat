@@ -1,0 +1,21 @@
+- système de message vu via un attribut sur la room avec les participants qui l'ont lu reset à chaque nouveau message
+- garder les fenêtres ouvertes via des cookies
+- notifications de nouveaux messages
+- pouvoir supprimer une conversation
+- gestion des traductions
+- affichage des messages au scroll en ajax
+- n'afficher les messages que 30 par 30
+- devoir nommer quelqu'un d'autre owner pour pouvoir quitter la conversation
+
+-- menu admin --
+- pouvoir choisir si on active ou non le chat
+- pouvoir ajouter un id ou une class custom au chat
+
+-- DONE --
+- masquer le chat si on est pas connecté
+- pouvoir ajouter des participants
+- actualiser le nom des conversations
+- nouveau type de message, message système pour les ajouts suppression de participants ou commentaire supprimé
+- pouvoir changer le nom d'une conversation
+- pouvoir rechercher dans ses conversations
+- pouvoir quitter une conversation

@@ -1,0 +1,35 @@
+user
+-
+id PK int
+display_name string
+
+room
+-
+id PK int
+name varchar(200)
+created datetime
+ownerID int
+lastMessage datetime
+
+participant
+-
+id PK int
+userID int FK >- user.id
+roomID int FK >- room.id
+
+message
+-
+id PK int
+roomID int FK >- room.id
+userID int FK >- user.id
+message text
+type varchar(200)
+created datetime
+
+read
+-
+id PK int
+messageID int FK >- message.id
+roomID int FK >- room.id
+participantID int FK >- participant.id
+created datetime
