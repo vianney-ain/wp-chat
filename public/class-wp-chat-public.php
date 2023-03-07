@@ -488,7 +488,7 @@ class Wp_Chat_Public {
 				$message .= ' par '.$user['display_name'];
 			}
 			$message.= '.';
-			$this->model->send_message($room->id, -1, $message, 'system');
+			$this->model->send_system_message($room->id, $message);
 
 			$response = array(
 				'success' => true,
@@ -584,7 +584,7 @@ class Wp_Chat_Public {
 				$message .= ' par '.$user['display_name'];
 			}
 			$message.= '.';
-			$this->model->send_message($room->id, -1, $message, 'system');
+			$this->model->send_system_message($room->id, $message);
 			$response = array(
 				'success' => true,
 			);
@@ -700,7 +700,7 @@ class Wp_Chat_Public {
 					$message = 'Un participant a a quitté la conversation';
 				}
 				$message.= '.';
-				$this->model->send_message($room->id, -1, $message, 'system');
+				$this->model->send_system_message($room->id, $message);
 				$response = array(
 					'success' => true,
 				);
@@ -852,7 +852,7 @@ class Wp_Chat_Public {
 			else {
 				$message = $user['display_name'].' a changé le titre de la conversation en "'.$_REQUEST['room_name'].'"';
 			}
-			$this->model->send_message($room->id, -1, $message, 'system');
+			$this->model->send_system_message($room->id, $message);
 			$response = array(
 				'success' => true,
 				'room' => $room,

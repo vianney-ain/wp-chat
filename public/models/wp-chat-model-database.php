@@ -78,10 +78,25 @@ class Wp_Chat_Model_Database {
   *** SEND MESSAGE TO ROOM
   *** TYPE must be empty or "system"
   ***/
-  public function send_message($room_id, $user_id, $message, $type){
+  public function send_message($room_id, $user_id, $message){
     global $wpdb;
     $table = $wpdb->prefix.'chat_message';
-    $data = array('userID' => $user_id, 'roomID' => $room_id, 'message' => $message, 'created' => current_time('mysql', 1), 'type' => $type);
+    $data = array('userID' => $user_id, 'roomID' => $room_id, 'message' => $message, 'created' => current_time('mysql', 1), 'type' => '');
+    $format = array('%d','%d','%s','%s', '%s');
+    $result = $wpdb->insert($table,$data,$format);
+    $message_id = $wpdb->insert_id;
+    $this->update_room_last_message($room_id);
+    return $message_id;
+  }
+
+    /***
+  *** SEND SYSTEM MESSAGE TO ROOM
+  *** TYPE must be empty or "system"
+  ***/
+  public function send_system_message($room_id, $message){
+    global $wpdb;
+    $table = $wpdb->prefix.'chat_message';
+    $data = array('userID' => -1, 'roomID' => $room_id, 'message' => $message, 'created' => current_time('mysql', 1), 'type' => 'system');
     $format = array('%d','%d','%s','%s', '%s');
     $result = $wpdb->insert($table,$data,$format);
     $message_id = $wpdb->insert_id;
