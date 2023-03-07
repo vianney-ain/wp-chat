@@ -848,11 +848,34 @@ class Wp_Chat_Public {
 		if ($this->model->edit_room_details($room->id, esc_attr($_REQUEST['room_name']), $public, $archived ) ){
 			if (empty($_REQUEST['room_name'])){
 				$message = $user['display_name'].' a retiré le titre de la conversation.';
+				$this->model->send_system_message($room->id, $message);
 			}
-			else {
+
+			if ($room->name != esc_attr($_REQUEST['room_name'])){
 				$message = $user['display_name'].' a changé le titre de la conversation en "'.$_REQUEST['room_name'].'"';
+				$this->model->send_system_message($room->id, $message);
 			}
-			$this->model->send_system_message($room->id, $message);
+
+			if ($room->public != $public){
+				if ($room->public == '0'){
+					$message = 'Cette conversation est désormais publique.';
+				}
+				if ($room->public == '1'){
+					$message = 'Cette conversation est désormais privée.';
+				}
+				$this->model->send_system_message($room->id, $message);
+			}
+
+			if ($room->archived != $archived){
+				if ($room->archived == '0'){
+					$message = 'Cette conversation a été archivé par '.$user['display_name'].'.';
+				}
+				if ($room->archived == '1'){
+					$message = "Cette conversation n'est plus archivée.";
+				}
+				$this->model->send_system_message($room->id, $message);
+			}
+			
 			$response = array(
 				'success' => true,
 				'room' => $room,
