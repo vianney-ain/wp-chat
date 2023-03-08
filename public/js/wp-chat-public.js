@@ -81,6 +81,9 @@
 					}
 				});
 				$('#wp-chat-window .wp-chat-window-archives ul li').each(function(){
+					if ($(this).hasClass('wp-chat-empty-archive')){
+						return;
+					}
 					if ($(this).data('room-section') == section){
 						$(this).show();
 					}
@@ -390,6 +393,10 @@
 					that.find('.wp-chat-dialog-thumbnail').removeClass('grouped').empty();
 					$.each(data, function (key, room){
 						if (room.room_id == room_id){
+							if (!room.is_user_in){
+								that.remove();
+								return;
+							}
 							if (room.room_thumbnails.length > 1){ that.find('.wp-chat-dialog-thumbnail').addClass('grouped'); }
 							that.find('.wp-chat-dialog-thumbnail').append(display_room_thumbnail(room.room_id, room.room_thumbnails));
 							that.find('.wp-chat-dialog-title').text(room.room_name);
