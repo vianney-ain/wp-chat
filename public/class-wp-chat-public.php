@@ -765,7 +765,7 @@ class Wp_Chat_Public {
 					'is_user_in' => false,
 					'room_id' => $room->id,
 					'ownerID' => $room->ownerID,
-					'lastMessage' => strtotime($room->lastMessage),
+					'last_message' => strtotime($room->lastMessage),
 					'public' => $room->public,
 					'private' => $room->private,
 					'created' => $room->created

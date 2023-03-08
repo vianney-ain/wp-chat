@@ -286,9 +286,6 @@
 
 			}
 
-
-
-
 			jQuery('body').on('keypress', '.wp-chat-dialog .wp-chat-dialog-footer input', function(event){
 				var that = jQuery(this);
 				var keycode = (event.keyCode ? event.keyCode : event.which);
@@ -457,6 +454,8 @@
 						}
 						$('#wp-chat-window').find('.wp-chat-window-archive[data-room-id='+room.room_id+']').data('room-section', room_section);
 
+						$('#wp-chat-window').find('.wp-chat-window-archive[data-room-id='+room.room_id+']').data('room-last-message', room.last_message);
+
 						var group = '';
 						if (room.room_thumbnails.length > 1){
 							$('#wp-chat-window').find('.wp-chat-window-archive[data-room-id='+room.room_id+'] .wp-chat-window-archive-avatar').addClass('grouped');
@@ -517,6 +516,15 @@
 					}
 					$(this).removeClass('updated');
 				});
+				wp_chat_order_archives_list();
+			}
+
+			function wp_chat_order_archives_list(){
+				$('#wp-chat-window .wp-chat-window-archives>ul .wp-chat-window-archive').sort(function(a, b) {
+					var upA = $(a).data('room-last-message');
+					var upB = $(b).data('room-last-message');
+					return (upA > upB) ? -1 : (upA < upB) ? 1 : 0;
+				}).appendTo('#wp-chat-window .wp-chat-window-archives>ul');
 			}
 
 
@@ -562,14 +570,10 @@
 			}
 
 			jQuery('body').on('click', '#wp-chat-window .wp-chat-window-archives .wp-chat-window-archive', function(event){
-				console.log('Clicking on archive');
 				var $target = $(event.target);
-				console.log($target.parent());
 				if ($target.hasClass('wp-chat-window-archive-actions') || $target.hasClass('wp-chat-window-archive-action') || $target.parent().hasClass('wp-chat-window-archive-actions')){
-					console.log('Whoops its the menu');
 					return;
 				}
-				console.log('Its not the menu');
 				var room_id = jQuery(this).closest('.wp-chat-window-archive').attr('data-room-id');
 				$.ajax({
 					type: 'POST',
