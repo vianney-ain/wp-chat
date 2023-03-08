@@ -774,11 +774,11 @@ class Wp_Chat_Public {
 				$room_details = $this->model->get_room_details_by_id($room->id, $this->user_id);
 				if (isset($room->name) && !empty($room->name)){
 					$current_room['room_name'] = $room->name;
-					$current_room['full_name'] = $room->name;
+					$current_room['room_fullname'] = $room->name;
 				}
 				else {
 					$current_room['room_name'] = $room_details['room_name'];
-					$current_room['full_name'] = $room_details['room_name'];
+					$current_room['room_fullname'] = $room_details['room_name'];
 				}
 				if (strlen($current_room['room_name']) > 20){
 					$current_room['room_name'] = substr($current_room['room_name'], 0, 20).'...';

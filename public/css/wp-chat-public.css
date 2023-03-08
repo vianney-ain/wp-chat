@@ -177,6 +177,7 @@
   display:flex;
   flex-direction:row;
   justify-content:space-around;
+  margin-top:10px;
 }
 
 #wp-chat-window .wp-chat-window-archives-menu .wp-chat-window-archives-menu-item {
@@ -447,6 +448,7 @@
   font-size:15px;
   padding: 0 10px 0 10px;
   max-width:calc(300px - 52px - 50px);
+  width:100%;
   white-space:nowrap;
   overflow:hidden;
   height: 100%;
