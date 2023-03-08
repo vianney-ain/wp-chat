@@ -213,7 +213,7 @@
   list-style:none;
   margin:0;
   padding:0;
-  overflow-y:scroll;
+  overflow-y:auto;
   height:100vh;
 }
 
@@ -223,6 +223,9 @@
   align-items:center;
   cursor:pointer;
   padding:20px;
+  border-radius:10px;
+  margin-left:10px;
+  margin-right:10px;
 }
 
 #wp-chat-window .wp-chat-window-archives ul li.wp-chat-empty-archive {
