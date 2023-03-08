@@ -26,6 +26,7 @@
 			});
 
 			$('body').on('click', '#wp-chat-window .wp-chat-window-archives .wp-chat-window-archive .wp-chat-window-archive-actions', function(){
+				console.log('Clicking menu');
 				if ($(this).hasClass('active')){
 					$(this).removeClass('active');
 				}
@@ -80,7 +81,7 @@
 						section = $(this).data('section');
 					}
 				});
-				$('#wp-chat-window .wp-chat-window-archives ul li').each(function(){
+				$('#wp-chat-window .wp-chat-window-archives ul li.wp-chat-window-archive').each(function(){
 					if ($(this).hasClass('wp-chat-empty-archive')){
 						return;
 					}
@@ -355,13 +356,10 @@
 					},
 					beforeSend: function (jqXHR, settings) {
 							let url = settings.url + "?" + settings.data;
-							console.log(url);
 					},
 					success: function(data) {
-						console.log(data);
 						if (data.success == true){
 							refresh_chat_window(data.content);
-							//refresh_chat_window('general', data.content);
 							refresh_chat_dialogs(data.content);
 							wp_chat_filter_archives();
 						}
@@ -564,10 +562,14 @@
 			}
 
 			jQuery('body').on('click', '#wp-chat-window .wp-chat-window-archives .wp-chat-window-archive', function(event){
+				console.log('Clicking on archive');
 				var $target = $(event.target);
-				if ($target.hasClass('wp-chat-window-archive-actions') || $target.hasClass('wp-chat-window-archive-action')){
+				console.log($target.parent());
+				if ($target.hasClass('wp-chat-window-archive-actions') || $target.hasClass('wp-chat-window-archive-action') || $target.parent().hasClass('wp-chat-window-archive-actions')){
+					console.log('Whoops its the menu');
 					return;
 				}
+				console.log('Its not the menu');
 				var room_id = jQuery(this).closest('.wp-chat-window-archive').attr('data-room-id');
 				$.ajax({
 					type: 'POST',
