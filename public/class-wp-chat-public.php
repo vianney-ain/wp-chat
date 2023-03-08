@@ -637,6 +637,25 @@ class Wp_Chat_Public {
 			);
 			die(json_encode($response));
 		}
+
+		if ($room->public == '0'){
+			if (!$this->model->is_participant_in_room($room->id, $this->user_id)){
+				$response = array(
+					'success' => false,
+					'message' => "You are not allowed to see this room."
+				);
+				die(json_encode($response));
+			}
+		}
+		else {
+			if (!$this->model->is_participant_in_room($room->id, $this->user_id)){
+				$this->model->create_participant($room->id, $this->user_id);
+				$user = get_user_by('id', $this->user_id);
+				$message = $user->data->display_name.' a rejoint la conversation.';
+				$this->model->send_system_message($room->id, $message);
+			}
+		}		
+
 		$room_details = $this->model->get_room_details_by_id($room->id, $this->user_id);
 
 		$response = array(

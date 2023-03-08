@@ -565,7 +565,7 @@
 					url: wp_chat_ajax.ajax_url,
 					data: {
 						'action': 'wp_chat_open_room',
-						'room_id': room_id
+						'room_id': room_id,
 					},
 					beforeSend: function (jqXHR, settings) {
 							let url = settings.url + "?" + settings.data;
