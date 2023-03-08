@@ -173,6 +173,37 @@
   outline:none;
 }
 
+#wp-chat-window .wp-chat-window-archives-menu {
+  display:flex;
+  flex-direction:row;
+  justify-content:space-around;
+}
+
+#wp-chat-window .wp-chat-window-archives-menu .wp-chat-window-archives-menu-item {
+  cursor:pointer;
+  display:flex;
+  width:100%;
+  justify-content:center;
+  padding:10px 0;
+}
+
+#wp-chat-window .wp-chat-window-archives-menu .wp-chat-window-archives-menu-item:not(:last-child) {
+  border-right:1px solid #cccccc;
+}
+
+#wp-chat-window .wp-chat-window-archives-menu .wp-chat-window-archives-menu-item.active {
+  color:#ED253C;
+  font-weight:bold;
+}
+
+#wp-chat-window .wp-chat-window-archives-menu .wp-chat-window-archives-menu-item:hover {
+  background:#dddddd;
+  color:#ED253C;
+}
+
+#wp-chat-window .wp-chat-window-archives-menu .wp-chat-window-archives-menu-item.active:hover {
+}
+
 #wp-chat-window .wp-chat-window-archives {
   margin-top:10px;
 }
@@ -196,6 +227,15 @@
 #wp-chat-window .wp-chat-window-archives ul li.wp-chat-empty-archive {
   margin-left:20px;
 }
+
+#wp-chat-window .wp-chat-window-archives .wp-chat-window-archives-section {
+  display:none;
+}
+
+#wp-chat-window .wp-chat-window-archives .wp-chat-window-archives-section.active {
+  display:block;
+}
+
 #wp-chat-window .wp-chat-window-archives ul li.wp-chat-empty-archive .create_new_conversation_button {
   padding:10px;
   color:#fff;
@@ -265,6 +305,24 @@
 
 #wp-chat-window .wp-chat-window-archives ul li.wp-chat-window-archive .wp-chat-window-archive-content .wp-chat-window-archive-title {
   font-size:18px;
+  display:flex;
+  flex-direction:row;
+}
+
+#wp-chat-window .wp-chat-window-archives ul li.wp-chat-window-archive .wp-chat-window-archive-content .wp-chat-window-archive-title .wp-chat-window-archive-status {
+  display:flex;
+  margin: auto 0;
+  margin-left:10px;
+  background:red;
+  border-radius:999px;
+  color:#ffffff;
+  font-size:11px;
+  padding:0px 4px;
+  align-items:center;
+}
+
+#wp-chat-window .wp-chat-window-archives ul li.wp-chat-window-archive .wp-chat-window-archive-content .wp-chat-window-archive-title .wp-chat-window-archive-status.public {
+  background:#8d7dc9;
 }
 
 #wp-chat-window .wp-chat-window-archives ul li.wp-chat-window-archive .wp-chat-window-archive-content .wp-chat-window-archive-last-comment {

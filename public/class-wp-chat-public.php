@@ -731,21 +731,47 @@ class Wp_Chat_Public {
 			);
 			die(json_encode($response));
 		}
-		$rooms = $this->model->get_participants_by_user($this->user_id);
-		if (isset($rooms) && !empty($rooms) && is_array($rooms)){
-			foreach($rooms as $kr => $room){
-				$room = $this->model->get_room_by_id($room->roomID);
-				$rooms[$kr]->room_id = $room->id;
+
+		$user_rooms = $this->model->get_user_private_rooms($this->user_id);
+		$public_rooms = $this->model->get_public_rooms($this->user_id);
+		$found_rooms = array_merge($user_rooms, $public_rooms);
+
+		$rooms = array();
+
+		if (isset($found_rooms) && !empty($found_rooms) && is_array($found_rooms)){
+			foreach($found_rooms as $kr => $room){
+				$current_room = array(
+					'is_user_in' => false,
+					'room_id' => $room->id,
+					'ownerID' => $room->ownerID,
+					'lastMessage' => strtotime($room->lastMessage),
+					'public' => $room->public,
+					'private' => $room->private,
+					'created' => $room->created
+				);
+				if ($this->model->is_participant_in_room($room->id, $this->user_id)){
+					$current_room['is_user_in'] = true;
+				}
 				$room_details = $this->model->get_room_details_by_id($room->id, $this->user_id);
 				if (isset($room->name) && !empty($room->name)){
-					$rooms[$kr]->room_name = $room->name;
+					$current_room['room_name'] = $room->name;
+					$current_room['full_name'] = $room->name;
 				}
 				else {
-					$rooms[$kr]->room_name = $room_details['room_name'];
+					$current_room['room_name'] = $room_details['room_name'];
+					$current_room['full_name'] = $room_details['room_name'];
 				}
-				$rooms[$kr]->last_message = strtotime($room->last_message);
-				$rooms[$kr]->room_thumbnails = $room_details['room_thumbnails'];
-				$rooms[$kr]->messages = $this->model->get_message_by_room($room->id);
+				if (strlen($current_room['room_name']) > 20){
+					$current_room['room_name'] = substr($current_room['room_name'], 0, 20).'...';
+				}
+				$current_room['room_thumbnails'] = $room_details['room_thumbnails'];
+				$current_room['messages'] = $this->model->get_message_by_room($room->id);
+
+				//if user participate to the room
+				if ($this->model->is_participant_in_room($room->id, $this->user_id)){
+					$current_room['is_user_in'] = true;
+				}
+				array_push($rooms, $current_room);
 			}
 		}
 		$response = array(

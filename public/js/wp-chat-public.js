@@ -4,7 +4,6 @@
 	 	jQuery(document).ready(function(){
 
 			$('body').on('keyup', '#wp-chat-window .wp-chat-search input', function(){
-				console.log('ici');
 				var rex = new RegExp($(this).val(), 'i');
 				$('#wp-chat-window .wp-chat-window-archives .wp-chat-window-archive').hide();
 				$('#wp-chat-window .wp-chat-window-archives .wp-chat-window-archive').filter(function () {
@@ -64,7 +63,33 @@
 				jQuery('.wp-chat-dialog[data-room-id='+room_id+']').find('.wp-chat-dialog-content').scrollTop(jQuery('.wp-chat-dialog[data-room-id='+room_id+']').find('.wp-chat-dialog-content')[0].scrollHeight);
 			});
 
+			jQuery('body').on('click', '.wp-chat-window-archives-menu .wp-chat-window-archives-menu-item', function(){
+				let section = $(this).data('section');
+				$('.wp-chat-window-archives-menu .wp-chat-window-archives-menu-item').each(function(){
+					$(this).removeClass('active');
+				});
+				$(this).addClass('active');
+				wp_chat_filter_archives();
+			});
+
 			/*** FUNCTIONS ***/
+			function wp_chat_filter_archives(){
+				var section = 'own';
+				$('#wp-chat-window .wp-chat-window-archives-menu .wp-chat-window-archives-menu-item').each(function(){
+					if ($(this).hasClass('active')){
+						section = $(this).data('section');
+					}
+				});
+				$('#wp-chat-window .wp-chat-window-archives ul li').each(function(){
+					if ($(this).data('room-section') == section){
+						$(this).show();
+					}
+					else {
+						$(this).hide();
+					}
+				});
+			}
+
 			function wp_chat_toggle_menu_window(){
 			  if (!jQuery('#wp-chat-window').length){
 			    console.warn('WP Chat Windows is not enabled');
@@ -326,12 +351,15 @@
 					},
 					beforeSend: function (jqXHR, settings) {
 							let url = settings.url + "?" + settings.data;
-							//console.log(url);
+							console.log(url);
 					},
 					success: function(data) {
+						console.log(data);
 						if (data.success == true){
 							refresh_chat_window(data.content);
+							//refresh_chat_window('general', data.content);
 							refresh_chat_dialogs(data.content);
+							wp_chat_filter_archives();
 						}
 						else {
 							alert(data.message);
@@ -404,7 +432,24 @@
 					jQuery('#wp-chat-window .wp-chat-window-archives .wp-chat-empty-archive').remove();
 					//if room has been loaded already
 					if ($('#wp-chat-window').find('.wp-chat-window-archive[data-room-id='+room.room_id+']').length > 0){
+						var room_status_label = '';
+						var room_status_class = '';
+						if (room.public == '1'){
+							room_status_label = 'publique';
+							room_status_class = 'public';
+						}
+						if (room.archived == '1'){
+							room_status_label = 'archivée';
+							room_status_class = 'archived';
+						}
 						$('#wp-chat-window').find('.wp-chat-window-archive[data-room-id='+room.room_id+']').addClass('updated');
+
+						var room_section = 'general';
+						if (room.is_user_in){
+							room_section = 'own';
+						}
+						$('#wp-chat-window').find('.wp-chat-window-archive[data-room-id='+room.room_id+']').data('room-section', room_section);
+
 						var group = '';
 						if (room.room_thumbnails.length > 1){
 							$('#wp-chat-window').find('.wp-chat-window-archive[data-room-id='+room.room_id+'] .wp-chat-window-archive-avatar').addClass('grouped');
@@ -414,6 +459,9 @@
 						}
 						$('#wp-chat-window').find('.wp-chat-window-archive[data-room-id='+room.room_id+'] .wp-chat-window-archive-avatar').empty().append(display_room_thumbnail(room.room_id, room.room_thumbnails));
 						$('#wp-chat-window').find('.wp-chat-window-archive[data-room-id='+room.room_id+'] .wp-chat-window-archive-content .wp-chat-window-archive-title').text(room.room_name);
+
+						$('#wp-chat-window').find('.wp-chat-window-archive[data-room-id='+room.room_id+'] .wp-chat-window-archive-content .wp-chat-window-archive-title').append('<span class="wp-chat-window-archive-status '+room_status_class+'">'+room_status_label+'</span>');
+
 						var message = '';
 						if (room.messages[room.messages.length - 1].message.length > wp_chat_ajax.text_extract_length){
 							message = room.messages[room.messages.length - 1].message.substring(0,wp_chat_ajax.text_extract_length)+'...';
@@ -422,7 +470,6 @@
 							message = room.messages[room.messages.length - 1].message;
 						}
 						$('#wp-chat-window').find('.wp-chat-window-archive[data-room-id='+room.room_id+'] .wp-chat-window-archive-content .wp-chat-window-archive-last-comment').text(message);
-
 					}
 					//if not loaded, we create the layout
 					else {
@@ -438,7 +485,21 @@
 							else {
 								message = room.messages[room.messages.length - 1].message;
 							}
-							jQuery('#wp-chat-window').find('.wp-chat-window-archives>ul').append('<li class="wp-chat-window-archive updated" data-room-id="'+room.room_id+'" data-room-last-message="'+room.last_message+'"><div class="wp-chat-window-archive-avatar '+group+'">'+display_room_thumbnail(room.room_id, room.room_thumbnails)+'</div><div class="wp-chat-window-archive-content"><div class="wp-chat-window-archive-title">'+room.room_name+'</div><div class="wp-chat-window-archive-last-comment">'+message+'</div></div><div class="wp-chat-window-archive-actions"><div class="wp-chat-icon dots-v"></div><ul><li class="wp-chat-window-archive-action leave-room-action">Quitter la conversation</li></ul></div></li>');
+							var room_status_label = '';
+							var room_status_class = '';
+							if (room.public == '1'){
+								room_status_label = 'publique';
+								room_status_class = 'public';
+							}
+							if (room.archived == '1'){
+								room_status_label = 'archivée';
+								room_status_class = 'archived';
+							}
+							var room_section = 'general';
+							if (room.is_user_in){
+								room_section = 'own';
+							}
+							jQuery('#wp-chat-window').find('.wp-chat-window-archives>ul').append('<li class="wp-chat-window-archive updated" data-room-id="'+room.room_id+'" data-room-last-message="'+room.last_message+'" data-room-section="'+room_section+'"><div class="wp-chat-window-archive-avatar '+group+'">'+display_room_thumbnail(room.room_id, room.room_thumbnails)+'</div><div class="wp-chat-window-archive-content"><div class="wp-chat-window-archive-title">'+room.room_name+'<span class="wp-chat-window-archive-status '+room_status_class+'">'+room_status_label+'</span></div><div class="wp-chat-window-archive-last-comment">'+message+'</div></div><div class="wp-chat-window-archive-actions"><div class="wp-chat-icon dots-v"></div><ul><li class="wp-chat-window-archive-action leave-room-action">Quitter la conversation</li></ul></div></li>');
 						}
 					}
 				});

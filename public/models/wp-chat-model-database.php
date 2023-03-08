@@ -226,6 +226,34 @@ class Wp_Chat_Model_Database {
     return array_values($result)[0];
   }
 
+  //Return any room the current user is in
+  public function get_user_rooms($user_id){
+    global $wpdb;
+    $result = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}chat_participant as Participant INNER JOIN {$wpdb->prefix}chat_room as Room ON Participant.roomID = Room.id WHERE Participant.userID = '{$user_id}'");
+    return $result;
+  }
+
+  //Return only privates rooms user is in
+  public function get_user_private_rooms($user_id){
+    global $wpdb;
+    $result = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}chat_participant as Participant INNER JOIN {$wpdb->prefix}chat_room as Room ON Participant.roomID = Room.id WHERE Participant.userID = '{$user_id}' AND Room.public = 0");
+    return $result;
+  }
+
+  //Return all publics rooms, no parameters needed
+  public function get_public_rooms(){
+    global $wpdb;
+    $result = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}chat_room as Room WHERE Room.public = '1'");
+    return $result;
+  }
+
+  //Return all publics rooms the current user is in
+  public function get_user_public_rooms($user_id){
+    global $wpdb;
+    $result = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}chat_participant as Participant INNER JOIN {$wpdb->prefix}chat_room as Room ON Participant.roomID = Room.id WHERE Participant.userID = '{$user_id}' AND Room.public = 1");
+    return $result;
+  }
+
   public function get_participants_by_user($user_id){
     global $wpdb;
     $results = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}chat_participant WHERE userID='{$user_id}'");
@@ -250,7 +278,7 @@ class Wp_Chat_Model_Database {
   public function create_room($to, $from){
     global $wpdb;
     $table = $wpdb->prefix.'chat_room';
-    $data = array('name' => '', 'created' => current_time('mysql', 1), 'ownerID' => $from, 'public' => true, 'archived' => false);
+    $data = array('name' => '', 'created' => current_time('mysql', 1), 'ownerID' => $from, 'public' => false, 'archived' => false);
     $format = array('%s','%s','%d', '%d', '%d');
     $wpdb->insert($table,$data,$format);
     $room_id = $wpdb->insert_id;

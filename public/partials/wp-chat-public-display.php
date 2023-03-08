@@ -95,7 +95,7 @@
          <div class="wp-chat-icon chat"></div>
        </div>
        <div id="wp-chat-menu-archives"></div>
-       <div id="wp-chat-window" class="">
+       <div id="wp-chat-window" class="active">
          <div class="wp-chat-window-header">
            <h3 class="wp-chat-title">Discussions</h3>
            <div class="wp-chat-window-close">
@@ -109,11 +109,15 @@
              <input type="text">
            </div>
          </div>
+         <div class="wp-chat-window-archives-menu">
+          <div class="wp-chat-window-archives-menu-item active" data-section="own">Vos discussions</div>
+          <div class="wp-chat-window-archives-menu-item" data-section="general">Discussions publiques</div>
+         </div>
          <div class="wp-chat-window-archives">
-           <ul>
-             <li class="wp-chat-empty-archive">Vous n'avez aucune discussion pour le moment.</li>
-             <li class="wp-chat-empty-archive"><button class="create_new_conversation_button">Créez-en une !</button></li>
-           </ul>
+          <ul>
+            <li class="wp-chat-empty-archive">Vous ne participez à aucune discussion pour le moment.</li>
+            <li class="wp-chat-empty-archive"><button class="create_new_conversation_button">Créez-en une !</button></li>
+          </ul>
          </div>
        </div>
        <div id="wp-chat-dialogs">
