@@ -9,20 +9,23 @@ class Wp_Chat_Model_Database {
     return false;
   }
 
+
+  //if two users already have a room (where they are 2)
+  //return the room id
+  //else, return false
   public function has_solo_room($to, $from){
     global $wpdb;
-    //$results = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}chat_participant WHERE userID=%s", $to);
     $wpdb->show_errors( true );
     //get rooms user "to" participate in
     $results_to = $this->get_participant($to);
     //get rooms user "from" participate in
     $results_from = $this->get_participant($from);
+
     $common_rooms = array();
     if (isset($results_to) && !empty($results_to) && isset($results_from) && !empty($results_from)){
       foreach ($results_to as $k1 => $result_to){
         foreach ($results_from as $k2 => $result_from){
           if ($result_to->roomID == $result_from->roomID){
-            //echo 'Les deux utilisateurs sont dans une même room, la room : '.$result_to->roomID.'<br>';
             array_push($common_rooms, $result_to->roomID);
           }
         }
@@ -32,13 +35,10 @@ class Wp_Chat_Model_Database {
     //for each rooms they have in common, we check if they are only 2 inside
     if (isset($common_rooms) && !empty($common_rooms)){
       foreach($common_rooms as $kr => $common_room){
-        //echo 'Vérifions si ils ne sont que tous les deux dans la room '.$common_room.'<br>';
         if ($this->is_room_grouped($common_room)){
-          //echo 'La room '.$common_room.' est groupée. Ils ne sont pas que 2 dedans.'.'<br>';
         }
         else {
           $has_solo_room = $common_room;
-          //echo "Ils ne sont que tous les deux dans la room ".$common_room.", elle existe donc déjà.".'<br>';
         }
       }
     }

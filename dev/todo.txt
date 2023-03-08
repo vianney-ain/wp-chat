@@ -6,7 +6,9 @@
 - affichage des messages au scroll en ajax
 - n'afficher les messages que 30 par 30
 - devoir nommer quelqu'un d'autre owner pour pouvoir quitter la conversation
-- pouvoir join une room publique
+- problème avec les caractères spéciaux dans les titres
+- afficher les archives dans l'ordre de la last activity
+- dans le refresh view, ne recuperer que le dernier message ?
 
 -- menu admin --
 - pouvoir choisir si on active ou non le chat
@@ -21,3 +23,4 @@
 - pouvoir rechercher dans ses conversations
 - pouvoir quitter une conversation
 - système de rooms publiques
+- pouvoir join une room publique

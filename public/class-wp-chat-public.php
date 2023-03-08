@@ -330,6 +330,7 @@ class Wp_Chat_Public {
 			);
 			die(json_encode($response));
 		}
+
 		$response = array(
 			'success' => true,
 			'room_id' => null,
@@ -337,6 +338,7 @@ class Wp_Chat_Public {
 			'room_name' => $to['display_name'],
 			'messages' => array(),
 		);
+		
 		if ($this->model->check_tables()){
 			if (isset($_REQUEST['to']) && !empty($_REQUEST['to']) ){
 				$room_id = $this->model->has_solo_room(esc_attr($_REQUEST['to']), $this->user_id);
@@ -902,7 +904,7 @@ class Wp_Chat_Public {
 			$archived = '1';
 		}
 
-		if ($this->model->edit_room_details($room->id, esc_attr($_REQUEST['room_name']), $public, $archived ) ){
+		if ($this->model->edit_room_details($room->id, stripcslashes($_REQUEST['room_name']), $public, $archived ) ){
 			if (empty($_REQUEST['room_name'])){
 				$message = $user['display_name'].' a retiré le titre de la conversation.';
 				$this->model->send_system_message($room->id, $message);
