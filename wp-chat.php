@@ -8,7 +8,7 @@
  * registers the activation and deactivation functions, and defines a function
  * that starts the plugin.
  *
- * @link              https://https://vianneyain.com/
+ * @link             https://vianneyain.com/
  * @since             1.0.0
  * @package           Wp_Chat
  *
@@ -18,7 +18,7 @@
  * Description:       Allow WordPress users to start instant messaging.
  * Version:           1.0.0
  * Author:            Vianney AÏN
- * Author URI:        https://https://vianneyain.com/
+ * Author URI:        https://vianneyain.com/
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       wp-chat

@@ -134,11 +134,16 @@ class Wp_Chat {
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function set_locale() {
+	public function set_locale() {
+		load_plugin_textdomain(
+			'wp-chat',
+			false,
+			dirname( dirname( plugin_basename( __FILE__ ) ) ) . '/languages/'
+		);
 
-		$plugin_i18n = new Wp_Chat_i18n();
+		/*$plugin_i18n = new Wp_Chat_i18n( $this->get_plugin_name(), $this->get_version() );
 
-		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
+		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );*/
 
 	}
 
