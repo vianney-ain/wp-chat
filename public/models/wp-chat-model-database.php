@@ -283,6 +283,7 @@ class Wp_Chat_Model_Database {
     $wpdb->insert($table,$data,$format);
     $room_id = $wpdb->insert_id;
     if (isset($room_id) && !empty($room_id)){
+      $this->send_system_message($room_id, __( 'This is the beginning of the conversation', 'wp-chat').'.' );
       $this->create_participant($room_id, $to);
       $this->create_participant($room_id, $from);
     }

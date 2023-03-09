@@ -17,7 +17,7 @@
      ?>
      <div class="wp-chat-dialog blank">
        <div class="wp-chat-dialog-header">
-         <div class="wp-chat-dialog-title"><?php _e( 'New room' , 'wp-chat' ); ?></div>
+         <div class="wp-chat-dialog-title"><?php _e( 'New conversation' , 'wp-chat' ); ?></div>
          <div class="wp-chat-dialog-header-actions">
            <div class="wp-chat-dialog-header-action close-dialog">
              <div class="wp-chat-icon close"></div>
@@ -71,7 +71,7 @@
              <div class="wp-chat-icon chevron_left"></div>
            </div>
          </div>
-         <div class="wp-chat-dialog-popup-title"><input type="text" placeholder="<?php _e( 'Room title' , 'wp-chat' ); ?>"></div>
+         <div class="wp-chat-dialog-popup-title"><input type="text" placeholder="<?php _e( 'Conversation title' , 'wp-chat' ); ?>"></div>
        </div>
        <div class="wp-chat-dialog-popup-content">
         <div class="wp-chat-dialog-popup-content-row">
@@ -111,7 +111,7 @@
          </div>
          <div class="wp-chat-window-archives-menu">
           <div class="wp-chat-window-archives-menu-item active" data-section="own"><?php _e( 'Your conversations' , 'wp-chat' ); ?></div>
-          <div class="wp-chat-window-archives-menu-item" data-section="general"><?php _e( 'Public rooms' , 'wp-chat' ); ?></div>
+          <div class="wp-chat-window-archives-menu-item" data-section="general"><?php _e( 'Public conversations' , 'wp-chat' ); ?></div>
          </div>
          <div class="wp-chat-window-archives">
           <ul>
