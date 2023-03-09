@@ -8,6 +8,7 @@
 - devoir nommer quelqu'un d'autre owner pour pouvoir quitter la conversation
 - dans le refresh view, ne recuperer que le dernier message ?
 - afficher la date de la dernière activité d'une conv dans les archives
+- changer le système de création de room, pouvoir créer une room en ajoutant plusieurs personnes
 
 -- menu admin --
 - pouvoir choisir si on active ou non le chat

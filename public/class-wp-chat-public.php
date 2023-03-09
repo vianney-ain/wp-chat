@@ -778,7 +778,7 @@ class Wp_Chat_Public {
 					'ownerID' => $room->ownerID,
 					'last_message' => strtotime($room->lastMessage),
 					'public' => $room->public,
-					'private' => $room->private,
+					'archived' => $room->archived,
 					'created' => $room->created
 				);
 				if ($this->model->is_participant_in_room($room->id, $this->user_id)){
