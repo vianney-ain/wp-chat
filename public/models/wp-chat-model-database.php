@@ -147,7 +147,7 @@ class Wp_Chat_Model_Database {
     }
     else {
       return array(
-        'room_name' => 'Conversation sans nom',
+        'room_name' => __( 'Nameless chat' , 'wp-chat' ),
         'room_thumbnails' => array(),
       );
     }
@@ -177,14 +177,14 @@ class Wp_Chat_Model_Database {
         return $user_names[0];
       }
       else if (sizeof($user_names) == 2){
-        return $user_names[0].' et '.$user_names[1];
+        return $user_names[0].' '.__( 'and', 'wp-chat' ).' '.$user_names[1];
       }
       else if (sizeof($user_names) > 2){
-        return $user_names[0].' et '.(sizeof($user_names)-1).' autres';
+        return $user_names[0].' '.__( 'and', 'wp-chat' ).' '.(sizeof($user_names)-1).' '.__( 'others', 'wp-chat' );
       }
     }
     else {
-      return 'Conversation sans nom';
+      return __( 'Nameless chat', 'wp-chat' );
     }
   }
 

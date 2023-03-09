@@ -125,7 +125,7 @@ class Wp_Chat_Public {
 		if (!isset($this->user_id) || empty($this->user_id)){
 			$response = array(
 				'success' => false,
-				'message' => 'You must be connected to be able to do that.',
+				'message' => __( 'You must be connected to be able to do that' , 'wp-chat' ).'.',
 			);
 			die(json_encode($response));
 		}
@@ -145,7 +145,7 @@ class Wp_Chat_Public {
 		        'user_login',
 		        'user_nicename',
 		        'user_firstname',
-						'user_lastname',
+				'user_lastname',
 		        'user_email',
 		        'user_display_name',
 		    ),
@@ -173,7 +173,7 @@ class Wp_Chat_Public {
 		if (!isset($this->user_id) || empty($this->user_id)){
 			$response = array(
 				'success' => false,
-				'message' => 'You must be connected to be able to do that.',
+				'message' => __( 'You must be connected to be able to do that' , 'wp-chat' ).'.',
 			);
 			die(json_encode($response));
 		}
@@ -193,7 +193,7 @@ class Wp_Chat_Public {
 		        'user_login',
 		        'user_nicename',
 		        'user_firstname',
-						'user_lastname',
+				'user_lastname',
 		        'user_email',
 		        'user_display_name',
 		    ),
@@ -229,7 +229,6 @@ class Wp_Chat_Public {
 	}
 
 	public function add_chat_section(){
-
 		$this->view->default_view();
 	}
 
@@ -238,7 +237,7 @@ class Wp_Chat_Public {
 		if (!isset($this->user_id) || empty($this->user_id)){
 			$response = array(
 				'success' => false,
-				'message' => 'You must be connected to be able to do that.',
+				'message' => __( 'You must be connected to be able to do that', 'wp-chat' ).'.',
 			);
 			die(json_encode($response));
 		}
@@ -246,7 +245,7 @@ class Wp_Chat_Public {
 		if (!isset($_REQUEST['room']) || empty($_REQUEST['room'])){
 			$response = array(
 				'success' => false,
-				'message' => 'Room is missing.'
+				'message' => __( 'Missing informations' , 'wp-chat' ).'.',
 			);
 			die(json_encode($response));
 		}
@@ -254,7 +253,7 @@ class Wp_Chat_Public {
 		if (!isset($_REQUEST['message']) || empty($_REQUEST['message'])){
 			$response = array(
 				'success' => false,
-				'message' => 'Message cannot be empty.'
+				'message' => __( 'Message cannot be empty' , 'wp-chat' ).'.',
 			);
 			die(json_encode($response));
 		}
@@ -264,7 +263,7 @@ class Wp_Chat_Public {
 		if (!isset($from) || empty($from)){
 			$response = array(
 				'success' => false,
-				'message' => 'User cannot be found'
+				'message' => __( 'User cannot be found' , 'wp-chat' ).'.',
 			);
 			die(json_encode($response));
 		}
@@ -274,7 +273,7 @@ class Wp_Chat_Public {
 		if (!isset($room) || empty($room)){
 			$response = array(
 				'success' => false,
-				'message' => 'Room cannot be found',
+				'message' => __( 'Conversation cannot be found' , 'wp-chat' ).'.',
 			);
 			die(json_encode($response));
 		}
@@ -282,7 +281,7 @@ class Wp_Chat_Public {
 		if (!$this->model->is_participant_in_room($room->id, $this->user_id)){
 			$response = array(
 				'success' => false,
-				'message' => 'You are not in this room.',
+				'message' => __( 'You are not in this conversation' , 'wp-chat' ).'.',
 			);
 			die(json_encode($response));
 		}
@@ -290,14 +289,14 @@ class Wp_Chat_Public {
 		if($this->model->send_message($room->id, $from['id'], stripcslashes($_REQUEST['message']), '')){
 			$response = array(
 				'success' => true,
-				'message' => 'Message sent'
+				'message' => __( 'Message sent' , 'wp-chat' ).'.',
 			);
 
 		}
 		else {
 			$response = array(
 				'success' => false,
-				'message' => 'An error occured, please try again.'
+				'message' => __( 'An error occured, please try again' , 'wp-chat' ).'.',
 			);
 		}
 		die(json_encode($response));
@@ -308,7 +307,15 @@ class Wp_Chat_Public {
 		if (!isset($this->user_id) || empty($this->user_id)){
 			$response = array(
 				'success' => false,
-				'message' => 'You must be connected to be able to do that.',
+				'message' => __( 'You must be connected to be able to do that', 'wp-chat' ).'.',
+			);
+			die(json_encode($response));
+		}
+
+		if (!isset($_REQUEST['to']) || empty($_REQUEST['to'])){
+			$response = array(
+				'success' => false,
+				'message' => __( 'Missing informations', 'wp-chat' ).'.',
 			);
 			die(json_encode($response));
 		}
@@ -316,7 +323,7 @@ class Wp_Chat_Public {
 		if ($_REQUEST['to'] == $this->user_id){
 			$response = array(
 				'success' => false,
-				'message' => 'Cannot create room for yourself'
+				'message' => __( 'Cannot create conversation for yourself' , 'wp-chat' ).'.',
 			);
 			die(json_encode($response));
 		}
@@ -326,7 +333,7 @@ class Wp_Chat_Public {
 		if (!isset($to) || empty($to)){
 			$response = array(
 				'success' => false,
-				'message' => 'User is not existing'
+				'message' => __( 'User is not existing' , 'wp-chat' ).'.',
 			);
 			die(json_encode($response));
 		}
@@ -355,7 +362,7 @@ class Wp_Chat_Public {
 		}
 		$response = array(
 			'success' => false,
-			'message' => 'An error occured',
+			'message' => __( 'An error occured, please try again' , 'wp-chat' ).'.',
 		);
 		die(json_encode($response));
 	}
@@ -365,14 +372,14 @@ class Wp_Chat_Public {
 		if (!isset($this->user_id) || empty($this->user_id)){
 			$response = array(
 				'success' => false,
-				'message' => 'You must be connected to be able to do that.',
+				'message' => __( 'You must be connected to be able to do that', 'wp-chat' ).'.',
 			);
 			die(json_encode($response));
 		}
 		if (!isset($_REQUEST['room_id']) || empty($_REQUEST['room_id'])){
 			$response = array(
 				'success' => false,
-				'message' => 'Conversation cannot be found.'
+				'message' => __( 'Missing informations' , 'wp-chat' ).'.',
 			);
 			die(json_encode($response));
 		}
@@ -381,7 +388,7 @@ class Wp_Chat_Public {
 		if (!isset($user) || empty($user)){
 			$response = array(
 				'success' => false,
-				'message' => 'User is not existing'
+				'message' => __( 'User is not existing' , 'wp-chat' ).'.',
 			);
 			die(json_encode($response));
 		}
@@ -390,7 +397,7 @@ class Wp_Chat_Public {
 		if (!isset($room) || empty($room)){
 			$response = array(
 				'success' => false,
-				'message' => 'Conversation cannot be found.'
+				'message' => __( 'Conversation cannot be found' , 'wp-chat' ).'.',
 			);
 			die(json_encode($response));
 		}
@@ -425,7 +432,7 @@ class Wp_Chat_Public {
 		if (!isset($this->user_id) || empty($this->user_id)){
 			$response = array(
 				'success' => false,
-				'message' => 'You must be connected to be able to do that.',
+				'message' => __( 'You must be connected to be able to do that', 'wp-chat' ).'.',
 			);
 			die(json_encode($response));
 		}
@@ -433,7 +440,7 @@ class Wp_Chat_Public {
 		if (!isset($user) || empty($user)){
 			$response = array(
 				'success' => false,
-				'message' => 'User is not existing'
+				'message' => __( 'User is not existing' , 'wp-chat' ).'.',
 			);
 			die(json_encode($response));
 		}
@@ -441,7 +448,7 @@ class Wp_Chat_Public {
 		if (!isset($_REQUEST['added_user_id']) || empty($_REQUEST['added_user_id'])){
 			$response = array(
 				'success' => false,
-				'message' => 'Missing informations.'
+				'message' => __( 'Missing informations' , 'wp-chat' ).'.',
 			);
 			die(json_encode($response));
 		}
@@ -449,7 +456,7 @@ class Wp_Chat_Public {
 		if (!isset($added_user) || empty($added_user)){
 			$response = array(
 				'success' => false,
-				'message' => 'User is not existing'
+				'message' => __( 'User is not existing' , 'wp-chat' ).'.',
 			);
 			die(json_encode($response));
 		}
@@ -457,7 +464,7 @@ class Wp_Chat_Public {
 		if (!isset($_REQUEST['room_id']) || empty($_REQUEST['room_id'])){
 			$response = array(
 				'success' => false,
-				'message' => 'Conversation cannot be found.'
+				'message' => __( 'Missing informations' , 'wp-chat' ).'.',
 			);
 			die(json_encode($response));
 		}
@@ -465,7 +472,7 @@ class Wp_Chat_Public {
 		if (!isset($room) || empty($room)){
 			$response = array(
 				'success' => false,
-				'message' => 'Conversation cannot be found.'
+				'message' => __( 'Conversation cannot be found' , 'wp-chat' ).'.',
 			);
 			die(json_encode($response));
 		}
@@ -473,23 +480,25 @@ class Wp_Chat_Public {
 		if ( $this->model->is_participant_in_room($room->id, esc_attr($_REQUEST['added_user_id']) ) ){
 			$response = array(
 				'success' => false,
-				'message' => 'This user is already in this conversation.'
+				'message' => __('This user is already in this conversation', 'wp-chat').'.',
 			);
 			die(json_encode($response));
 		}
 
 		if ( $this->model->create_participant($room->id, esc_attr($_REQUEST['added_user_id']) ) ){
 			$message = '';
-			if (isset($added_user) && !empty($added_user)){
-				$message = $added_user['display_name'].' a été ajouté à la conversation';
+			if (isset($added_user) && !empty($added_user) && isset($user) && !empty($user)){
+				$message = sprintf(__('%1$s has been added to the conversation by %2$s', 'wp-chat'), $added_user['display_name'], $user['display_name']).'.';
+			}
+			else if (isset($added_user) && !empty($added_user)){
+				$message = sprintf(__('%s has been added to the conversation', 'wp-chat'), $added_user['display_name']).'.';
+			}
+			else if (isset($user) && !empty($user)) {
+				$message = sprintf(__( 'Somebody has been added to the conversation by %s' , 'wp-chat' ), $user['display_name']).'.';
 			}
 			else {
-				$message = 'Un participant a été ajouté à la conversation';
+				$message = __( 'Somebody has been added to the conversation' , 'wp-chat' ).'.';
 			}
-			if (isset($user) && !empty($user)){
-				$message .= ' par '.$user['display_name'];
-			}
-			$message.= '.';
 			$this->model->send_system_message($room->id, $message);
 
 			$response = array(
@@ -500,7 +509,7 @@ class Wp_Chat_Public {
 		else {
 			$response = array(
 				'success' => false,
-				'message' => 'An error occured, please try again.'
+				'message' => __( 'An error occured, please try again' , 'wp-chat' ).'.',
 			);
 			die(json_encode($response));
 		}
@@ -512,7 +521,7 @@ class Wp_Chat_Public {
 		if (!isset($this->user_id) || empty($this->user_id)){
 			$response = array(
 				'success' => false,
-				'message' => 'You must be connected to be able to do that.',
+				'message' => __( 'You must be connected to be able to do that', 'wp-chat' ).'.',
 			);
 			die(json_encode($response));
 		}
@@ -521,7 +530,7 @@ class Wp_Chat_Public {
 		if (!isset($user) || empty($user)){
 			$response = array(
 				'success' => false,
-				'message' => 'User is not existing'
+				'message' => __( 'User is not existing' , 'wp-chat' ).'.',
 			);
 			die(json_encode($response));
 		}
@@ -529,15 +538,15 @@ class Wp_Chat_Public {
 		if (!isset($_REQUEST['removed_user_id']) || empty($_REQUEST['removed_user_id'])){
 			$response = array(
 				'success' => false,
-				'message' => 'Missing informations.'
+				'message' => __( 'Missing informations' , 'wp-chat' ).'.',
 			);
 			die(json_encode($response));
 		}
-		$removed_user_id = $this->model->get_user_by_id($_REQUEST['removed_user_id']);
-		if (!isset($removed_user_id) || empty($removed_user_id)){
+		$removed_user = $this->model->get_user_by_id($_REQUEST['removed_user_id']);
+		if (!isset($removed_user) || empty($removed_user)){
 			$response = array(
 				'success' => false,
-				'message' => 'User is not existing'
+				'message' => __( 'User is not existing' , 'wp-chat' ).'.',
 			);
 			die(json_encode($response));
 		}
@@ -545,7 +554,7 @@ class Wp_Chat_Public {
 		if (!isset($_REQUEST['room_id']) || empty($_REQUEST['room_id'])){
 			$response = array(
 				'success' => false,
-				'message' => 'Conversation cannot be found.'
+				'message' => __( 'Missing informations' , 'wp-chat' ).'.',
 			);
 			die(json_encode($response));
 		}
@@ -553,7 +562,7 @@ class Wp_Chat_Public {
 		if (!isset($room) || empty($room)){
 			$response = array(
 				'success' => false,
-				'message' => 'Conversation cannot be found.'
+				'message' => __( 'Conversation cannot be found' , 'wp-chat' ).'.',
 			);
 			die(json_encode($response));
 		}
@@ -561,7 +570,7 @@ class Wp_Chat_Public {
 		if ($room->ownerID != $this->user_id){
 			$response = array(
 				'success' => false,
-				'message' => 'You are not the owner of this conversation.'
+				'message' => __( 'You are not the owner of this conversation' , 'wp-chat' ).'.',
 			);
 			die(json_encode($response));
 		}
@@ -569,23 +578,25 @@ class Wp_Chat_Public {
 		if ($room->ownerID == esc_attr($_REQUEST['removed_user_id'])){
 			$response = array(
 				'success' => false,
-				'message' => 'The owner of the conversation cannot be removed from it.'
+				'message' => __( 'The owner of the conversation cannot be removed from it' , 'wp-chat' ).'.',
 			);
 			die(json_encode($response));
 		}
 
 		if ($this->model->remove_participant_from_room($room->id, esc_attr($_REQUEST['removed_user_id']))){
 			$message = '';
-			if (isset($removed_user_id) && !empty($removed_user_id)){
-				$message = $removed_user_id['display_name'].' a été retiré de la conversation';
+			if (isset($removed_user) && !empty($removed_user) && isset($user) && !empty($user)){
+				$message = sprintf(__('%1$s has been removed from the conversation by %2$s', 'wp-chat'), $removed_user['display_name'], $user['display_name']).'.';
+			}
+			else if (isset($removed_user) && !empty($removed_user)){
+				$message = sprintf(__('%s has been removed from the conversation', 'wp-chat'), $removed_user['display_name']).'.';
+			}
+			else if (isset($user) && !empty($user)) {
+				$message = sprintf(__( 'Somebody has been removed from the conversation by %s' , 'wp-chat' ), $user['display_name']).'.';
 			}
 			else {
-				$message = 'Un participant a été retiré de la conversation';
+				$message = __( 'Somebody has been removed from the conversation' , 'wp-chat' ).'.';
 			}
-			if (isset($user) && !empty($user)){
-				$message .= ' par '.$user['display_name'];
-			}
-			$message.= '.';
 			$this->model->send_system_message($room->id, $message);
 			$response = array(
 				'success' => true,
@@ -594,7 +605,7 @@ class Wp_Chat_Public {
 		else {
 			$response = array(
 				'success' => false,
-				'message' => 'An error occurred.'
+				'message' => __( 'An error occured, please try again' , 'wp-chat' ).'.',
 			);
 		}
 
@@ -607,7 +618,7 @@ class Wp_Chat_Public {
 		if (!isset($this->user_id) || empty($this->user_id)){
 			$response = array(
 				'success' => false,
-				'message' => 'You must be connected to be able to do that.',
+				'message' => __( 'You must be connected to be able to do that', 'wp-chat' ).'.',
 			);
 			die(json_encode($response));
 		}
@@ -615,7 +626,7 @@ class Wp_Chat_Public {
 		if (!isset($_REQUEST['room_id']) || empty($_REQUEST['room_id'])){
 			$response = array(
 				'success' => false,
-				'message' => 'Conversation cannot be found.'
+				'message' => __( 'Missing informations' , 'wp-chat' ).'.',
 			);
 			die(json_encode($response));
 		}
@@ -625,7 +636,7 @@ class Wp_Chat_Public {
 		if (!isset($user) || empty($user)){
 			$response = array(
 				'success' => false,
-				'message' => 'User is not existing'
+				'message' => __( 'User is not existing' , 'wp-chat' ).'.',
 			);
 			die(json_encode($response));
 		}
@@ -635,7 +646,7 @@ class Wp_Chat_Public {
 		if (!isset($room) || empty($room)){
 			$response = array(
 				'success' => false,
-				'message' => 'Room is not existing'
+				'message' => __( 'Conversation cannot be found' , 'wp-chat' ).'.',
 			);
 			die(json_encode($response));
 		}
@@ -644,7 +655,7 @@ class Wp_Chat_Public {
 			if (!$this->model->is_participant_in_room($room->id, $this->user_id)){
 				$response = array(
 					'success' => false,
-					'message' => "You are not allowed to see this room."
+					'message' => __( 'You are not allowed to see this conversation' , 'wp-chat' ).'.',
 				);
 				die(json_encode($response));
 			}
@@ -653,7 +664,7 @@ class Wp_Chat_Public {
 			if (!$this->model->is_participant_in_room($room->id, $this->user_id)){
 				$this->model->create_participant($room->id, $this->user_id);
 				$user = get_user_by('id', $this->user_id);
-				$message = $user->data->display_name.' a rejoint la conversation.';
+				$message = sprintf(__( '%s joined the room' , 'wp-chat' ), $user->data->display_name).'.';
 				$this->model->send_system_message($room->id, $message);
 			}
 		}		
@@ -680,7 +691,7 @@ class Wp_Chat_Public {
 		if (!isset($this->user_id) || empty($this->user_id)){
 			$response = array(
 				'success' => false,
-				'message' => 'You must be connected to be able to do that.',
+				'message' => __( 'You must be connected to be able to do that', 'wp-chat' ).'.',
 			);
 			die(json_encode($response));
 		}
@@ -689,7 +700,7 @@ class Wp_Chat_Public {
 		if (!isset($user) || empty($user)){
 			$response = array(
 				'success' => false,
-				'message' => 'User is not existing'
+				'message' => __( 'User is not existing' , 'wp-chat' ).'.',
 			);
 			die(json_encode($response));
 		}
@@ -697,7 +708,7 @@ class Wp_Chat_Public {
 		if (!isset($_REQUEST['room_id']) || empty($_REQUEST['room_id'])){
 			$response = array(
 				'success' => false,
-				'message' => 'Conversation cannot be found.'
+				'message' => __( 'Missing informations' , 'wp-chat' ).'.',
 			);
 			die(json_encode($response));
 		}
@@ -706,7 +717,7 @@ class Wp_Chat_Public {
 		if (!isset($room) || empty($room)){
 			$response = array(
 				'success' => false,
-				'message' => 'Room is not existing'
+				'message' => __( 'Conversation cannot be found' , 'wp-chat' ).'.',
 			);
 			die(json_encode($response));
 		}
@@ -715,10 +726,10 @@ class Wp_Chat_Public {
 			if ($this->model->remove_participant_from_room($room->id, $this->user_id)){
 				$message = '';
 				if (isset($user) && !empty($user)){
-					$message = $user['display_name'].' a été quitté la conversation';
+					$message = sprintf(__( '%s left the conversation' , 'wp-chat' ), $user['display_name']).'.';
 				}
 				else {
-					$message = 'Un participant a a quitté la conversation';
+					$message = __( 'Somebody left the conversation' , 'wp-chat' ).'.';
 				}
 				$message.= '.';
 				$this->model->send_system_message($room->id, $message);
@@ -729,7 +740,7 @@ class Wp_Chat_Public {
 			else {
 				$response = array(
 					'success' => false,
-					'message' => 'An error occured, please try again.',
+					'message' => __( 'An error occured, please try again' , 'wp-chat' ).'.',
 				);
 			}
 
@@ -737,7 +748,7 @@ class Wp_Chat_Public {
 		else {
 			$response = array(
 				'success' => false,
-				'message' => 'You are not in this room',
+				'message' => __( 'You are not in this conversation' , 'wp-chat' ).'.',
 			);
 		}
 		die(json_encode($response));
@@ -748,7 +759,7 @@ class Wp_Chat_Public {
 		if (!isset($this->user_id) || empty($this->user_id)){
 			$response = array(
 				'success' => false,
-				'message' => 'You must be connected to be able to do that.',
+				'message' => __( 'You must be connected to be able to do that', 'wp-chat' ).'.',
 			);
 			die(json_encode($response));
 		}
@@ -807,14 +818,14 @@ class Wp_Chat_Public {
 		if (!isset($this->user_id) || empty($this->user_id)){
 			$response = array(
 				'success' => false,
-				'message' => 'You must be connected to be able to do that.',
+				'message' => __( 'You must be connected to be able to do that', 'wp-chat' ).'.',
 			);
 			die(json_encode($response));
 		}
 		if (!isset($_REQUEST['room_id']) || empty($_REQUEST['room_id'])){
 			$response = array(
 				'success' => false,
-				'message' => 'Conversation cannot be found.'
+				'message' => __( 'Conversation cannot be found' , 'wp-chat' ).'.',
 			);
 			die(json_encode($response));
 		}
@@ -822,7 +833,7 @@ class Wp_Chat_Public {
 		if (!isset($room) || empty($room)){
 			$response = array(
 				'success' => false,
-				'message' => 'Conversation cannot be found.'
+				'message' => __( 'Conversation cannot be found' , 'wp-chat' ).'.',
 			);
 			die(json_encode($response));
 		}
@@ -843,7 +854,7 @@ class Wp_Chat_Public {
 		if (!isset($this->user_id) || empty($this->user_id)){
 			$response = array(
 				'success' => false,
-				'message' => 'You must be connected to be able to do that.',
+				'message' => __( 'You must be connected to be able to do that', 'wp-chat' ).'.',
 			);
 			die(json_encode($response));
 		}
@@ -852,7 +863,7 @@ class Wp_Chat_Public {
 		if (!isset($user) || empty($user)){
 			$response = array(
 				'success' => false,
-				'message' => 'User is not existing'
+				'message' => __( 'User is not existing' , 'wp-chat' ).'.',
 			);
 			die(json_encode($response));
 		}
@@ -860,14 +871,14 @@ class Wp_Chat_Public {
 		if (!isset($_REQUEST['room_name'])){
 			$response = array(
 				'success' => false,
-				'message' => 'Room name is required.'
+				'message' => __( 'Conversation name is required' , 'wp-chat' ).'.',
 			);
 			die(json_encode($response));
 		}
 		if (!isset($_REQUEST['room_id']) || empty($_REQUEST['room_id'])){
 			$response = array(
 				'success' => false,
-				'message' => 'Conversation cannot be found.'
+				'message' => __( 'Missing informations' , 'wp-chat' ).'.',
 			);
 			die(json_encode($response));
 		}
@@ -889,7 +900,7 @@ class Wp_Chat_Public {
 		if (!isset($room) || empty($room)){
 			$response = array(
 				'success' => false,
-				'message' => 'Conversation cannot be found.'
+				'message' => __( 'Conversation cannot be found' , 'wp-chat' ).'.',
 			);
 			die(json_encode($response));
 		}
@@ -906,31 +917,31 @@ class Wp_Chat_Public {
 
 		if ($this->model->edit_room_details($room->id, stripcslashes($_REQUEST['room_name']), $public, $archived ) ){
 			if (empty($_REQUEST['room_name'])){
-				$message = $user['display_name'].' a retiré le titre de la conversation.';
+				$message = sprintf(__( '%s has removed the title of this conversation.' , 'wp-chat' ), $user['display_name']).'.';
 				$this->model->send_system_message($room->id, $message);
 			}
 
 			if ($room->name != esc_attr($_REQUEST['room_name'])){
-				$message = $user['display_name'].' a changé le titre de la conversation en "'.$_REQUEST['room_name'].'"';
+				$message = sprintf(__('%1$s has changed the title of this conversation for %2$s', 'wp-chat'), $user['display_name'], $_REQUEST['room_name']).'.';
 				$this->model->send_system_message($room->id, $message);
 			}
 
 			if ($room->public != $public){
 				if ($room->public == '0'){
-					$message = 'Cette conversation est désormais publique.';
+					$message = __( 'This conversation is now public' , 'wp-chat' ).'.';
 				}
 				if ($room->public == '1'){
-					$message = 'Cette conversation est désormais privée.';
+					$message = __( 'This conversation is now private' , 'wp-chat' ).'.';
 				}
 				$this->model->send_system_message($room->id, $message);
 			}
 
 			if ($room->archived != $archived){
 				if ($room->archived == '0'){
-					$message = 'Cette conversation a été archivé par '.$user['display_name'].'.';
+					$message = sprintf(__( 'This conversation has been archived by %s' , 'wp-chat' ), $user['display_name']).'.';
 				}
 				if ($room->archived == '1'){
-					$message = "Cette conversation n'est plus archivée.";
+					$message = __( 'This conversation is no longer archived' , 'wp-chat' );
 				}
 				$this->model->send_system_message($room->id, $message);
 			}
@@ -943,7 +954,7 @@ class Wp_Chat_Public {
 		else {
 			$response = array(
 				'success' => false,
-				'message' => 'Failed to change room name.',
+				'message' => __( 'Failed to change conversation details' , 'wp-chat' ).'.',
 			);
 		}
 		die(json_encode($response));

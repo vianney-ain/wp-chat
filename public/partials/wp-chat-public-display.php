@@ -17,7 +17,7 @@
      ?>
      <div class="wp-chat-dialog blank">
        <div class="wp-chat-dialog-header">
-         <div class="wp-chat-dialog-title">Nouveau message</div>
+         <div class="wp-chat-dialog-title"><?php _e( 'New room' , 'wp-chat' ); ?></div>
          <div class="wp-chat-dialog-header-actions">
            <div class="wp-chat-dialog-header-action close-dialog">
              <div class="wp-chat-icon close"></div>
@@ -27,7 +27,7 @@
        <div class="wp-chat-dialog-content">
          <div class="new_dialog_search">
            <div class="new_dialog_search_container">
-             <input placeholder="Chercher un utilisateur" class="new_dialog_search_input" type="text">
+             <input placeholder="<?php _e( 'Search a user' , 'wp-chat' ); ?>" class="new_dialog_search_input" type="text">
              <div class="dialog_search_results">
                <ul>
                </ul>
@@ -49,14 +49,14 @@
              <div class="wp-chat-icon chevron_left"></div>
            </div>
          </div>
-         <div class="wp-chat-dialog-popup-title">Participants</div>
+         <div class="wp-chat-dialog-popup-title"><?php _e( 'Participants' , 'wp-chat' ); ?></div>
        </div>
        <div class="wp-chat-dialog-popup-content">
          <ul class="wp-chat-dialog-popup-participants-list">
          </ul>
        </div>
        <div class="wp-chat-dialog-popup-footer">
-         <input class="wp-chat-add-participant-input" placeholder="Ajouter un participant" type="text">
+         <input class="wp-chat-add-participant-input" placeholder="<?php _e( 'Add a participant' , 'wp-chat' ); ?>" type="text">
        </div>
      </div>
      <?php
@@ -71,18 +71,18 @@
              <div class="wp-chat-icon chevron_left"></div>
            </div>
          </div>
-         <div class="wp-chat-dialog-popup-title"><input type="text" placeholder="Titre de la conversation"></div>
+         <div class="wp-chat-dialog-popup-title"><input type="text" placeholder="<?php _e( 'Room title' , 'wp-chat' ); ?>"></div>
        </div>
        <div class="wp-chat-dialog-popup-content">
         <div class="wp-chat-dialog-popup-content-row">
-          Conversation publique : <label class="wp-chat-switch"><input type="checkbox" name="room-public-checkbox" /><span></span></label>
+        <?php _e( 'Public conversation' , 'wp-chat' ); ?> : <label class="wp-chat-switch"><input type="checkbox" name="room-public-checkbox" /><span></span></label>
         </div>
         <div class="wp-chat-dialog-popup-content-row">
-          Archiver la conversation : <label class="wp-chat-switch"><input type="checkbox" name="room-archived-checkbox" /><span></span></label>
+        <?php _e( 'Archive conversation' , 'wp-chat' ); ?> : <label class="wp-chat-switch"><input type="checkbox" name="room-archived-checkbox" /><span></span></label>
         </div>
        </div>
        <div class="wp-chat-dialog-popup-footer">
-         <button>Enregistrer les modifications</button>
+         <button><?php _e( 'Save' , 'wp-chat' ); ?></button>
        </div>
      </div>
      <?php
@@ -97,7 +97,7 @@
        <div id="wp-chat-menu-archives"></div>
        <div id="wp-chat-window" class="active">
          <div class="wp-chat-window-header">
-           <h3 class="wp-chat-title">Discussions</h3>
+           <h3 class="wp-chat-title"><?php _e( 'Conversations' , 'wp-chat' ); ?></h3>
            <div class="wp-chat-window-close">
              <span></span>
              <span></span>
@@ -106,17 +106,17 @@
          <div class="wp-chat-window-menu">
            <div class="wp-chat-icon new"></div>
            <div class="wp-chat-search">
-             <input type="text">
+             <input type="text" placeholder="<?php _e( 'Search' , 'wp-chat' ); ?>">
            </div>
          </div>
          <div class="wp-chat-window-archives-menu">
-          <div class="wp-chat-window-archives-menu-item active" data-section="own">Vos discussions</div>
-          <div class="wp-chat-window-archives-menu-item" data-section="general">Discussions publiques</div>
+          <div class="wp-chat-window-archives-menu-item active" data-section="own"><?php _e( 'Your conversations' , 'wp-chat' ); ?></div>
+          <div class="wp-chat-window-archives-menu-item" data-section="general"><?php _e( 'Public rooms' , 'wp-chat' ); ?></div>
          </div>
          <div class="wp-chat-window-archives">
           <ul>
-            <li class="wp-chat-empty-archive">Vous ne participez à aucune discussion pour le moment.</li>
-            <li class="wp-chat-empty-archive"><button class="create_new_conversation_button">Créez-en une !</button></li>
+            <li class="wp-chat-empty-archive"><?php _e( 'You are not participating to any conversation for now.' , 'wp-chat' ); ?></li>
+            <li class="wp-chat-empty-archive"><button class="create_new_conversation_button"><?php _e( 'Create one !' , 'wp-chat' ); ?></button></li>
           </ul>
          </div>
        </div>
