@@ -917,12 +917,12 @@ class Wp_Chat_Public {
 
 		if ($this->model->edit_room_details($room->id, stripcslashes($_REQUEST['room_name']), $public, $archived ) ){
 			if (empty($_REQUEST['room_name'])){
-				$message = sprintf(__( '%s has removed the title of this conversation.' , 'wp-chat' ), $user['display_name']).'.';
+				$message = sprintf(__( '%s has removed the title of this conversation' , 'wp-chat' ), $user['display_name']).'.';
 				$this->model->send_system_message($room->id, $message);
 			}
 
 			if ($room->name != esc_attr($_REQUEST['room_name'])){
-				$message = sprintf(__('%1$s has changed the title of this conversation for %2$s', 'wp-chat'), $user['display_name'], $_REQUEST['room_name']).'.';
+				$message = sprintf(__('%1$s has changed the title of this conversation for "%2$s"', 'wp-chat'), $user['display_name'], $_REQUEST['room_name']).'.';
 				$this->model->send_system_message($room->id, $message);
 			}
 
