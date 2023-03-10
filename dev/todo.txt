@@ -2,7 +2,6 @@
 - garder les fenêtres ouvertes via des cookies
 - notifications de nouveaux messages
 - pouvoir supprimer une conversation
-- gestion des traductions
 - affichage des messages au scroll en ajax
 - n'afficher les messages que 30 par 30
 - devoir nommer quelqu'un d'autre owner pour pouvoir quitter la conversation
@@ -26,3 +25,4 @@
 - pouvoir join une room publique
 - problème avec les caractères spéciaux dans les titres des rooms
 - afficher les archives dans l'ordre de la last activity
+- gestion des traductions

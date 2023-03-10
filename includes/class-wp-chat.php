@@ -195,8 +195,10 @@ class Wp_Chat {
 		$this->loader->add_action( 'wp_ajax_wp_chat_add_room_participant', $plugin_public, 'wp_chat_add_room_participant' );
 		$this->loader->add_action( 'wp_ajax_wp_chat_get_room_details', $plugin_public, 'wp_chat_get_room_details' );
 
+		/*** ENQUEUE ***/
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
+		$this->loader->add_action( 'plugins_loaded', $plugin_public, 'wp_chat_load_textdomain' );
 
 	}
 

@@ -2,6 +2,40 @@
 
 class Wp_Chat_Model_Database {
 
+	/**
+	 * The ID of this plugin.
+	 *
+	 * @since    1.0.0
+	 * @access   private
+	 * @var      string    $plugin_name    The ID of this plugin.
+	 */
+	private $plugin_name;
+
+	/**
+	 * The version of this plugin.
+	 *
+	 * @since    1.0.0
+	 * @access   private
+	 * @var      string    $version    The current version of this plugin.
+	 */
+	private $version;
+
+  
+	/**
+	 * Initialize the class and set its properties.
+	 *
+	 * @since    1.0.0
+	 * @param      string    $plugin_name       The name of the plugin.
+	 * @param      string    $version    The version of this plugin.
+	 */
+  public function __construct( $plugin_name, $version ) {
+
+		$this->plugin_name = $plugin_name;
+		$this->version = $version;
+
+	}
+
+
   public function check_tables(){
     if ($this->create_room_table() && $this->create_participants_table() && $this->create_messages_table()){
       return true;
@@ -147,7 +181,7 @@ class Wp_Chat_Model_Database {
     }
     else {
       return array(
-        'room_name' => __( 'Nameless chat' , 'wp-chat' ),
+        'room_name' => __( 'Nameless chat' , $this->plugin_name ),
         'room_thumbnails' => array(),
       );
     }
@@ -177,14 +211,14 @@ class Wp_Chat_Model_Database {
         return $user_names[0];
       }
       else if (sizeof($user_names) == 2){
-        return $user_names[0].' '.__( 'and', 'wp-chat' ).' '.$user_names[1];
+        return $user_names[0].' '.__( 'and', $this->plugin_name ).' '.$user_names[1];
       }
       else if (sizeof($user_names) > 2){
-        return $user_names[0].' '.__( 'and', 'wp-chat' ).' '.(sizeof($user_names)-1).' '.__( 'others', 'wp-chat' );
+        return $user_names[0].' '.__( 'and', $this->plugin_name ).' '.(sizeof($user_names)-1).' '.__( 'others', $this->plugin_name );
       }
     }
     else {
-      return __( 'Nameless chat', 'wp-chat' );
+      return __( 'Nameless chat', $this->plugin_name );
     }
   }
 
@@ -283,7 +317,7 @@ class Wp_Chat_Model_Database {
     $wpdb->insert($table,$data,$format);
     $room_id = $wpdb->insert_id;
     if (isset($room_id) && !empty($room_id)){
-      $this->send_system_message($room_id, __( 'This is the beginning of the conversation', 'wp-chat').'.' );
+      $this->send_system_message($room_id, __( 'This is the beginning of the conversation', $this->plugin_name).'.' );
       $this->create_participant($room_id, $to);
       $this->create_participant($room_id, $from);
     }

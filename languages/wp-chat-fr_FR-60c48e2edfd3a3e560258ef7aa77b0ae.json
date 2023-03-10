@@ -1,0 +1,21 @@
+{
+    "translation-revision-date": "2023-03-10 08:26+0000",
+    "generator": "Loco https://localise.biz/",
+    "source": "public/js/wp-chat-public.js",
+    "domain": "wp-chat",
+    "locale_data": {
+        "wp-chat": {
+            "": {
+                "domain": "wp-chat",
+                "lang": "fr_FR",
+                "plural-forms": "nplurals=2; plural=n > 1;"
+            },
+            "archived": [
+                "archiv\u00e9"
+            ],
+            "public": [
+                "publique"
+            ]
+        }
+    }
+}

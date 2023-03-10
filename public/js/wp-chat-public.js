@@ -1,5 +1,6 @@
 (function( $ ) {
 	'use strict';
+	const { __, _x, _n, _nx } = wp.i18n;
 
 	 	jQuery(document).ready(function(){
 
@@ -26,7 +27,6 @@
 			});
 
 			$('body').on('click', '#wp-chat-window .wp-chat-window-archives .wp-chat-window-archive .wp-chat-window-archive-actions', function(){
-				console.log('Clicking menu');
 				if ($(this).hasClass('active')){
 					$(this).removeClass('active');
 				}
@@ -96,7 +96,7 @@
 
 			function wp_chat_toggle_menu_window(){
 			  if (!jQuery('#wp-chat-window').length){
-			    console.warn('WP Chat Windows is not enabled');
+				console.warn( __( 'WP-Chat window is not enabled', wp_chat_ajax.plugin_name) );
 			    return false;
 			  }
 			  if (jQuery('#wp-chat-window').hasClass('active')){
@@ -173,7 +173,7 @@
 				jQuery('.wp-chat-dialog.blank .dialog_search_results ul').empty();
 				if (matches != null && matches.length > 0 ){
 					$.each(matches, function (k, v){
-						if (k < 5){
+						if (k < limit){
 							jQuery('.wp-chat-dialog.blank .dialog_search_results ul').append('<li class="new_dialog_user_select" data-id="'+v.ID+'">'+v.display_name+'</li>');
 						}
 					});
@@ -353,6 +353,7 @@
 					},
 					beforeSend: function (jqXHR, settings) {
 							let url = settings.url + "?" + settings.data;
+							//console.log(url);
 					},
 					success: function(data) {
 						if (data.success == true){
@@ -439,11 +440,11 @@
 						var room_status_label = '';
 						var room_status_class = '';
 						if (room.public == '1'){
-							room_status_label = 'publique';
+							room_status_label = __( 'public', wp_chat_ajax.plugin_name);
 							room_status_class = 'public';
 						}
 						if (room.archived == '1'){
-							room_status_label = 'archivée';
+							room_status_label = __( 'archived', wp_chat_ajax.plugin_name);
 							room_status_class = 'archived';
 						}
 						$('#wp-chat-window').find('.wp-chat-window-archive[data-room-id='+room.room_id+']').addClass('updated');
@@ -495,11 +496,11 @@
 							var room_status_label = '';
 							var room_status_class = '';
 							if (room.public == '1'){
-								room_status_label = 'publique';
+								room_status_label = __( 'public', wp_chat_ajax.plugin_name);
 								room_status_class = 'public';
 							}
 							if (room.archived == '1'){
-								room_status_label = 'archivée';
+								room_status_label = __( 'archived', wp_chat_ajax.plugin_name);
 								room_status_class = 'archived';
 							}
 							var room_section = 'general';
@@ -874,7 +875,6 @@
 				let room_name = jQuery('.wp-chat-dialog[data-room-id='+room_id+']').find('.wp-chat-dialog-popup.popup-room .wp-chat-dialog-popup-title input').val();
 				let public_checkbox = jQuery('.wp-chat-dialog[data-room-id='+room_id+']').find('.wp-chat-dialog-popup.popup-room input[name="room-public-checkbox"]').is(':checked');
 				let archived_checkbox = jQuery('.wp-chat-dialog[data-room-id='+room_id+']').find('.wp-chat-dialog-popup.popup-room input[name="room-archived-checkbox"]').is(':checked');
-				console.log(public_checkbox);
 				edit_room_details(room_id, room_name, public_checkbox, archived_checkbox);
 			});
 
@@ -907,10 +907,8 @@
 					},
 					beforeSend: function (jqXHR, settings) {
 							let url = settings.url + "?" + settings.data;
-							console.log(url);
 					},
 					success: function(data) {
-						console.log(data);
 						if (data.success == true){
 							refresh_view();
 							jQuery('.wp-chat-dialog[data-room-id='+room_id+']').find('.wp-chat-dialog-popup.popup-room').remove();
