@@ -8,9 +8,10 @@
 - dans le refresh view, ne recuperer que le dernier message ?
 - afficher la date de la dernière activité d'une conv dans les archives
 - changer le système de création de room, pouvoir créer une room en ajoutant plusieurs personnes
+- ajouter des logs en cas d'erreur
+- les archives blink au refresh
 
 -- menu admin --
-- pouvoir choisir si on active ou non le chat
 - pouvoir ajouter un id ou une class custom au chat
 
 -- DONE --
@@ -26,3 +27,7 @@
 - problème avec les caractères spéciaux dans les titres des rooms
 - afficher les archives dans l'ordre de la last activity
 - gestion des traductions
+
+-- menu admin -- 
+- pouvoir choisir si on active ou non le chat
+- pouvoir régler la refresh rate des rooms

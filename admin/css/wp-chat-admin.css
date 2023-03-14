@@ -2,3 +2,13 @@
  * All of the CSS for your admin-specific functionality should be
  * included in this file.
  */
+
+ #adminmenu #toplevel_page_wp-chat .wp-menu-image img {
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+    padding: 0;
+    width: 75%;
+    height: 75%;
+    padding: 3px 0 0;
+ }

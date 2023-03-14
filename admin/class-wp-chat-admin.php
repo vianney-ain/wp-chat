@@ -106,74 +106,128 @@ class Wp_Chat_Admin {
 	* @since    1.0.0
 	*/
 	public function register_settings_page() {
+
+		add_menu_page(
+			__( 'Home', $this->plugin_name ),//page title
+			__( 'WP Chat', $this->plugin_name ), //menu title
+			'manage_options',//capability
+			$this->plugin_name,//menu slug
+			array( $this, 'display_general_settings_page' ), // callable function
+			plugins_url( '/wp-chat/public/img/wp-chat.png' ),//icon url
+			999//position
+		);
+
 		// Create our settings page as a submenu page.
 		add_submenu_page(
-			'tools.php',                            // parent slug
-			__( 'WP-Chat', 'wp-chat' ),      				// page title
-			__( 'WP-Chat', 'wp-chat' ),     			  // menu title
+			$this->plugin_name,                            // parent slug
+			__( 'Theme', $this->plugin_name ),      				// page title
+			__( 'Theme', $this->plugin_name ),     			  // menu title
 			'manage_options',                       // capability
-			'wp-chat',                              // menu_slug
-			array( $this, 'display_settings_page' ) // callable function
+			$this->plugin_name.'-theme',                              // menu_slug
+			array( $this, 'display_theme_settings_page' ) // callable function
 		);
 	}
 
-	/**
-	* Display the settings page content for the page we have created.
-	*
-	* @since    1.0.0
-	*/
-	public function display_settings_page() {
-
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/wp-chat-admin-display.php';
-
+	public function display_general_settings_page() {
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/wp-chat-admin-general-display.php';
 	}
 
-	/**
-	* Register the settings for our settings page.
-	*
-	* @since    1.0.0
-	*/
+	public function display_theme_settings_page() {
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/wp-chat-admin-theme-display.php';
+	}
+
 	public function register_settings() {
+		$this->register_general_settings();
+		$this->register_theme_settings();
+	}
+
+	public function register_general_settings(){
 
 		// Here we are going to register our setting.
 		register_setting(
-			$this->plugin_name . '-settings', // option_group, a setting group name
-			$this->plugin_name . '-settings', // option_name
+			$this->plugin_name . '-general-settings', // option_group, a setting group name
+			$this->plugin_name . '-general-settings', // option_name
 			array( $this, 'sandbox_register_setting' ) // type, sanitize_callback
 		);
 
 		// Here we are going to add a section for our setting.
 		add_settings_section(
-			$this->plugin_name . '-settings-section', // id
-			__( 'Settings', 'wp-chat' ), // title
+			$this->plugin_name . '-general-settings-section', // id
+			__( 'Settings', $this->plugin_name ), // title
 			array( $this, 'sandbox_add_settings_section' ), // type, sanitize_callback
-			$this->plugin_name . '-settings' // page, the slug-name of the settings page on which to show the section
+			$this->plugin_name . '-general-settings' // page, the slug-name of the settings page on which to show the section
 		);
 
 		add_settings_field(
-			'toggle-content-override', // slug
-			__( 'Append Button', 'wp-chat' ), // title
+			'wp-chat-disable-plugin', // slug
+			__( 'Disable WP-Chat', $this->plugin_name ), // title
 			array( $this, 'sandbox_add_settings_field_single_checkbox' ), // callback, sanitize function
-			$this->plugin_name . '-settings', // page setting slug
-			$this->plugin_name . '-settings-section', // setting section slug
+			$this->plugin_name . '-general-settings', // page setting slug
+			$this->plugin_name . '-general-settings-section', // setting section slug
 			array( //extra parameters
-				'label_for' => 'toggle-content-override', // label for
-				'description' => __( 'If checked, it will append save button to the content.', 'wp-chat' ) // description
+				'label_for' => 'disable-wp-chat', // label for
+				'section_slug' => '-general-settings',
+				'description' => __( 'If checked, it will turn off the WP Chat plugin.', 'wp-chat' ) // description
 			)
 		);
 
 		add_settings_field(
-			'text-save',
-			__( 'Save Item', 'wp-chat' ),
+			'wp-chat-refresh-rate',
+			__( 'WP Chat refresh rate (in milliseconds)', $this->plugin_name ),
 			array( $this, 'sandbox_add_settings_field_input_text' ),
-			$this->plugin_name . '-settings',
-			$this->plugin_name . '-settings-section',
+			$this->plugin_name . '-general-settings',
+			$this->plugin_name . '-general-settings-section',
 			array(
-				'label_for' => 'text-save',
-				'default'   => __( 'Save Item', 'wp-chat' )
+				'label_for' => 'wp-chat-refresh-rate',
+				'section_slug' => '-general-settings',
+				'default'   => __( '1000', 'wp-chat' )
 			)
 		);
 
+	}
+	
+	public function register_theme_settings(){
+
+		// Here we are going to register our setting.
+		register_setting(
+			$this->plugin_name . '-theme-settings', // option_group, a setting group name
+			$this->plugin_name . '-theme-settings', // option_name
+			array( $this, 'sandbox_register_setting' ) // type, sanitize_callback
+		);
+
+		// Here we are going to add a section for our setting.
+		add_settings_section(
+			$this->plugin_name . '-theme-settings-section', // id
+			__( 'Settings', $this->plugin_name ), // title
+			array( $this, 'sandbox_add_settings_section' ), // type, sanitize_callback
+			$this->plugin_name . '-theme-settings' // page, the slug-name of the settings page on which to show the section
+		);
+
+		add_settings_field(
+			'wp-chat-disable-plugin', // slug
+			__( 'Disable WP-Chat', $this->plugin_name ), // title
+			array( $this, 'sandbox_add_settings_field_single_checkbox' ), // callback, sanitize function
+			$this->plugin_name . '-theme-settings', // page setting slug
+			$this->plugin_name . '-theme-settings-section', // setting section slug
+			array( //extra parameters
+				'label_for' => 'disable-wp-chat', // label for
+				'section_slug' => '-theme-settings',
+				'description' => __( 'If checked, it will turn off the WP Chat plugin.', 'wp-chat' ) // description
+			)
+		);
+
+		add_settings_field(
+			'wp-chat-refresh-rate',
+			__( 'WP Chat refresh rate (in milliseconds)', $this->plugin_name ),
+			array( $this, 'sandbox_add_settings_field_input_text' ),
+			$this->plugin_name . '-theme-settings',
+			$this->plugin_name . '-general-settings-section',
+			array(
+				'label_for' => 'wp-chat-refresh-rate',
+				'section_slug' => '-theme-settings',
+				'default'   => __( '1000', 'wp-chat' )
+			)
+		);
 
 	}
 
@@ -183,7 +237,6 @@ class Wp_Chat_Admin {
 	* @since    1.0.0
 	*/
 	public function sandbox_register_setting( $input ) {
-
 		$new_input = array();
 
 		if ( isset( $input ) ) {
@@ -201,28 +254,18 @@ class Wp_Chat_Admin {
 
 	}
 
-	/**
-	* Sandbox our section for the settings.
-	*
-	* @since    1.0.0
-	*/
 	public function sandbox_add_settings_section() {
 
 		return;
 
 	}
 
-	/**
-	* Sandbox our single checkboxes.
-	*
-	* @since    1.0.0
-	*/
 	public function sandbox_add_settings_field_single_checkbox( $args ) {
-
 		$field_id = $args['label_for'];
 		$field_description = $args['description'];
+		$section = $args['section_slug'];
 
-		$options = get_option( $this->plugin_name . '-settings' );
+		$options = get_option( $this->plugin_name . $section );
 		$option = 0;
 
 		if ( ! empty( $options[ $field_id ] ) ) {
@@ -233,8 +276,8 @@ class Wp_Chat_Admin {
 
 		?>
 
-		<label for="<?php echo $this->plugin_name . '-settings[' . $field_id . ']'; ?>">
-			<input type="checkbox" name="<?php echo $this->plugin_name . '-settings[' . $field_id . ']'; ?>" id="<?php echo $this->plugin_name . '-settings[' . $field_id . ']'; ?>" <?php checked( $option, true, 1 ); ?> value="1" />
+		<label for="<?php echo $this->plugin_name . $section . '[' . $field_id . ']'; ?>">
+			<input type="checkbox" name="<?php echo $this->plugin_name . $section . '[' . $field_id . ']'; ?>" id="<?php echo $this->plugin_name . $section . '[' . $field_id . ']'; ?>" <?php checked( $option, true, 1 ); ?> value="1" />
 			<span class="description"><?php echo esc_html( $field_description ); ?></span>
 		</label>
 
@@ -242,18 +285,13 @@ class Wp_Chat_Admin {
 
 	}
 
-
-	/**
-	* Sandbox our inputs with text
-	*
-	* @since    1.0.0
-	*/
 	public function sandbox_add_settings_field_input_text( $args ) {
 
 		$field_id = $args['label_for'];
 		$field_default = $args['default'];
+		$section = $args['section_slug'];
 
-		$options = get_option( $this->plugin_name . '-settings' );
+		$options = get_option( $this->plugin_name . $section );
 		$option = $field_default;
 
 		if ( ! empty( $options[ $field_id ] ) ) {
@@ -264,7 +302,7 @@ class Wp_Chat_Admin {
 
 		?>
 
-		<input type="text" name="<?php echo $this->plugin_name . '-settings[' . $field_id . ']'; ?>" id="<?php echo $this->plugin_name . '-settings[' . $field_id . ']'; ?>" value="<?php echo esc_attr( $option ); ?>" class="regular-text" />
+		<input type="text" name="<?php echo $this->plugin_name . $section . '[' . $field_id . ']'; ?>" id="<?php echo $this->plugin_name . $section . '[' . $field_id . ']'; ?>" value="<?php echo esc_attr( $option ); ?>" class="regular-text" />
 
 		<?php
 
