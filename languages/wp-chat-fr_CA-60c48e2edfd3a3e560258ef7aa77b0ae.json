@@ -1,0 +1,24 @@
+{
+    "translation-revision-date": "2023-03-15 09:22+0000",
+    "generator": "Loco https://localise.biz/",
+    "source": "public/js/wp-chat-public.js",
+    "domain": "wp-chat",
+    "locale_data": {
+        "wp-chat": {
+            "": {
+                "domain": "wp-chat",
+                "lang": "fr_CA",
+                "plural-forms": "nplurals=2; plural=n > 1;"
+            },
+            "archived": [
+                "archiv\u00e9"
+            ],
+            "public": [
+                "publique"
+            ],
+            "WP-Chat window is not enabled": [
+                "WP-Chat n'est pas activ\u00e9"
+            ]
+        }
+    }
+}
