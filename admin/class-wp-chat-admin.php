@@ -108,8 +108,8 @@ class Wp_Chat_Admin {
 	public function register_settings_page() {
 
 		add_menu_page(
-			__( 'Home', $this->plugin_name ),//page title
-			__( 'WP Chat', $this->plugin_name ), //menu title
+			__( 'Home', 'wp-chat' ),//page title
+			__( 'WP Chat', 'wp-chat' ), //menu title
 			'manage_options',//capability
 			$this->plugin_name,//menu slug
 			array( $this, 'display_general_settings_page' ), // callable function
@@ -120,8 +120,8 @@ class Wp_Chat_Admin {
 		// Create our settings page as a submenu page.
 		add_submenu_page(
 			$this->plugin_name,                            // parent slug
-			__( 'Theme', $this->plugin_name ),      				// page title
-			__( 'Theme', $this->plugin_name ),     			  // menu title
+			__( 'Theme', 'wp-chat' ),      				// page title
+			__( 'Theme', 'wp-chat' ),     			  // menu title
 			'manage_options',                       // capability
 			$this->plugin_name.'-theme',                              // menu_slug
 			array( $this, 'display_theme_settings_page' ) // callable function
@@ -153,34 +153,34 @@ class Wp_Chat_Admin {
 		// Here we are going to add a section for our setting.
 		add_settings_section(
 			$this->plugin_name . '-general-settings-section', // id
-			__( 'Settings', $this->plugin_name ), // title
+			__( 'Settings', 'wp-chat' ), // title
 			array( $this, 'sandbox_add_settings_section' ), // type, sanitize_callback
 			$this->plugin_name . '-general-settings' // page, the slug-name of the settings page on which to show the section
 		);
 
 		add_settings_field(
 			'wp-chat-disable-plugin', // slug
-			__( 'Disable WP-Chat', $this->plugin_name ), // title
+			__( 'Disable WP-Chat', 'wp-chat' ), // title
 			array( $this, 'sandbox_add_settings_field_single_checkbox' ), // callback, sanitize function
 			$this->plugin_name . '-general-settings', // page setting slug
 			$this->plugin_name . '-general-settings-section', // setting section slug
 			array( //extra parameters
 				'label_for' => 'disable-wp-chat', // label for
 				'section_slug' => '-general-settings',
-				'description' => __( 'If checked, it will turn off the WP Chat plugin.', 'wp-chat' ) // description
+				'description' => __( 'If checked, it will turn off the WP Chat plugin.', $this->plugin_name ) // description
 			)
 		);
 
 		add_settings_field(
 			'wp-chat-refresh-rate',
-			__( 'WP Chat refresh rate (in milliseconds)', $this->plugin_name ),
+			__( 'WP Chat refresh rate (in milliseconds)', 'wp-chat' ),
 			array( $this, 'sandbox_add_settings_field_input_text' ),
 			$this->plugin_name . '-general-settings',
 			$this->plugin_name . '-general-settings-section',
 			array(
 				'label_for' => 'wp-chat-refresh-rate',
 				'section_slug' => '-general-settings',
-				'default'   => __( '1000', 'wp-chat' )
+				'default'   => '1000',
 			)
 		);
 
@@ -198,14 +198,14 @@ class Wp_Chat_Admin {
 		// Here we are going to add a section for our setting.
 		add_settings_section(
 			$this->plugin_name . '-theme-settings-section', // id
-			__( 'Settings', $this->plugin_name ), // title
+			__( 'Settings', 'wp-chat' ), // title
 			array( $this, 'sandbox_add_settings_section' ), // type, sanitize_callback
 			$this->plugin_name . '-theme-settings' // page, the slug-name of the settings page on which to show the section
 		);
 
 		add_settings_field(
 			'wp-chat-disable-plugin', // slug
-			__( 'Disable WP-Chat', $this->plugin_name ), // title
+			__( 'Disable WP-Chat', 'wp-chat' ), // title
 			array( $this, 'sandbox_add_settings_field_single_checkbox' ), // callback, sanitize function
 			$this->plugin_name . '-theme-settings', // page setting slug
 			$this->plugin_name . '-theme-settings-section', // setting section slug
@@ -218,14 +218,14 @@ class Wp_Chat_Admin {
 
 		add_settings_field(
 			'wp-chat-refresh-rate',
-			__( 'WP Chat refresh rate (in milliseconds)', $this->plugin_name ),
+			__( 'WP Chat refresh rate (in milliseconds)', 'wp-chat' ),
 			array( $this, 'sandbox_add_settings_field_input_text' ),
 			$this->plugin_name . '-theme-settings',
 			$this->plugin_name . '-general-settings-section',
 			array(
 				'label_for' => 'wp-chat-refresh-rate',
 				'section_slug' => '-theme-settings',
-				'default'   => __( '1000', 'wp-chat' )
+				'default'   => '1000',
 			)
 		);
 

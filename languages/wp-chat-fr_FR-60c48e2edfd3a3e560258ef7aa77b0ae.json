@@ -1,5 +1,5 @@
 {
-    "translation-revision-date": "2023-03-10 08:26+0000",
+    "translation-revision-date": "2023-03-15 09:21+0000",
     "generator": "Loco https://localise.biz/",
     "source": "public/js/wp-chat-public.js",
     "domain": "wp-chat",
@@ -15,6 +15,9 @@
             ],
             "public": [
                 "publique"
+            ],
+            "WP-Chat window is not enabled": [
+                "WP-Chat n'est pas activ\u00e9"
             ]
         }
     }

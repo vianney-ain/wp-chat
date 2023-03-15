@@ -96,7 +96,7 @@
 
 			function wp_chat_toggle_menu_window(){
 			  if (!jQuery('#wp-chat-window').length){
-				console.warn( __( 'WP-Chat window is not enabled', wp_chat_ajax.plugin_name) );
+				console.warn( __( 'WP-Chat window is not enabled', 'wp-chat') );
 			    return false;
 			  }
 			  if (jQuery('#wp-chat-window').hasClass('active')){
@@ -440,11 +440,11 @@
 						var room_status_label = '';
 						var room_status_class = '';
 						if (room.public == '1'){
-							room_status_label = __( 'public', wp_chat_ajax.plugin_name);
+							room_status_label = __( 'public', 'wp-chat');
 							room_status_class = 'public';
 						}
 						if (room.archived == '1'){
-							room_status_label = __( 'archived', wp_chat_ajax.plugin_name);
+							room_status_label = __( 'archived', 'wp-chat');
 							room_status_class = 'archived';
 						}
 						$('#wp-chat-window').find('.wp-chat-window-archive[data-room-id='+room.room_id+']').addClass('updated');
@@ -496,11 +496,11 @@
 							var room_status_label = '';
 							var room_status_class = '';
 							if (room.public == '1'){
-								room_status_label = __( 'public', wp_chat_ajax.plugin_name);
+								room_status_label = __( 'public', 'wp-chat');
 								room_status_class = 'public';
 							}
 							if (room.archived == '1'){
-								room_status_label = __( 'archived', wp_chat_ajax.plugin_name);
+								room_status_label = __( 'archived', 'wp-chat');
 								room_status_class = 'archived';
 							}
 							var room_section = 'general';
