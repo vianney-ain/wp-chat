@@ -40,6 +40,8 @@ class Wp_Chat_Admin {
 	*/
 	private $version;
 
+	private $options;
+
 	/**
 	* Initialize the class and set its properties.
 	*
@@ -47,10 +49,11 @@ class Wp_Chat_Admin {
 	* @param      string    $plugin_name       The name of this plugin.
 	* @param      string    $version    The version of this plugin.
 	*/
-	public function __construct( $plugin_name, $version ) {
+	public function __construct( $plugin_name, $version, $options ) {
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
+		$this->options = $options;
 
 	}
 
@@ -143,6 +146,12 @@ class Wp_Chat_Admin {
 
 	public function register_general_settings(){
 
+		
+		$general_settings_defaults = $this->options['wp-chat-general-settings-default'];
+		if (isset($_POST['reset-settings']) && !empty($_POST['reset-settings'])){
+			delete_option($this->plugin_name .'-general-settings');
+		}
+
 		// Here we are going to register our setting.
 		register_setting(
 			$this->plugin_name . '-general-settings', // option_group, a setting group name
@@ -165,22 +174,37 @@ class Wp_Chat_Admin {
 			$this->plugin_name . '-general-settings', // page setting slug
 			$this->plugin_name . '-general-settings-section', // setting section slug
 			array( //extra parameters
-				'label_for' => 'disable-wp-chat', // label for
+				'label_for' => 'wp-chat-disable-plugin-checkbox', // label for
 				'section_slug' => '-general-settings',
-				'description' => __( 'If checked, it will turn off the WP Chat plugin.', $this->plugin_name ) // description
+				'description' => __( 'If checked, it will turn off the WP Chat plugin.', $this->plugin_name ), // description
+				'options_defaults' => $general_settings_defaults
+			)
+		);
+
+		add_settings_field(
+			'wp-chat-enable-ajax', // slug
+			__( 'Enable Ajax refresh', 'wp-chat' ), // title
+			array( $this, 'sandbox_add_settings_field_single_checkbox' ), // callback, sanitize function
+			$this->plugin_name . '-general-settings', // page setting slug
+			$this->plugin_name . '-general-settings-section', // setting section slug
+			array( //extra parameters
+				'label_for' => 'wp-chat-enable-ajax-checkbox', // label for
+				'section_slug' => '-general-settings',
+				'description' => __( 'If checked, will allow plugin to refresh conversations with ajax.', $this->plugin_name ), // description
+				'options_defaults' => $general_settings_defaults,
 			)
 		);
 
 		add_settings_field(
 			'wp-chat-refresh-rate',
-			__( 'WP Chat refresh rate (in milliseconds)', 'wp-chat' ),
-			array( $this, 'sandbox_add_settings_field_input_text' ),
+			__( 'Ajax refresh rate (in milliseconds)', 'wp-chat' ),
+			array( $this, 'sandbox_add_settings_field_input_number' ),
 			$this->plugin_name . '-general-settings',
 			$this->plugin_name . '-general-settings-section',
 			array(
-				'label_for' => 'wp-chat-refresh-rate',
+				'label_for' => 'wp-chat-refresh-rate-input',
 				'section_slug' => '-general-settings',
-				'default'   => '1000',
+				'options_defaults' => $general_settings_defaults,
 			)
 		);
 
@@ -225,7 +249,7 @@ class Wp_Chat_Admin {
 			array(
 				'label_for' => 'wp-chat-refresh-rate',
 				'section_slug' => '-theme-settings',
-				'default'   => '1000',
+				'default'   => 1000,
 			)
 		);
 
@@ -255,9 +279,7 @@ class Wp_Chat_Admin {
 	}
 
 	public function sandbox_add_settings_section() {
-
 		return;
-
 	}
 
 	public function sandbox_add_settings_field_single_checkbox( $args ) {
@@ -266,14 +288,16 @@ class Wp_Chat_Admin {
 		$section = $args['section_slug'];
 
 		$options = get_option( $this->plugin_name . $section );
-		$option = 0;
 
-		if ( ! empty( $options[ $field_id ] ) ) {
+		$option = $options[ $field_id ];
 
-			$option = $options[ $field_id ];
+		if (isset($args['options_defaults']) && is_array($args['options_defaults']) && isset($_POST['reset-settings']) && !empty($_POST['reset-settings']) ){
+			$options_defaults = $args['options_defaults'];
 
+			$field_default = $options_defaults[$field_id];
+			$option = $field_default;
 		}
-
+		
 		?>
 
 		<label for="<?php echo $this->plugin_name . $section . '[' . $field_id . ']'; ?>">
@@ -288,21 +312,48 @@ class Wp_Chat_Admin {
 	public function sandbox_add_settings_field_input_text( $args ) {
 
 		$field_id = $args['label_for'];
-		$field_default = $args['default'];
+		if (isset($args['options_defaults']) && is_array($args['options_defaults'])){
+			$options_defaults = $args['options_defaults'];
+			$field_default = $options_defaults[$field_id];
+		}
+		$option = $field_default;
+
 		$section = $args['section_slug'];
 
 		$options = get_option( $this->plugin_name . $section );
-		$option = $field_default;
 
 		if ( ! empty( $options[ $field_id ] ) ) {
-
 			$option = $options[ $field_id ];
-
 		}
 
 		?>
 
 		<input type="text" name="<?php echo $this->plugin_name . $section . '[' . $field_id . ']'; ?>" id="<?php echo $this->plugin_name . $section . '[' . $field_id . ']'; ?>" value="<?php echo esc_attr( $option ); ?>" class="regular-text" />
+
+		<?php
+
+	}
+
+	public function sandbox_add_settings_field_input_number( $args ) {
+
+		$field_id = $args['label_for'];
+		if (isset($args['options_defaults']) && is_array($args['options_defaults'])){
+			$options_defaults = $args['options_defaults'];
+			$field_default = $options_defaults[$field_id];
+		}
+		$option = $field_default;
+
+		$section = $args['section_slug'];
+
+		$options = get_option( $this->plugin_name . $section );
+
+		if ( ! empty( $options[ $field_id ] ) ) {
+			$option = $options[ $field_id ];
+		}
+
+		?>
+
+		<input type="number" name="<?php echo $this->plugin_name . $section . '[' . $field_id . ']'; ?>" id="<?php echo $this->plugin_name . $section . '[' . $field_id . ']'; ?>" value="<?php echo esc_attr( $option ); ?>" class="small-text" min="<?php echo $args['minimum']; ?>" max="<?php echo $args['maximum']; ?>" />
 
 		<?php
 

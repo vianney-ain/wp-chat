@@ -117,7 +117,7 @@
 			function open_new_dialog_window(){
 				$.ajax({
 					type: 'post',
-					url: wp_chat_ajax.ajax_url,
+					url: wp_chat_datas.ajax_url,
 					data: {
 						'action': 'wp_chat_get_blank_dialog'
 					},
@@ -147,7 +147,7 @@
 					$.ajax({
 						type: 'POST',
 						dataType: 'json',
-						url: wp_chat_ajax.ajax_url,
+						url: wp_chat_datas.ajax_url,
 						data: {
 							'action': 'wp_chat_search_users',
 							'search': search
@@ -185,7 +185,7 @@
 				$.ajax({
 					type: 'POST',
 					dataType: 'json',
-					url: wp_chat_ajax.ajax_url,
+					url: wp_chat_datas.ajax_url,
 					data: {
 						'action': 'wp_chat_create_room',
 						'to': user_id,
@@ -210,7 +210,7 @@
 			});
 
 			function create_empty_room(room_id){
-				let html = '<div class="wp-chat-dialog" data-room-id="'+room_id+'"><div class="wp-chat-dialog-reduced"> <img src="'+wp_chat_ajax.default_img+'" alt=""> </div><div class="wp-chat-dialog-header"> <div class="wp-chat-dialog-thumbnail"> <img src="'+wp_chat_ajax.default_img+'" alt=""> </div><div class="wp-chat-dialog-title">Conversation sans nom</div><div class="wp-chat-dialog-header-actions"> <div class="wp-chat-dialog-header-action reduce-dialog"> <div class="wp-chat-icon reduce"></div></div><div class="wp-chat-dialog-header-action close-dialog"> <div class="wp-chat-icon close"></div></div></div></div><div class="wp-chat-dialog-content"></div><div class="wp-chat-dialog-footer"> <input type="text"> <div class="send-btn"> <div class="wp-chat-icon send"></div></div></div></div>';
+				let html = '<div class="wp-chat-dialog" data-room-id="'+room_id+'"><div class="wp-chat-dialog-reduced"> <img src="'+wp_chat_datas.default_img+'" alt=""> </div><div class="wp-chat-dialog-header"> <div class="wp-chat-dialog-thumbnail"> <img src="'+wp_chat_datas.default_img+'" alt=""> </div><div class="wp-chat-dialog-title">Conversation sans nom</div><div class="wp-chat-dialog-header-actions"> <div class="wp-chat-dialog-header-action reduce-dialog"> <div class="wp-chat-icon reduce"></div></div><div class="wp-chat-dialog-header-action close-dialog"> <div class="wp-chat-icon close"></div></div></div></div><div class="wp-chat-dialog-content"></div><div class="wp-chat-dialog-footer"> <input type="text"> <div class="send-btn"> <div class="wp-chat-icon send"></div></div></div></div>';
 				jQuery('#wp-chat-dialogs').prepend(html);
 				listenForScrollEvent($(".wp-chat-dialog[data-room-id="+room_id+"] .wp-chat-dialog-content"));
 			}
@@ -241,7 +241,7 @@
 					$.each(messages, function(key, val){
 						if (val.type == ''){
 							//self
-							if (val.userID == wp_chat_ajax.user_id){
+							if (val.userID == wp_chat_datas.user_id){
 								messages_html += '<div class="wp-chat-message self"><div class="wp-chat-message-avatar"><img src="'+val.user.avatar+'" alt=""></div><div class="wp-chat-message-content"><div class="wp-chat-message-details"><div class="wp-chat-message-from">'+val.user.display_name+'</div> - <div class="wp-chat-message-time">'+val.created+'</div></div><div class="wp-chat-message-text">'+val.message+'</div></div></div>';
 							}
 							//other participants
@@ -310,7 +310,7 @@
 					$.ajax({
 						type: 'POST',
 						dataType: 'json',
-						url: wp_chat_ajax.ajax_url,
+						url: wp_chat_datas.ajax_url,
 						data: {
 							'action': 'wp_chat_send_message',
 							'room': room_id,
@@ -347,7 +347,7 @@
 				$.ajax({
 					type: 'POST',
 					dataType: 'json',
-					url: wp_chat_ajax.ajax_url,
+					url: wp_chat_datas.ajax_url,
 					data: {
 						'action': 'wp_chat_refresh_view',
 					},
@@ -401,7 +401,7 @@
 							var messages = '';
 							$.each(room.messages, function (mk, val){
 								if (val.type != 'system'){
-									if (val.userID == wp_chat_ajax.user_id){
+									if (val.userID == wp_chat_datas.user_id){
 										messages += '<div class="wp-chat-message self"><div class="wp-chat-message-avatar"><img src="'+val.user.avatar+'" alt=""></div><div class="wp-chat-message-content"><div class="wp-chat-message-details"><div class="wp-chat-message-from">'+val.user.display_name+'</div> - <div class="wp-chat-message-time">'+val.created+'</div></div><div class="wp-chat-message-text">'+val.message+'</div></div></div>';
 									}
 									else {
@@ -471,8 +471,8 @@
 						$('#wp-chat-window').find('.wp-chat-window-archive[data-room-id='+room.room_id+'] .wp-chat-window-archive-content .wp-chat-window-archive-title').append('<span class="wp-chat-window-archive-status '+room_status_class+'">'+room_status_label+'</span>');
 
 						var message = '';
-						if (room.messages[room.messages.length - 1].message.length > wp_chat_ajax.text_extract_length){
-							message = room.messages[room.messages.length - 1].message.substring(0,wp_chat_ajax.text_extract_length)+'...';
+						if (room.messages[room.messages.length - 1].message.length > wp_chat_datas.text_extract_length){
+							message = room.messages[room.messages.length - 1].message.substring(0,wp_chat_datas.text_extract_length)+'...';
 						}
 						else {
 							message = room.messages[room.messages.length - 1].message;
@@ -487,8 +487,8 @@
 								group = 'grouped';
 							}
 							var message = '';
-							if (room.messages[room.messages.length - 1].message.length > wp_chat_ajax.text_extract_length){
-								message = room.messages[room.messages.length - 1].message.substring(0,wp_chat_ajax.text_extract_length)+'...';
+							if (room.messages[room.messages.length - 1].message.length > wp_chat_datas.text_extract_length){
+								message = room.messages[room.messages.length - 1].message.substring(0,wp_chat_datas.text_extract_length)+'...';
 							}
 							else {
 								message = room.messages[room.messages.length - 1].message;
@@ -534,7 +534,7 @@
 				$.ajax({
 					type: 'POST',
 					dataType: 'json',
-					url: wp_chat_ajax.ajax_url,
+					url: wp_chat_datas.ajax_url,
 					data: {
 						'action': 'wp_chat_leave_room',
 						'room_id': room_id
@@ -559,7 +559,7 @@
 			});
 
 			function display_room_thumbnail(room_id, thumbnails){
-				var thumbnails_html = '<div class="wp-chat-room-thumbnail-image"><img src="'+wp_chat_ajax.default_img+'" alt=""></div>';
+				var thumbnails_html = '<div class="wp-chat-room-thumbnail-image"><img src="'+wp_chat_datas.default_img+'" alt=""></div>';
 				if (thumbnails != undefined && thumbnails.length > 0){
 					thumbnails_html = '';
 					$.each(thumbnails, function(key, val){
@@ -579,7 +579,7 @@
 				$.ajax({
 					type: 'POST',
 					dataType: 'json',
-					url: wp_chat_ajax.ajax_url,
+					url: wp_chat_datas.ajax_url,
 					data: {
 						'action': 'wp_chat_open_room',
 						'room_id': room_id,
@@ -630,7 +630,7 @@
 			function show_manage_participant_popup(room_id){
 				$.ajax({
 					type: 'post',
-					url: wp_chat_ajax.ajax_url,
+					url: wp_chat_datas.ajax_url,
 					data: {
 						'action': 'wp_chat_get_participant_popup'
 					},
@@ -652,7 +652,7 @@
 				$.ajax({
 					type: 'POST',
 					dataType: 'json',
-					url: wp_chat_ajax.ajax_url,
+					url: wp_chat_datas.ajax_url,
 					data: {
 						'action': 'wp_chat_get_room_participants',
 						'room_id': room_id
@@ -707,7 +707,7 @@
 				$.ajax({
 					type: 'POST',
 					dataType: 'json',
-					url: wp_chat_ajax.ajax_url,
+					url: wp_chat_datas.ajax_url,
 					data: {
 						'action': 'wp_chat_remove_room_participant',
 						'room_id': room_id,
@@ -741,7 +741,7 @@
 					$.ajax({
 						type: 'POST',
 						dataType: 'json',
-						url: wp_chat_ajax.ajax_url,
+						url: wp_chat_datas.ajax_url,
 						data: {
 							'action': 'wp_chat_search_participant',
 							'search': search
@@ -783,7 +783,7 @@
 				$.ajax({
 					type: 'POST',
 					dataType: 'json',
-					url: wp_chat_ajax.ajax_url,
+					url: wp_chat_datas.ajax_url,
 					data: {
 						'action': 'wp_chat_add_room_participant',
 						'room_id': room_id,
@@ -817,7 +817,7 @@
 			function show_room_details_popup(room_id){
 				$.ajax({
 					type: 'post',
-					url: wp_chat_ajax.ajax_url,
+					url: wp_chat_datas.ajax_url,
 					data: {
 						'action': 'wp_chat_get_room_details_popup'
 					},
@@ -838,7 +838,7 @@
 				$.ajax({
 					type: 'POST',
 					dataType: 'json',
-					url: wp_chat_ajax.ajax_url,
+					url: wp_chat_datas.ajax_url,
 					data: {
 						'action': 'wp_chat_get_room_details',
 						'room_id': room_id
@@ -897,7 +897,7 @@
 				$.ajax({
 					type: 'POST',
 					dataType: 'json',
-					url: wp_chat_ajax.ajax_url,
+					url: wp_chat_datas.ajax_url,
 					data: {
 						'action': 'wp_chat_edit_room_details',
 						'room_name': room_name,

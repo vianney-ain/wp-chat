@@ -156,7 +156,7 @@ class Wp_Chat {
 	 */
 	private function define_admin_hooks() {
 
-		$plugin_admin = new Wp_Chat_Admin( $this->get_plugin_name(), $this->get_version() );
+		$plugin_admin = new Wp_Chat_Admin( $this->get_plugin_name(), $this->get_version(), $this->get_options() );
 
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'register_settings_page' );
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'register_settings' );
@@ -174,7 +174,7 @@ class Wp_Chat {
 	 */
 	private function define_public_hooks() {
 
-		$plugin_public = new Wp_Chat_Public( $this->get_plugin_name(), $this->get_version() );
+		$plugin_public = new Wp_Chat_Public( $this->get_plugin_name(), $this->get_version(), $this->get_options());
 
 		$this->loader->add_action( 'wp_head', $plugin_public, 'add_chat_section', 45 );
 
@@ -240,6 +240,19 @@ class Wp_Chat {
 	 */
 	public function get_version() {
 		return $this->version;
+	}
+
+	public function get_options() {
+		return $options = array(
+			'wp-chat-general-settings-default' => array(
+				'wp-chat-disable-plugin-checkbox' => '0',
+				'wp-chat-enable-ajax-checkbox' => '1',
+				'wp-chat-refresh-rate-input' => '2500',
+			),
+			'theme_settings_defaults' => array(
+
+			)
+		);
 	}
 
 }

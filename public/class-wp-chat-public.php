@@ -40,6 +40,8 @@ class Wp_Chat_Public {
 	 */
 	private $version;
 
+	private $options;
+
 	private $user_id;
 
 	/**
@@ -49,10 +51,11 @@ class Wp_Chat_Public {
 	 * @param      string    $plugin_name       The name of the plugin.
 	 * @param      string    $version    The version of this plugin.
 	 */
-	public function __construct( $plugin_name, $version ) {
+	public function __construct( $plugin_name, $version, $options ) {
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
+		$this->options = $options;
 
 		$this->user_id = get_current_user_id();
 
@@ -100,13 +103,14 @@ class Wp_Chat_Public {
 
 		wp_localize_script(
 			$this->plugin_name,
-			'wp_chat_ajax',
+			'wp_chat_datas',
 			array(
 				'ajax_url' => admin_url( 'admin-ajax.php' ),
 				'plugin_name' => $this->plugin_name,
 				'user_id' => get_current_user_id(),
 				'default_img' => plugin_dir_url( __FILE__ ).'img/default.png',
-				'text_extract_length' => 40
+				'text_extract_length' => 40,
+				'wp_chat_options' => $this->wp_chat_get_admin_options(),
 			)
 		);
 	}
@@ -116,6 +120,13 @@ class Wp_Chat_Public {
 	 */
 	public function wp_chat_load_textdomain() {
 		load_plugin_textdomain( 'wp-chat', FALSE, plugin_dir_path(__DIR__).'languages/' );
+	}
+
+	private function wp_chat_get_admin_options(){
+		
+		$general_settings_defaults = $this->options['wp-chat-general-settings-default'];
+		$options = wp_parse_args(get_option('wp-chat-general-settings'), $general_settings_defaults);
+		return $options;
 	}
 
 	public function wp_chat_search_users(){
