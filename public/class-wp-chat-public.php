@@ -233,7 +233,46 @@ class Wp_Chat_Public {
 		die();
 	}
 	public function wp_chat_get_room_details_popup(){
-		$this->view->room_details_popup_view();
+		if (!isset($this->user_id) || empty($this->user_id)){
+			$response = array(
+				'success' => false,
+				'message' => __( 'You must be connected to be able to do that', 'wp-chat' ).'.',
+			);
+			die(json_encode($response));
+		}
+		if (!isset($_REQUEST['room']) || empty($_REQUEST['room'])){
+			$response = array(
+				'success' => false,
+				'message' => __( 'Missing informations' , 'wp-chat' ).'.',
+			);
+			die(json_encode($response));
+		}
+		$room = $this->model->get_room_by_id(esc_attr($_REQUEST['room']));
+
+		if (!isset($room) || empty($room)){
+			$response = array(
+				'success' => false,
+				'message' => __( 'Conversation cannot be found' , 'wp-chat' ).'.',
+			);
+			die(json_encode($response));
+		}
+
+		if (!$this->model->is_participant_in_room($room->id, $this->user_id)){
+			$response = array(
+				'success' => false,
+				'message' => __( 'You are not in this conversation' , 'wp-chat' ).'.',
+			);
+			die(json_encode($response));
+		}
+		
+		$isOwner = false;
+		if (isset($room->ownerID) && !empty($room->ownerID)){
+			if ($room->ownerID == $this->user_id){
+				$isOwner = true;
+			}
+		}
+		
+		$this->view->room_details_popup_view($isOwner);
 		die();
 	}
 
@@ -781,6 +820,12 @@ class Wp_Chat_Public {
 
 		if (isset($found_rooms) && !empty($found_rooms) && is_array($found_rooms)){
 			foreach($found_rooms as $kr => $room){
+				$isOwner = false;
+				if (isset($room->ownerID) && !empty($room->ownerID)){
+					if ($room->ownerID == $this->user_id){
+						$isOwner = true;
+					}
+				}
 				$current_room = array(
 					'is_user_in' => false,
 					'room_id' => $room->id,
@@ -788,7 +833,8 @@ class Wp_Chat_Public {
 					'last_message' => strtotime($room->lastMessage),
 					'public' => $room->public,
 					'archived' => $room->archived,
-					'created' => $room->created
+					'created' => $room->created,
+					'is_owner' => $isOwner
 				);
 				if ($this->model->is_participant_in_room($room->id, $this->user_id)){
 					$current_room['is_user_in'] = true;

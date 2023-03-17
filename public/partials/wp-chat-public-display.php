@@ -96,9 +96,10 @@
      <?php
    }
 
-   public function room_details_popup_view(){
-     ?>
-     <div class="wp-chat-dialog-popup popup-room">
+   public function room_details_popup_view($isOwner = false){
+    if ($isOwner){
+      ?>
+      <div class="wp-chat-dialog-popup popup-room">
        <div class="wp-chat-dialog-popup-header">
          <div class="wp-chat-dialog-header-popup-actions">
            <div class="wp-chat-dialog-header-popup-action close-popup">
@@ -109,17 +110,41 @@
        </div>
        <div class="wp-chat-dialog-popup-content">
         <div class="wp-chat-dialog-popup-content-row">
-        <?php _e( 'Public conversation' , 'wp-chat' ); ?> : <label class="wp-chat-switch"><input type="checkbox" name="room-public-checkbox" /><span></span></label>
+         <div class="wp-chat-dialog-popup-content-row-label"><?php _e( 'Public conversation' , 'wp-chat' ); ?> :</div><label class="wp-chat-switch"><input type="checkbox" name="room-public-checkbox" /><span></span></label>
         </div>
         <div class="wp-chat-dialog-popup-content-row">
-        <?php _e( 'Archive conversation' , 'wp-chat' ); ?> : <label class="wp-chat-switch"><input type="checkbox" name="room-archived-checkbox" /><span></span></label>
+          <div class="wp-chat-dialog-popup-content-row-label"><?php _e( 'Archive conversation' , 'wp-chat' ); ?> :</div><label class="wp-chat-switch"><input type="checkbox" name="room-archived-checkbox" /><span></span></label>
+        </div>
+        <div class="wp-chat-dialog-popup-content-row">
+          <div class="wp-chat-dialog-popup-content-row-label"><?php _e( 'Delete conversation' , 'wp-chat' ); ?> :</div><button class="wp_chat_btn"><?php _e('Delete'); ?></button>
         </div>
        </div>
        <div class="wp-chat-dialog-popup-footer">
          <button><?php _e( 'Save' , 'wp-chat' ); ?></button>
        </div>
      </div>
-     <?php
+      <?php
+    }
+    else {
+      ?>
+      <div class="wp-chat-dialog-popup popup-room">
+       <div class="wp-chat-dialog-popup-header">
+         <div class="wp-chat-dialog-header-popup-actions">
+           <div class="wp-chat-dialog-header-popup-action close-popup">
+             <div class="wp-chat-icon chevron_left"></div>
+           </div>
+         </div>
+         <div class="wp-chat-dialog-popup-title"><label for="" class="wp-chat-dialog-popup-title-label"><?php _e( 'Conversation title' , 'wp-chat' ); ?></label></div>
+       </div>
+       <div class="wp-chat-dialog-popup-content">
+       <div class="wp-chat-dialog-popup-content-row">
+          <div class="wp-chat-dialog-popup-content-row-label"><?php _e( 'Leave conversation' , 'wp-chat' ); ?> :</div><button class="wp-chat-leave-room-action wp_chat_btn"><?php _e('Leave'); ?></button>
+        </div>
+       </div>
+     </div>
+
+      <?php
+    }
    }
 
    public function default_view(){
