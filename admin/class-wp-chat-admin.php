@@ -182,15 +182,15 @@ class Wp_Chat_Admin {
 		);
 
 		add_settings_field(
-			'wp-chat-enable-ajax', // slug
-			__( 'Enable Ajax refresh', 'wp-chat' ), // title
+			'wp-chat-disable-ajax', // slug
+			__( 'Disable Ajax refresh', 'wp-chat' ), // title
 			array( $this, 'sandbox_add_settings_field_single_checkbox' ), // callback, sanitize function
 			$this->plugin_name . '-general-settings', // page setting slug
 			$this->plugin_name . '-general-settings-section', // setting section slug
 			array( //extra parameters
-				'label_for' => 'wp-chat-enable-ajax-checkbox', // label for
+				'label_for' => 'wp-chat-disable-ajax-checkbox', // label for
 				'section_slug' => '-general-settings',
-				'description' => __( 'If checked, will allow plugin to refresh conversations with ajax.', $this->plugin_name ), // description
+				'description' => __( 'If checked, will no longer allow plugin to refresh conversations with ajax.', $this->plugin_name ), // description
 				'options_defaults' => $general_settings_defaults,
 			)
 		);

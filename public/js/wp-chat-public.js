@@ -336,13 +336,13 @@
 				}
 			}
 
-
-
-			var refresh_room_interval = setInterval(function(){
-				refresh_view();
-			}, 1000);
-			refresh_view();
-
+			if (wp_chat_datas.wp_chat_options['wp-chat-disable-ajax-checkbox'] != '1'){
+				var refresh_room_interval = setInterval(function(){
+					refresh_view();
+				}, wp_chat_datas.wp_chat_options['wp-chat-refresh-rate-input']);
+			}
+			refresh_view();	
+			
 			function refresh_view(){
 				$.ajax({
 					type: 'POST',
@@ -353,7 +353,7 @@
 					},
 					beforeSend: function (jqXHR, settings) {
 							let url = settings.url + "?" + settings.data;
-							//console.log(url);
+							console.log(url);
 					},
 					success: function(data) {
 						if (data.success == true){

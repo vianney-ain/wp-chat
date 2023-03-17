@@ -77,7 +77,11 @@ class Wp_Chat {
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
-		$this->define_public_hooks();
+		$disable = '0';
+		if (get_option('wp-chat-general-settings')['wp-chat-disable-plugin-checkbox'] != '1'){
+			$this->define_public_hooks();
+		}
+		
 	}
 
 	/**
@@ -246,7 +250,7 @@ class Wp_Chat {
 		return $options = array(
 			'wp-chat-general-settings-default' => array(
 				'wp-chat-disable-plugin-checkbox' => '0',
-				'wp-chat-enable-ajax-checkbox' => '1',
+				'wp-chat-disable-ajax-checkbox' => '1',
 				'wp-chat-refresh-rate-input' => '2500',
 			),
 			'theme_settings_defaults' => array(
