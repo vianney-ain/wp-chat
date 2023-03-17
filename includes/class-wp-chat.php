@@ -250,7 +250,7 @@ class Wp_Chat {
 		return $options = array(
 			'wp-chat-general-settings-default' => array(
 				'wp-chat-disable-plugin-checkbox' => '0',
-				'wp-chat-disable-ajax-checkbox' => '1',
+				'wp-chat-disable-ajax-checkbox' => '0',
 				'wp-chat-refresh-rate-input' => '2500',
 			),
 			'theme_settings_defaults' => array(
