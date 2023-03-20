@@ -99,15 +99,20 @@ class Wp_Chat_Model_Database {
   public function get_user_by_id($user_id){
     $user = get_user_by('id', $user_id);
     if (isset($user) && !empty($user)){
+			if ( metadata_exists( 'user', $user->data->ID, 'avatar' ) ) {
+				$avatar = get_user_meta($user->data->ID, 'avatar', true );
+			}
+			if (!isset($avatar) || empty($avatar)){
+				$avatar = get_avatar_url($user->ID);
+			}
       return array(
         'id' => $user->data->ID,
-        'avatar' => get_avatar_url($user->data->ID),
+        'avatar' => $avatar,
         'display_name' => $user->data->display_name,
       );
     }
     return null;
   }
-
   /***
   *** SEND MESSAGE TO ROOM
   *** TYPE must be empty or "system"
