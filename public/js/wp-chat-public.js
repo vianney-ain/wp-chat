@@ -18,7 +18,7 @@
 				if ($target.hasClass('wp-chat-menu-toggler') || $target.hasClass('wp-chat-icon')){
 					return;
 				}
-				if(!$target.closest('#wp-chat-window').length && $('#wp-chat-window').hasClass("active")) {
+				if(!$target.closest('#wp-chat-window').length && $('#wp-chat-window').hasClass("active") && !$target.hasClass('wp-chat-menu-btn')) {
 					wp_chat_toggle_menu_window();
 				}
 				if (!$target.hasClass('wp-chat-window-archive-actions')){
@@ -94,18 +94,7 @@
 				});
 			}
 
-			function wp_chat_toggle_menu_window(){
-			  if (!jQuery('#wp-chat-window').length){
-				console.warn( __( 'WP-Chat window is not enabled', 'wp-chat') );
-			    return false;
-			  }
-			  if (jQuery('#wp-chat-window').hasClass('active')){
-			    jQuery('#wp-chat-window').removeClass('active');
-			  }
-			  else {
-			    jQuery('#wp-chat-window').addClass('active');
-			  }
-			}
+			
 
 			jQuery('body').on('click', '#wp-chat-window .wp-chat-icon.new', function(){
 				open_new_dialog_window();
@@ -936,3 +925,18 @@
 
 		});
 })( jQuery );
+
+
+function wp_chat_toggle_menu_window(){
+	if (!jQuery('#wp-chat-window').length){
+	  console.warn( __( 'WP-Chat window is not enabled', 'wp-chat') );
+	  return false;
+	}
+	console.log(jQuery('#wp-chat-window').hasClass('active'));
+	if (jQuery('#wp-chat-window').hasClass('active')){
+	  jQuery('#wp-chat-window').removeClass('active');
+	}
+	else {
+	  jQuery('#wp-chat-window').addClass('active');
+	}
+}
