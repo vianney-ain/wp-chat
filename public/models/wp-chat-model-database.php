@@ -159,13 +159,13 @@ class Wp_Chat_Model_Database {
 
   public function get_message_by_room($room_id){
     global $wpdb;
-    $results = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}chat_message WHERE roomID='{$room_id}' ORDER BY created ASC");
+    $results = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}chat_message WHERE roomID='{$room_id}' ORDER BY created DESC");
     if (isset($results) && !empty($results) && is_array($results)){
       foreach($results as $key => $result){
         $results[$key]->user = $this->get_user_by_id($result->userID);
       }
     }
-    return $results;
+    return array_reverse($results);
   }
 
   public function get_room_details_by_id($room_id, $user_from_id){

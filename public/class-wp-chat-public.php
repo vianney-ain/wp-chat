@@ -802,6 +802,17 @@ class Wp_Chat_Public {
 		die(json_encode($response));
 	}
 
+	public function randomPassword() {
+		$alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
+		$pass = array(); //remember to declare $pass as an array
+		$alphaLength = strlen($alphabet) - 1; //put the length -1 in cache
+		for ($i = 0; $i < 8; $i++) {
+			$n = rand(0, $alphaLength);
+			$pass[] = $alphabet[$n];
+		}
+		return implode($pass); //turn the array into a string
+	}
+
 	public function wp_chat_refresh_view(){
 		$this->user_id = get_current_user_id();
 		if (!isset($this->user_id) || empty($this->user_id)){
