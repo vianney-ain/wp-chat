@@ -87,7 +87,7 @@ class Wp_Chat_Public {
 		 */
 
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/wp-chat-public.css', array(), $this->version, 'all' );
-
+		wp_enqueue_style( $this->plugin_name.'-dialog-blank', plugin_dir_url( __FILE__ ) . 'css/wp-chat-public-dialog-blank.css', array(), $this->version, 'all' );
 	}
 
 	/**
@@ -98,6 +98,7 @@ class Wp_Chat_Public {
 	public function enqueue_scripts() {
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/wp-chat-public.js', array( 'wp-i18n', 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_name.'-dialog-blank', plugin_dir_url( __FILE__ ) . 'js/wp-chat-public-dialog-blank.js', array( 'wp-i18n', 'jquery' ), $this->version, false );
 		
 		wp_set_script_translations( $this->plugin_name, $this->plugin_name, plugin_dir_path(__DIR__).'languages/' );
 
@@ -360,59 +361,100 @@ class Wp_Chat_Public {
 			die(json_encode($response));
 		}
 
-		if (!isset($_REQUEST['to']) || empty($_REQUEST['to'])){
-			$response = array(
-				'success' => false,
-				'message' => __( 'Missing informations', 'wp-chat' ).'.',
-			);
-			die(json_encode($response));
-		}
-
-		if ($_REQUEST['to'] == $this->user_id){
-			$response = array(
-				'success' => false,
-				'message' => __( 'Cannot create conversation for yourself' , 'wp-chat' ).'.',
-			);
-			die(json_encode($response));
-		}
-
-		$to = $this->model->get_user_by_id(esc_attr($_REQUEST['to']));
-
-		if (!isset($to) || empty($to)){
-			$response = array(
-				'success' => false,
-				'message' => __( 'User is not existing' , 'wp-chat' ).'.',
-			);
-			die(json_encode($response));
-		}
-
-		$response = array(
+		$room_params = array(
 			'success' => true,
 			'room_id' => null,
-			'room_thumbnails' => array(0 => $to['avatar']),
-			'room_name' => $to['display_name'],
+			'room_participants' => array(),
+			'room_name' => '',
+			'room_public' => '',
+			'room_thumbnails' => array(),
 			'messages' => array(),
 		);
-		
-		if ($this->model->check_tables()){
-			if (isset($_REQUEST['to']) && !empty($_REQUEST['to']) ){
-				$room_id = $this->model->has_solo_room(esc_attr($_REQUEST['to']), $this->user_id);
-				if (!isset($room_id) || empty($room_id)){
-					$room_id = $this->model->create_room(esc_attr($_REQUEST['to']), $this->user_id);
+
+		if (isset($_REQUEST['room_name']) && !empty($_REQUEST['room_name']) ){
+			$room_name = trim(esc_attr($_REQUEST['room_name']));
+			$room_params['room_name'] = $room_name;
+		}
+
+		if (isset($_REQUEST['participants']) && !empty($_REQUEST['participants']) ){
+			$participants = $_REQUEST['participants'];
+			if (isset($participants) && !empty($participants) && is_array($participants)){
+				foreach($participants as $pkey => $participant_id){
+					$participant_id = intval($participant_id);
+
+					$to = $this->model->get_user_by_id($participant_id);
+
+					if (!isset($to) || empty($to)){
+						$response = array(
+							'success' => false,
+							'message' => __( 'User is not existing' , 'wp-chat' ).'.',
+						);
+						die(json_encode($response));
+					};
+
+					array_push( $room_params['room_participants'], intval($to['id']) );
+					array_push( $room_params['room_thumbnails'], $to['avatar']);
 				}
-				$response['room_id'] = $room_id;
-				$room = $this->model->get_room_by_id($room_id);
-				if (isset($room->name) && !empty($room->name))
-					$response['room_name'] = $room->name;
-				$response['messages'] = $this->model->get_message_by_room($room_id);
-				die(json_encode($response));
 			}
 		}
+
+		if (isset($_REQUEST['room_public']) && !empty($_REQUEST['room_public']) ){
+			$room_public = esc_attr($_REQUEST['room_public']);
+			if ($room_public === 'true' ){
+				$room_params['room_public'] = true;
+			}
+			else {
+				$room_params['room_public'] = false;
+			}
+		}
+
+		if ($this->model->check_tables()){
+
+			//if there's only 1 participant and the room is PRIVATE, we search for an existing room
+			if (isset($room_params['room_participants']) && !empty($room_params['room_participants']) && sizeof($room_params['room_participants']) == 1 && !$room_params['room_public']){
+				$room_id = $this->model->has_solo_room(esc_attr($room_params['room_participants'][0]), $this->user_id);
+				$room_params['room_id'] = $room_id;
+			}
+			
+
+			//if there's NO PARTICIPANT and the room is PRIVATE, we cannot create the room
+			if (sizeof($room_params['room_participants']) == 0 && !$room_params['room_public']){
+				$response = array(
+					'success' => false,
+					'message' => __( "You must add at least 1 participant to create a private room" , 'wp-chat' ).'.',
+				);
+				die(json_encode($response));
+			}
+
+			if (!isset($room_id) || empty($room_id)){
+				$room_id = $this->model->create_room_2($room_params, $this->user_id);
+				$room_params['room_id'] = $room_id;
+			}
+
+			$room = $this->model->get_room_details_by_id($room_id, $this->user_id);
+
+			if (isset($room) && !empty($room)){
+				if (isset($room['room_name']) && !empty($room['room_name'])){
+					$room_params['room_name'] = $room['room_name'];
+				}
+				if (isset($room['room_thumbnails']) && !empty($room['room_thumbnails'])){
+					$room_params['room_thumbnails'] = $room['room_thumbnails'];
+				}
+			}
+
+			$room_params['messages'] = $this->model->get_message_by_room($room_id);
+
+
+			die(json_encode($room_params));
+		}
+
+
 		$response = array(
 			'success' => false,
 			'message' => __( 'An error occured, please try again' , 'wp-chat' ).'.',
 		);
 		die(json_encode($response));
+
 	}
 
 	public function wp_chat_get_room_participants(){

@@ -1,0 +1,167 @@
+:root {
+    --wp-chat-white: #FFFFFF;
+    --wp-chat-white-hover: #D5D5D5;
+    --wp-chat-lightgrey: #F5F5F5;
+    --wp-chat-lightgrey-hover: #CBCBCB;
+    --wp-chat-grey: #2A2A2A;
+    --wp-chat-grey-hover: #434343;
+    --wp-chat-grey-active: #1A1A1A;
+    --wp-chat-primary-hover: #F94055;
+    --wp-chat-primary: #ED253C;
+    --wp-chat-primary-active: #C4162A;
+    --wp-chat-primary-low-opacity: #ed253c1f;
+}
+.wp-chat-dialog.blank .wp-chat-dialog-header .wp-chat-dialog-title {
+    max-width:100%;
+    cursor:default;
+}
+.wp-chat-dialog.blank .wp-chat-dialog-header .wp-chat-dialog-title:hover {
+    background:transparent;
+}
+
+.wp-chat-dialog.blank .wp-chat-dialog-header .wp-chat-dialog-title input {
+    height:100%;
+    width:100%;
+    background:transparent;
+    font-size:14px;
+    border:none;
+    outline:none;
+}
+
+.wp-chat-dialog.blank .wp-chat-dialog-content {
+    padding:0;
+}
+
+.wp-chat-dialog.blank .wp-chat-new-dialog-row {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    padding:5px 10px;
+}
+
+.wp-chat-dialog.blank .wp-chat-new-dialog-row .wp-chat-add-participant-pre {
+    white-space: nowrap;
+    font-size: 14px;
+    margin-top: 6px;
+    padding-right: 5px;
+}
+
+.wp-chat-dialog.blank .wp-chat-new-dialog-row .wp-chat-add-participant-content {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width:100%;
+}
+
+.wp-chat-dialog.blank .wp-chat-new-dialog-row .wp-chat-add-participant-content .wp-chat-participants-selected {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    max-height: 150px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: auto;
+}
+
+.wp-chat-dialog.blank .wp-chat-new-dialog-row .wp-chat-add-participant-content .wp-chat-participants-selected .wp-chat-participant-selected {
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    background: var(--wp-chat-primary-low-opacity);
+    color: var(--wp-chat-primary);
+    border-radius: 3px;
+    padding: 3px 0px 3px 10px;
+    align-items: center;
+    margin: 3px;
+}
+
+.wp-chat-dialog.blank .wp-chat-new-dialog-row .wp-chat-add-participant-content .wp-chat-participants-selected .wp-chat-participant-selected .participant_name {
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.wp-chat-dialog.blank .wp-chat-new-dialog-row .wp-chat-add-participant-content .wp-chat-participants-selected .wp-chat-participant-selected .participant_remove {
+    border-radius: 99px;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.wp-chat-dialog.blank .wp-chat-new-dialog-row .wp-chat-add-participant-content .wp-chat-participants-selected .wp-chat-participant-selected .participant_remove:hover {
+    background: var(--wp-chat-primary-low-opacity);
+}
+
+.wp-chat-dialog.blank .wp-chat-new-dialog-row .wp-chat-add-participant-content .wp-chat-participants-selected .wp-chat-participant-selected .participant_remove .wp-chat-icon {
+    width: 15px;
+    height: 15px;
+}
+
+.wp-chat-dialog.blank .wp-chat-new-dialog-row .wp-chat-add-participant-content .wp-chat-new-dialog-add-participant-input {
+    border: none;
+    font-size: 14px;
+    outline: none;
+    padding: 10px;
+    background: transparent;
+    width: 100%;
+    border-bottom: 1px solid grey;
+}
+
+.wp-chat-dialog.blank .wp-chat-new-dialog-row .wp-chat-new-dialog-row-label {
+    margin-right: 10px;
+}
+
+
+.wp-chat-dialog.blank .new_dialog_title {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.wp-chat-dialog.blank .wp-chat-new-dialog-add-participant-container {
+    position: relative;
+    width: 100%;
+}
+
+
+.wp-chat-dialog.blank .wp-chat-new-dialog-participant-search-results {
+    padding:0;
+}
+
+.wp-chat-dialog.blank .wp-chat-new-dialog-participant-search-results ul {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    font-size: 14px;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
+    max-height:221px;
+}
+
+.wp-chat-dialog.blank .wp-chat-new-dialog-participant-search-results ul li {
+    cursor:pointer;
+    padding:5px 10px;
+}
+
+.wp-chat-dialog.blank .wp-chat-new-dialog-participant-search-results ul li:hover {
+    background: #dddddd;
+}
+
+.wp-chat-dialog.blank .wp-chat-new-dialog-create-dialog {
+    background:var(--wp-chat-primary);
+    color:#fff;
+    font-size:14px;
+    font-weight:bold;
+    padding:10px 20px;
+    border-radius:5px;
+    outline:none;
+    border:none;
+    cursor:pointer;
+}
+
+.wp-chat-dialog.blank .wp-chat-new-dialog-create-dialog:hover {
+    background:var(--wp-chat-primary-active);
+}

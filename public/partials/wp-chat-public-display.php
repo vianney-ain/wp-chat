@@ -51,7 +51,7 @@
      ?>
      <div class="wp-chat-dialog blank">
        <div class="wp-chat-dialog-header">
-         <div class="wp-chat-dialog-title"><?php _e( 'New conversation' , 'wp-chat' ); ?></div>
+         <div class="wp-chat-dialog-title"><input type="text" placeholder="<?php _e( 'Conversation title' , 'wp-chat' ); ?>" value=""></div>
          <div class="wp-chat-dialog-header-actions">
            <div class="wp-chat-dialog-header-action close-dialog">
              <div class="wp-chat-icon close"></div>
@@ -59,17 +59,26 @@
          </div>
        </div>
        <div class="wp-chat-dialog-content">
-         <div class="new_dialog_search">
-           <div class="new_dialog_search_container">
-             <input placeholder="<?php _e( 'Search a user' , 'wp-chat' ); ?>" class="new_dialog_search_input" type="text">
-             <div class="dialog_search_results">
-               <ul>
-               </ul>
-             </div>
-           </div>
-         </div>
+       <div class="wp-chat-new-dialog-row">
+         <div class="wp-chat-new-dialog-row-label"><?php _e( 'Public conversation' , 'wp-chat' ); ?> :</div><label class="wp-chat-switch"><input type="checkbox" name="room-public-checkbox" /><span></span></label>
+        </div>
+        <div class="wp-chat-new-dialog-row">
+          <div class="wp-chat-add-participant-pre">À :</div>
+          <div class="wp-chat-add-participant-content">
+            <div class="wp-chat-participants-selected">
+              
+            </div>
+            <div class="wp-chat-new-dialog-add-participant-container">
+              <input placeholder="<?php _e( 'Add participants' , 'wp-chat' ); ?>" class="wp-chat-new-dialog-add-participant-input" type="text">
+            </div>
+          </div>
+        </div>
+        <div class="wp-chat-new-dialog-row wp-chat-new-dialog-participant-search-results">
+          <ul></ul>
+        </div>
        </div>
        <div class="wp-chat-dialog-footer">
+          <button class="wp-chat-new-dialog-create-dialog"><?php _e( 'Start chatting' , 'wp-chat' ); ?></button>
        </div>
      </div>
      <?php
@@ -154,7 +163,7 @@
          <div class="wp-chat-icon chat"></div>
        </div>
        <div id="wp-chat-menu-archives"></div>
-       <div id="wp-chat-window" class="active">
+       <div id="wp-chat-window" class="">
          <div class="wp-chat-window-header">
            <h3 class="wp-chat-title"><?php _e( 'Conversations' , 'wp-chat' ); ?></h3>
            <div class="wp-chat-window-close">

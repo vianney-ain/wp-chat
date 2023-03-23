@@ -329,6 +329,43 @@ class Wp_Chat_Model_Database {
     return $room_id;
   }
 
+  public function create_room_2($room_params, $from){
+    global $wpdb;
+    $table = $wpdb->prefix.'chat_room';
+    $name = '';
+    $public = false;
+
+    if (isset($room_params['room_name']) && !empty($room_params['room_name'])){
+      $name = $room_params['room_name'];
+    }
+
+    if (isset($room_params['room_public']) && !empty($room_params['room_public']) && $room_params['room_public']){
+      $public = true;
+    }
+
+    $data = array(
+      'name' => $name,
+      'created' => current_time('mysql', 1),
+      'ownerID' => $from,
+      'public' => $public,
+      'archived' => false,
+    );
+
+    $format = array('%s','%s','%d', '%d', '%d');
+    $wpdb->insert($table,$data,$format);
+    $room_id = $wpdb->insert_id;
+    if (isset($room_id) && !empty($room_id)){
+      $this->send_system_message($room_id, __( 'This is the beginning of the conversation', 'wp-chat').'.' );
+      $this->create_participant($room_id, $from);
+      if (isset($room_params['room_participants']) && !empty($room_params['room_participants']) && sizeof($room_params['room_participants']) > 0){
+        foreach($room_params['room_participants'] as $key => $participant_id){
+          $this->create_participant($room_id, $participant_id);
+        }
+      }
+    }
+    return $room_id;
+  }
+
   public function create_participant($room_id, $user_id){
     global $wpdb;
     $table = $wpdb->prefix.'chat_participant';

@@ -1,7 +1,7 @@
 {
     "translation-revision-date": "2023-03-23 16:40+0000",
     "generator": "Loco https://localise.biz/",
-    "source": "public/js/wp-chat-public.js",
+    "source": "public/js/wp-chat-public-dialog-blank.js",
     "domain": "wp-chat",
     "locale_data": {
         "wp-chat": {
@@ -10,14 +10,8 @@
                 "lang": "fr_FR",
                 "plural-forms": "nplurals=2; plural=n > 1;"
             },
-            "archived": [
-                "archiv\u00e9"
-            ],
-            "public": [
-                "publique"
-            ],
-            "WP-Chat window is not enabled": [
-                "WP-Chat n'est pas activ\u00e9"
+            "This user is already selected.": [
+                "Cet utilisateur est d\u00e9j\u00e0 s\u00e9lectionn\u00e9."
             ]
         }
     }
