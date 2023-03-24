@@ -11,6 +11,7 @@
 - ajouter des logs en cas d'erreur
 - les archives blink au refresh
 - traduire les messages "system" sortants et non pas entrant, pour traduire dans la langue choisie par l'utilisateur et non par le site (si on change la langue du site ça traduit les chaines)
+- exclure les utilisateurs déjà selectionné du résultat de la recherche à la création d'une conversation
 
 -- menu admin --
 - pouvoir ajouter un id ou une class custom au chat

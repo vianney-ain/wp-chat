@@ -139,6 +139,7 @@ class Wp_Chat_Public {
 			);
 			die(json_encode($response));
 		}
+		
 		if (isset($_REQUEST['search']) && !empty($_REQUEST['search'])){
 			$search = $_REQUEST['search'];
 		}
@@ -149,31 +150,20 @@ class Wp_Chat_Public {
 			);
 			die( json_encode($response) );
 		}
-		$users = new WP_User_Query( array(
-		    'search'         => '*'.esc_attr( $search ).'*',
-		    'search_columns' => array(
-		        'user_login',
-		        'user_nicename',
-		        'user_firstname',
-				'user_lastname',
-		        'user_email',
-		        'user_display_name',
-		    ),
-		) );
-		$users_found = $users->get_results();
-		//$users_found = get_users( array( 'search' => esc_attr( $search ) ) );
 
-		$matches = array();
-		foreach($users_found as $key => $user){
-			$match = array(
-				'ID' => $user->data->ID,
-				'display_name' => $user->data->display_name
+		$search_matches = $this->model->search_users_matches($search);
+
+		if (isset($search_matches) && !empty($search_matches) && is_array($search_matches)){
+			$response = array(
+				'success' => true,
+				'matches' => $search_matches
 			);
-			array_push($matches, $match);
+			die( json_encode($response) );
 		}
+
 		$response = array(
 			'success' => true,
-			'matches' => $matches
+			'matches' => array()
 		);
 		die( json_encode($response) );
 	}

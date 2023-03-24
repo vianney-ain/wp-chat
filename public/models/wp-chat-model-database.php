@@ -43,6 +43,107 @@ class Wp_Chat_Model_Database {
     return false;
   }
 
+  public function search_users_matches($input){
+    $matches = array();
+
+    if (!isset($input) || empty($input)){
+      return $matches;
+    }    
+    
+    global $wpdb;
+
+    if (!isset($wpdb) || empty($wpdb)){
+      return $matches;
+    }
+
+    $search_user_fields = array(
+      'user_nicename' => array(
+        'type' => '%s'
+      ),
+      'user_login' => array(
+        'type' => '%s'
+      ),
+      'display_name' => array(
+        'type' => '%s'
+      ),
+    );
+
+    $search_meta_fields = array(
+      'first_name' => array(
+        'type' => '%s'
+      ),
+      'last_name' => array(
+        'type' => '%s'
+      ),
+    );
+
+    
+    $query = "SELECT user.id, user.display_name FROM wp_users as user";
+    if (isset($search_meta_fields) && !empty($search_meta_fields) && sizeof($search_meta_fields) > 0){
+      $query .= ' LEFT JOIN wp_usermeta as meta on meta.user_id = user.id';
+    }
+    $where = '';
+    $params = array();
+
+    if (isset($search_meta_fields) && !empty($search_meta_fields) && is_array($search_meta_fields)){
+
+      $count = 0;
+      
+      foreach($search_meta_fields as $key => $field){
+        if ($count > 0 && $count < sizeof($search_meta_fields)){
+          $where .= ' OR ';
+        }
+        $where .= "( meta.meta_key = '".$key."' AND meta.meta_value LIKE '".$field['type']."' )";
+        array_push($params, '%'.$input.'%');
+        $count++;
+      }
+
+    }
+
+    if (isset($search_user_fields) && !empty($search_user_fields) && is_array($search_user_fields)){
+
+      if (isset($where) && !empty($where)) {
+        $where .= ' OR ';
+      }
+
+      $count = 0;
+
+      foreach($search_user_fields as $key => $field){
+        if ($count > 0 && $count < sizeof($search_user_fields)){
+          $where .= ' OR ';
+        }
+        $where .= "( user.".$key." LIKE ".$field['type']." )";
+        array_push($params, '%'.$input.'%');
+        $count++;
+      }
+      
+    }
+
+
+    if (isset($where) && !empty($where)){
+      $query .= ' WHERE '.$where;
+      $query .= ' GROUP BY user.id';
+      $prepared_query = $wpdb->prepare($query, $params);
+      if (isset($prepared_query) && !empty($prepared_query)){
+
+        $users = $wpdb->get_results($prepared_query);
+
+        if (isset($users) && !empty($users) && is_array($users)){
+          foreach($users as $ku => $user){
+            $match = array(
+              'ID' => $user->id,
+              'display_name' => $user->display_name
+            );
+            array_push($matches, $match);
+          }
+        }
+
+      }
+
+    }
+    return $matches;
+  }
+
 
   //if two users already have a room (where they are 2)
   //return the room id

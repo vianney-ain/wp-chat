@@ -69,9 +69,7 @@ class Wp_Chat {
 	public function __construct() {
 		if ( defined( 'WP_CHAT_VERSION' ) ) {
 			$this->version = WP_CHAT_VERSION;
-		} else {
-			$this->version = '1.0.0';
-		}
+		} 
 		$this->plugin_name = 'wp-chat';
 
 		$this->load_dependencies();
