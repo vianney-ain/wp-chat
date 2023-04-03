@@ -115,7 +115,7 @@
   right: 0;
   top: 0;
   height: 100vh;
-  background: #eeeeee;
+  background: #dddddd;
   z-index: 98;
   transition: all 0.5s ease;
   transform: translateX(100%);
@@ -194,7 +194,7 @@
 
 #wp-chat-window .wp-chat-window-menu .wp-chat-search input {
   border: none;
-  background: #cccccc;
+  background: #eee;
   border-radius: 20px;
   width: 100%;
   padding: 10px;
@@ -217,7 +217,7 @@
 }
 
 #wp-chat-window .wp-chat-window-archives-menu .wp-chat-window-archives-menu-item:not(:last-child) {
-  border-right: 1px solid #cccccc;
+  border-right: 1px solid #bbbbbb;
 }
 
 #wp-chat-window .wp-chat-window-archives-menu .wp-chat-window-archives-menu-item.active {
@@ -226,7 +226,7 @@
 }
 
 #wp-chat-window .wp-chat-window-archives-menu .wp-chat-window-archives-menu-item:hover {
-  background: #dddddd;
+  background: #cccccc;
   color: var(--wp-chat-primary);
 }
 
@@ -291,14 +291,14 @@
 }
 
 #wp-chat-window .wp-chat-window-archives ul li.wp-chat-window-archive:hover {
-  background: #dddddd;
+  background: #cccccc;
 }
 
 #wp-chat-window .wp-chat-window-archives ul li.wp-chat-window-archive .wp-chat-window-archive-avatar {
   width: 44px;
   height: 44px;
   border-radius: 9999px;
-  background: #ccc;
+  background: #bbb;
   position: relative;
   min-width: 44px;
 }
@@ -382,7 +382,7 @@
 }
 
 #wp-chat-window .wp-chat-window-archives ul li.wp-chat-window-archive .wp-chat-window-archive-actions:hover {
-  background: #ccc;
+  background: #bbbbbb;
 }
 
 #wp-chat-window .wp-chat-window-archives ul li.wp-chat-window-archive .wp-chat-window-archive-actions ul {
