@@ -648,7 +648,7 @@
   overflow: hidden;
   border-radius: 9999px;
 }
-
+a
 .wp-chat-dialog.reduced .wp-chat-dialog-reduced img {
   width: 100%;
   height: 100%;
@@ -660,6 +660,7 @@
   padding: 10px;
   align-items: center;
   height: 50px;
+  justify-content:center;
 }
 
 .wp-chat-dialog .wp-chat-dialog-footer input {
