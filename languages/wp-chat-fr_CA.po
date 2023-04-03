@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: WP-Chat\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-03-09 15:03+0000\n"
-"PO-Revision-Date: 2023-03-23 16:40+0000\n"
+"PO-Revision-Date: 2023-04-03 13:30+0000\n"
 "Last-Translator: \n"
 "Language-Team: Français du Canada\n"
 "Language: fr_CA\n"
@@ -18,42 +18,42 @@ msgstr ""
 "X-Generator: Loco https://localise.biz/\n"
 "X-Loco-Version: 2.6.4; wp-6.1.1"
 
-#: public/class-wp-chat-public.php:581
+#: public/class-wp-chat-public.php:571
 #, php-format
 msgid "%1$s has been added to the conversation by %2$s"
 msgstr "%1$s a été ajouté à la conversation par %2$s"
 
-#: public/class-wp-chat-public.php:679
+#: public/class-wp-chat-public.php:669
 #, php-format
 msgid "%1$s has been removed from the conversation by %2$s"
 msgstr "%1$s a été retiré de la conversation par %2$s"
 
-#: public/class-wp-chat-public.php:1033
+#: public/class-wp-chat-public.php:1084
 #, php-format
 msgid "%1$s has changed the title of this conversation for \"%2$s\""
 msgstr "%1$s a changé le titre de la conversation pour \"%2$s\""
 
-#: public/class-wp-chat-public.php:584
+#: public/class-wp-chat-public.php:574
 #, php-format
 msgid "%s has been added to the conversation"
 msgstr "%s a été ajouté à la conversation"
 
-#: public/class-wp-chat-public.php:682
+#: public/class-wp-chat-public.php:672
 #, php-format
 msgid "%s has been removed from the conversation"
 msgstr "%s a été retiré de la conversation"
 
-#: public/class-wp-chat-public.php:1028
+#: public/class-wp-chat-public.php:1079
 #, php-format
 msgid "%s has removed the title of this conversation"
 msgstr "%s a retiré le titre de la conversation"
 
-#: public/class-wp-chat-public.php:757
+#: public/class-wp-chat-public.php:747
 #, php-format
 msgid "%s joined the room"
 msgstr "%s a rejoint la conversation"
 
-#: public/class-wp-chat-public.php:819
+#: public/class-wp-chat-public.php:809
 #, php-format
 msgid "%s left the conversation"
 msgstr "%s a quitté la conversation"
@@ -74,14 +74,18 @@ msgstr "Fréquence de rafraichissement Ajax (en millisecondes)"
 msgid "Allow WordPress users to start instant messaging."
 msgstr "Permet aux utilisateurs de WordPress de s'envoyer des messages."
 
-#: public/class-wp-chat-public.php:348 public/class-wp-chat-public.php:454
-#: public/class-wp-chat-public.php:602 public/class-wp-chat-public.php:698
-#: public/class-wp-chat-public.php:833
+#: public/class-wp-chat-public.php:338 public/class-wp-chat-public.php:444
+#: public/class-wp-chat-public.php:592 public/class-wp-chat-public.php:688
+#: public/class-wp-chat-public.php:823
 msgid "An error occured, please try again"
 msgstr "Une erreur est survenue, veuillez réessayer"
 
-#: public/models/wp-chat-model-database.php:219
-#: public/models/wp-chat-model-database.php:222
+#: public/js/wp-chat-public.js:412
+msgid "An error occured."
+msgstr "Une erreur est survenue."
+
+#: public/models/wp-chat-model-database.php:357
+#: public/models/wp-chat-model-database.php:360
 msgid "and"
 msgstr "et"
 
@@ -89,19 +93,24 @@ msgstr "et"
 msgid "Archive conversation"
 msgstr "Archiver la conversation"
 
-#: public/js/wp-chat-public.js:265 public/js/wp-chat-public.js:321
+#: public/js/wp-chat-public.js:249 public/js/wp-chat-public.js:315
 msgid "archived"
 msgstr "archivé"
 
-#: public/class-wp-chat-public.php:256 public/class-wp-chat-public.php:325
-#: public/class-wp-chat-public.php:490 public/class-wp-chat-public.php:565
-#: public/class-wp-chat-public.php:655 public/class-wp-chat-public.php:739
-#: public/class-wp-chat-public.php:810 public/class-wp-chat-public.php:936
-#: public/class-wp-chat-public.php:944 public/class-wp-chat-public.php:1011
+#: public/js/wp-chat-public.js:414
+msgid "Are you sure you want to delete this conversation ?"
+msgstr "Êtes-vous sûr de vouloir supprimer cette conversation ?"
+
+#: public/class-wp-chat-public.php:246 public/class-wp-chat-public.php:315
+#: public/class-wp-chat-public.php:480 public/class-wp-chat-public.php:555
+#: public/class-wp-chat-public.php:645 public/class-wp-chat-public.php:729
+#: public/class-wp-chat-public.php:800 public/class-wp-chat-public.php:868
+#: public/class-wp-chat-public.php:987 public/class-wp-chat-public.php:995
+#: public/class-wp-chat-public.php:1062
 msgid "Conversation cannot be found"
 msgstr "Conversation introuvable"
 
-#: public/class-wp-chat-public.php:982
+#: public/class-wp-chat-public.php:1033
 msgid "Conversation name is required"
 msgstr "Le nom de la conversation est requis"
 
@@ -115,7 +124,7 @@ msgstr "Titre de la conversation"
 msgid "Conversations"
 msgstr "Discussions"
 
-#: public/partials/wp-chat-public-display.php:187
+#: public/partials/wp-chat-public-display.php:188
 msgid "Create one !"
 msgstr "Créez-en une !"
 
@@ -133,9 +142,13 @@ msgstr "Désactiver le rafraichissement en Ajax"
 msgid "Disable WP-Chat"
 msgstr "Désactiver WP-Chat"
 
-#: public/class-wp-chat-public.php:1065
+#: public/class-wp-chat-public.php:1116
 msgid "Failed to change conversation details"
 msgstr "Echec du changement des détails de la conversation"
+
+#: public/class-wp-chat-public.php:884
+msgid "Failed to remove the room. Please try again."
+msgstr "Échec de la suppression de la conversation. Veuillez réessayer."
 
 #: admin/class-wp-chat-admin.php:114
 msgid "Home"
@@ -158,28 +171,29 @@ msgstr "Si coché, va désactiver le plugin WP-Chat"
 msgid "Leave conversation"
 msgstr "Quitter la conversation"
 
-#: public/class-wp-chat-public.php:305
+#: public/class-wp-chat-public.php:295
 msgid "Message cannot be empty"
 msgstr "Le message ne peut être vide"
 
-#: public/class-wp-chat-public.php:341
+#: public/class-wp-chat-public.php:331
 msgid "Message sent"
 msgstr "Message envoyé"
 
-#: public/class-wp-chat-public.php:247 public/class-wp-chat-public.php:297
-#: public/class-wp-chat-public.php:472 public/class-wp-chat-public.php:541
-#: public/class-wp-chat-public.php:557 public/class-wp-chat-public.php:631
-#: public/class-wp-chat-public.php:647 public/class-wp-chat-public.php:719
-#: public/class-wp-chat-public.php:801 public/class-wp-chat-public.php:989
+#: public/class-wp-chat-public.php:237 public/class-wp-chat-public.php:287
+#: public/class-wp-chat-public.php:462 public/class-wp-chat-public.php:531
+#: public/class-wp-chat-public.php:547 public/class-wp-chat-public.php:621
+#: public/class-wp-chat-public.php:637 public/class-wp-chat-public.php:709
+#: public/class-wp-chat-public.php:791 public/class-wp-chat-public.php:859
+#: public/class-wp-chat-public.php:1040
 msgid "Missing informations"
 msgstr "Informations manquantes"
 
-#: public/models/wp-chat-model-database.php:189
-#: public/models/wp-chat-model-database.php:226
+#: public/models/wp-chat-model-database.php:276
+#: public/models/wp-chat-model-database.php:364
 msgid "Nameless chat"
 msgstr "Conversation sans nom"
 
-#: public/models/wp-chat-model-database.php:222
+#: public/models/wp-chat-model-database.php:360
 msgid "others"
 msgstr "autres"
 
@@ -187,7 +201,7 @@ msgstr "autres"
 msgid "Participants"
 msgstr "Participants"
 
-#: public/js/wp-chat-public.js:261 public/js/wp-chat-public.js:317
+#: public/js/wp-chat-public.js:245 public/js/wp-chat-public.js:311
 msgid "public"
 msgstr "publique"
 
@@ -208,6 +222,10 @@ msgstr "Réinitialiser"
 msgid "Reset settings to default"
 msgstr "Réinitialiser les paramètres par défaut"
 
+#: public/class-wp-chat-public.php:878
+msgid "Room removed successfully."
+msgstr "Conversation supprimée avec succès."
+
 #: public/partials/wp-chat-public-display.php:132
 msgid "Save"
 msgstr "Enregistrer"
@@ -221,25 +239,25 @@ msgstr "Rechercher"
 msgid "Settings"
 msgstr "Réglages"
 
-#: public/class-wp-chat-public.php:590
+#: public/class-wp-chat-public.php:580
 msgid "Somebody has been added to the conversation"
 msgstr "Quelqu'un a été ajouté à la conversation"
 
-#: public/class-wp-chat-public.php:587
+#: public/class-wp-chat-public.php:577
 #, php-format
 msgid "Somebody has been added to the conversation by %s"
 msgstr "Quelqu'un a été ajouté à la conversation par %s"
 
-#: public/class-wp-chat-public.php:688
+#: public/class-wp-chat-public.php:678
 msgid "Somebody has been removed from the conversation"
 msgstr "Quelqu'un a été retiré de la conversation"
 
-#: public/class-wp-chat-public.php:685
+#: public/class-wp-chat-public.php:675
 #, php-format
 msgid "Somebody has been removed from the conversation by %s"
 msgstr "Quelqu'un a été retiré de la conversation par %s"
 
-#: public/class-wp-chat-public.php:822
+#: public/class-wp-chat-public.php:812
 msgid "Somebody left the conversation"
 msgstr "Quelqu'un a quitté la conversation"
 
@@ -247,7 +265,7 @@ msgstr "Quelqu'un a quitté la conversation"
 msgid "Start chatting"
 msgstr "Créer une conversation"
 
-#: public/class-wp-chat-public.php:671
+#: public/class-wp-chat-public.php:661
 msgid "The owner of the conversation cannot be removed from it"
 msgstr "Le propriétaire de la conversation ne peut pas en être enlevé"
 
@@ -257,29 +275,29 @@ msgstr "Le propriétaire de la conversation ne peut pas en être enlevé"
 msgid "Theme"
 msgstr "Thème"
 
-#: public/class-wp-chat-public.php:1049
+#: public/class-wp-chat-public.php:1100
 #, php-format
 msgid "This conversation has been archived by %s"
 msgstr "Cette conversation a été archivé par %s"
 
-#: public/class-wp-chat-public.php:1052
+#: public/class-wp-chat-public.php:1103
 msgid "This conversation is no longer archived"
 msgstr "Cette conversation n'est plus archivée"
 
-#: public/class-wp-chat-public.php:1042
+#: public/class-wp-chat-public.php:1093
 msgid "This conversation is now private"
 msgstr "Cette conversation est maintenant privée"
 
-#: public/class-wp-chat-public.php:1039
+#: public/class-wp-chat-public.php:1090
 msgid "This conversation is now public"
 msgstr "Cette conversation est maintenant publique"
 
-#: public/models/wp-chat-model-database.php:325
-#: public/models/wp-chat-model-database.php:358
+#: public/models/wp-chat-model-database.php:531
+#: public/models/wp-chat-model-database.php:564
 msgid "This is the beginning of the conversation"
 msgstr "Ceci est le début de la conversation"
 
-#: public/class-wp-chat-public.php:573
+#: public/class-wp-chat-public.php:563
 msgid "This user is already in this conversation"
 msgstr "Cet utilisateur est déjà dans cette conversation"
 
@@ -287,15 +305,15 @@ msgstr "Cet utilisateur est déjà dans cette conversation"
 msgid "This user is already selected."
 msgstr "Cet utilisateur est déjà sélectionné"
 
-#: public/class-wp-chat-public.php:315
+#: public/class-wp-chat-public.php:305
 msgid "User cannot be found"
 msgstr "Utilisateur inconnu"
 
-#: public/class-wp-chat-public.php:390 public/class-wp-chat-public.php:481
-#: public/class-wp-chat-public.php:533 public/class-wp-chat-public.php:549
-#: public/class-wp-chat-public.php:623 public/class-wp-chat-public.php:639
-#: public/class-wp-chat-public.php:729 public/class-wp-chat-public.php:793
-#: public/class-wp-chat-public.php:974
+#: public/class-wp-chat-public.php:380 public/class-wp-chat-public.php:471
+#: public/class-wp-chat-public.php:523 public/class-wp-chat-public.php:539
+#: public/class-wp-chat-public.php:613 public/class-wp-chat-public.php:629
+#: public/class-wp-chat-public.php:719 public/class-wp-chat-public.php:783
+#: public/class-wp-chat-public.php:851 public/class-wp-chat-public.php:1025
 msgid "User is not existing"
 msgstr "Utilisateur inconnu"
 
@@ -316,42 +334,48 @@ msgstr "Fréquence de rafraichissement du chat (en milli-secondes)"
 msgid "WP-Chat"
 msgstr "WP-Chat"
 
-#: public/js/wp-chat-public.js:831
+#: public/js/wp-chat-public.js:892
 msgid "WP-Chat window is not enabled"
 msgstr "WP-Chat n'est pas activé"
 
-#: public/class-wp-chat-public.php:748
+#: public/class-wp-chat-public.php:738
 msgid "You are not allowed to see this conversation"
 msgstr "Vous n'êtes pas autorisé à voir cette conversation"
 
-#: public/class-wp-chat-public.php:264 public/class-wp-chat-public.php:333
-#: public/class-wp-chat-public.php:841
+#: public/class-wp-chat-public.php:254 public/class-wp-chat-public.php:323
+#: public/class-wp-chat-public.php:831
 msgid "You are not in this conversation"
 msgstr "Vous n'êtes pas dans cette conversation"
 
-#: public/partials/wp-chat-public-display.php:186
+#: public/partials/wp-chat-public-display.php:187
 msgid "You are not participating to any conversation for now."
 msgstr "Vous ne participez à aucun conversation pour le moment."
 
-#: public/class-wp-chat-public.php:663
+#: public/class-wp-chat-public.php:653
 msgid "You are not the owner of this conversation"
 msgstr "Vous n'êtes pas le propriétaire de cette conversation."
 
-#: public/class-wp-chat-public.php:424
+#: public/class-wp-chat-public.php:414
 msgid "You must add at least 1 participant to create a private room"
 msgstr ""
 "Vous devez ajouter un moins un participant pour pouvoir créer une discussion "
 "privée"
 
-#: public/class-wp-chat-public.php:138 public/class-wp-chat-public.php:186
-#: public/class-wp-chat-public.php:240 public/class-wp-chat-public.php:289
-#: public/class-wp-chat-public.php:359 public/class-wp-chat-public.php:465
-#: public/class-wp-chat-public.php:525 public/class-wp-chat-public.php:614
-#: public/class-wp-chat-public.php:711 public/class-wp-chat-public.php:784
-#: public/class-wp-chat-public.php:863 public/class-wp-chat-public.php:929
-#: public/class-wp-chat-public.php:965
+#: public/class-wp-chat-public.php:138 public/class-wp-chat-public.php:176
+#: public/class-wp-chat-public.php:230 public/class-wp-chat-public.php:279
+#: public/class-wp-chat-public.php:349 public/class-wp-chat-public.php:455
+#: public/class-wp-chat-public.php:515 public/class-wp-chat-public.php:604
+#: public/class-wp-chat-public.php:701 public/class-wp-chat-public.php:774
+#: public/class-wp-chat-public.php:842 public/class-wp-chat-public.php:914
+#: public/class-wp-chat-public.php:980 public/class-wp-chat-public.php:1016
 msgid "You must be connected to be able to do that"
 msgstr "Vous devez être connecté pour effectuer cette action"
+
+#: public/class-wp-chat-public.php:892
+msgid "You must be the owner of the conversation to do this."
+msgstr ""
+"Vous devez être le propriétaire de cette conversation pour pouvoir faire "
+"cela."
 
 #: public/partials/wp-chat-public-display.php:181
 msgid "Your conversations"

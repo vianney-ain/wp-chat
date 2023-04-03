@@ -163,7 +163,7 @@
          <div class="wp-chat-icon chat"></div>
        </div>
        <div id="wp-chat-menu-archives"></div>
-       <div id="wp-chat-window" class="active">
+       <div id="wp-chat-window" class="">
          <div class="wp-chat-window-header">
            <h3 class="wp-chat-title"><?php _e( 'Conversations' , 'wp-chat' ); ?></h3>
            <div class="wp-chat-window-close">

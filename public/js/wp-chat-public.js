@@ -422,7 +422,7 @@
 						},
 						beforeSend: function (jqXHR, settings) {
 								let url = settings.url + "?" + settings.data;
-								console.log(url);
+								//console.log(url);
 						},
 						success: function(data) {
 							if (data.success == true){
