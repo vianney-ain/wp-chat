@@ -182,10 +182,15 @@
           <div class="wp-chat-window-archives-menu-item" data-section="general"><?php _e( 'Public conversations' , 'wp-chat' ); ?></div>
          </div>
          <div class="wp-chat-window-archives">
-          <ul>
-            <li data-room-section="own" class="wp-chat-empty-archive"><?php _e( 'You are not participating to any conversation for now.' , 'wp-chat' ); ?></li>
-            <li data-room-section="own" class="wp-chat-empty-archive"><button class="create_new_conversation_button"><?php _e( 'Create one !' , 'wp-chat' ); ?></button></li>
-          </ul>
+          <div class="wp-chat-window-archives-section active" data-section="own">
+            <ul>
+              <li data-room-section="own" class="wp-chat-empty-archive"><?php _e( 'You are not participating to any conversation for now.' , 'wp-chat' ); ?></li>
+              <li data-room-section="own" class="wp-chat-empty-archive"><button class="create_new_conversation_button"><?php _e( 'Create one !' , 'wp-chat' ); ?></button></li>
+            </ul>
+          </div>
+          <div class="wp-chat-window-archives-section" data-section="general">
+            <ul></ul>
+          </div>
          </div>
        </div>
        <div id="wp-chat-dialogs">

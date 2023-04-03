@@ -236,6 +236,14 @@
   margin-top: 10px;
 }
 
+#wp-chat-window .wp-chat-window-archives-menu .wp-chat-window-archives-section {
+  display:none;
+}
+
+#wp-chat-window .wp-chat-window-archives-menu .wp-chat-window-archives-section.active {
+  display:block;
+}
+
 #wp-chat-window .wp-chat-window-archives ul {
   list-style: none;
   margin: 0;

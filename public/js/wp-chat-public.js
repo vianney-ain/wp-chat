@@ -70,33 +70,14 @@
 					$(this).removeClass('active');
 				});
 				$(this).addClass('active');
-				wp_chat_filter_archives();
+				$('.wp-chat-window-archives .wp-chat-window-archives-section').each(function(){
+					$(this).removeClass('active');
+					if ($(this).data('section') == section){
+						$(this).addClass('active');
+					}
+				});
 			});
-
-			/*** FUNCTIONS ***/
-			function wp_chat_filter_archives(){
-				var section = 'own';
-				$('#wp-chat-window .wp-chat-window-archives-menu .wp-chat-window-archives-menu-item').each(function(){
-					if ($(this).hasClass('active')){
-						section = $(this).data('section');
-					}
-				});
-				$('#wp-chat-window .wp-chat-window-archives ul li.wp-chat-window-archive').each(function(){
-					if (section == '')
-					if ($(this).hasClass('wp-chat-empty-archive')){
-						return;
-					}
-					if ($(this).data('room-section') == section){
-						$(this).show();
-					}
-					else {
-						$(this).hide();
-					}
-				});
-			}
-		
-
-			
+	
 
 			jQuery('body').on('keypress', '.wp-chat-dialog .wp-chat-dialog-footer input', function(event){
 				var that = jQuery(this);
@@ -165,14 +146,12 @@
 					},
 					beforeSend: function (jqXHR, settings) {
 							let url = settings.url + "?" + settings.data;
-							console.log(url);
+							//console.log(url);
 					},
 					success: function(data) {
-						console.log(data);
 						if (data.success == true){
 							refresh_chat_window(data.content);
 							refresh_chat_dialogs(data.content);
-							wp_chat_filter_archives();
 						}
 						else {
 							alert(data.message);
@@ -250,16 +229,12 @@
 			}
 
 			function refresh_chat_window(data){
-				console.log(data);
 				if (jQuery('#wp-chat-window').length == 0) return;
 				if (!data) {
 					return;
 				}
-				if (data.length == 0){
-					jQuery('#wp-chat-window .wp-chat-window-archives .wp-chat-empty-archive').show();
-				}
 				//
-				var own_room_count = 0;
+				var user_in_room_count = 0;
 				//jQuery('#wp-chat-window').find('.wp-chat-window-archives ul').empty();
 				$.each(data, function (key, room){
 					//if room has been loaded already
@@ -279,7 +254,16 @@
 						var room_section = 'general';
 						if (room.is_user_in){
 							room_section = 'own';
+							user_in_room_count++;
 						}
+						
+						if ( 
+							$('#wp-chat-window').find('.wp-chat-window-archive[data-room-id='+room.room_id+']').data('room-section') != room_section
+						){
+							console.log('Room section differs');
+							$('#wp-chat-window').find('.wp-chat-window-archive[data-room-id='+room.room_id+']').appendTo(jQuery('#wp-chat-window').find('.wp-chat-window-archives .wp-chat-window-archives-section[data-section="'+room_section+'"]>ul'));
+						}
+
 						$('#wp-chat-window').find('.wp-chat-window-archive[data-room-id='+room.room_id+']').data('room-section', room_section);
 
 						$('#wp-chat-window').find('.wp-chat-window-archive[data-room-id='+room.room_id+']').data('room-last-message', room.last_message);
@@ -305,6 +289,7 @@
 							message = room.messages[room.messages.length - 1].message;
 						}
 						$('#wp-chat-window').find('.wp-chat-window-archive[data-room-id='+room.room_id+'] .wp-chat-window-archive-content .wp-chat-window-archive-last-comment').text(message);
+
 					}
 					//if not loaded, we create the layout
 					else {
@@ -333,18 +318,21 @@
 							var room_section = 'general';
 							if (room.is_user_in){
 								room_section = 'own';
-								own_room_count++;
+								user_in_room_count++;
 							}
 							var remove_room_html = '';
 							if (room.is_owner){
 								remove_room_html = '<li class="wp-chat-window-archive-action wp-chat-remove-room-action">Supprimer la conversation</li>';
 							}
-							jQuery('#wp-chat-window').find('.wp-chat-window-archives>ul').append('<li class="wp-chat-window-archive updated" data-room-id="'+room.room_id+'" data-room-last-message="'+room.last_message+'" data-room-section="'+room_section+'"><div class="wp-chat-window-archive-avatar '+group+'">'+display_room_thumbnail(room.room_id, room.room_thumbnails)+'</div><div class="wp-chat-window-archive-content"><div class="wp-chat-window-archive-title" title="'+room.room_fullname+'">'+room.room_name+'<span class="wp-chat-window-archive-status '+room_status_class+'">'+room_status_label+'</span></div><div class="wp-chat-window-archive-last-comment">'+message+'</div></div><div class="wp-chat-window-archive-actions"><div class="wp-chat-icon dots-v"></div><ul><li class="wp-chat-window-archive-action wp-chat-leave-room-action">Quitter la conversation</li>'+remove_room_html+'</ul></div></li>');
+							jQuery('#wp-chat-window').find('.wp-chat-window-archives .wp-chat-window-archives-section[data-section="'+room_section+'"]>ul').append('<li class="wp-chat-window-archive updated" data-room-id="'+room.room_id+'" data-room-last-message="'+room.last_message+'" data-room-section="'+room_section+'"><div class="wp-chat-window-archive-avatar '+group+'">'+display_room_thumbnail(room.room_id, room.room_thumbnails)+'</div><div class="wp-chat-window-archive-content"><div class="wp-chat-window-archive-title" title="'+room.room_fullname+'">'+room.room_name+'<span class="wp-chat-window-archive-status '+room_status_class+'">'+room_status_label+'</span></div><div class="wp-chat-window-archive-last-comment">'+message+'</div></div><div class="wp-chat-window-archive-actions"><div class="wp-chat-icon dots-v"></div><ul><li class="wp-chat-window-archive-action wp-chat-leave-room-action">Quitter la conversation</li>'+remove_room_html+'</ul></div></li>');					
 						}
 					}
 				});
-				if (own_room_count > 0){
+				if (user_in_room_count > 0){
 					jQuery('#wp-chat-window .wp-chat-window-archives .wp-chat-empty-archive').hide();
+				}
+				else {
+					jQuery('#wp-chat-window .wp-chat-window-archives .wp-chat-empty-archive').show();
 				}
 				$('#wp-chat-window').find('.wp-chat-window-archive').each(function(){
 					if (!$(this).hasClass('updated')){
@@ -477,6 +465,7 @@
 					success: function(data) {
 						if (data.success == true){
 							create_room_box(data);
+							refresh_view();
 						}
 						else {
 							alert(data.message);
