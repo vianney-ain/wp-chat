@@ -814,6 +814,12 @@
 
 .wp-chat-dialog-popup .wp-chat-dialog-popup-content .wp-chat-dialog-popup-content-row .wp-chat-dialog-popup-content-row-label {
   margin-right: 10px;
+  font-size:12px;
+}
+
+.wp-chat-dialog-popup .wp-chat-dialog-popup-content .wp-chat-dialog-popup-content-row .wp_chat_btn {
+  font-size:12px;
+  padding:5px;
 }
 
 .wp-chat-switch {

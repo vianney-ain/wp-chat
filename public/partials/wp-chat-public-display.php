@@ -125,7 +125,7 @@
           <div class="wp-chat-dialog-popup-content-row-label"><?php _e( 'Archive conversation' , 'wp-chat' ); ?> :</div><label class="wp-chat-switch"><input type="checkbox" name="room-archived-checkbox" /><span></span></label>
         </div>
         <div class="wp-chat-dialog-popup-content-row">
-          <div class="wp-chat-dialog-popup-content-row-label"><?php _e( 'Delete conversation' , 'wp-chat' ); ?> :</div><button class="wp_chat_btn"><?php _e('Delete'); ?></button>
+          <div class="wp-chat-dialog-popup-content-row-label"><?php _e( 'Delete conversation' , 'wp-chat' ); ?> :</div><button class="wp_chat_btn wp-chat-popup-content-remove-room-btn"><?php _e('Delete'); ?></button>
         </div>
        </div>
        <div class="wp-chat-dialog-popup-footer">
@@ -163,7 +163,7 @@
          <div class="wp-chat-icon chat"></div>
        </div>
        <div id="wp-chat-menu-archives"></div>
-       <div id="wp-chat-window" class="">
+       <div id="wp-chat-window" class="active">
          <div class="wp-chat-window-header">
            <h3 class="wp-chat-title"><?php _e( 'Conversations' , 'wp-chat' ); ?></h3>
            <div class="wp-chat-window-close">
@@ -183,8 +183,8 @@
          </div>
          <div class="wp-chat-window-archives">
           <ul>
-            <li class="wp-chat-empty-archive"><?php _e( 'You are not participating to any conversation for now.' , 'wp-chat' ); ?></li>
-            <li class="wp-chat-empty-archive"><button class="create_new_conversation_button"><?php _e( 'Create one !' , 'wp-chat' ); ?></button></li>
+            <li data-room-section="own" class="wp-chat-empty-archive"><?php _e( 'You are not participating to any conversation for now.' , 'wp-chat' ); ?></li>
+            <li data-room-section="own" class="wp-chat-empty-archive"><button class="create_new_conversation_button"><?php _e( 'Create one !' , 'wp-chat' ); ?></button></li>
           </ul>
          </div>
        </div>

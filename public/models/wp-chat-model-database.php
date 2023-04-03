@@ -350,6 +350,65 @@ class Wp_Chat_Model_Database {
     }
   }
 
+  private function remove_room_participants($room_id){
+    if (isset($room_id) && !empty($room_id)){
+      global $wpdb;
+      $table = $wpdb->prefix.'chat_participant';
+      $where = array('roomID' => $room_id);
+      $format = array('%d');
+      $result = $wpdb->delete($table,$where,$format);
+      if ($result){
+        return true;
+      }
+      else {
+        return false;
+      }
+    }
+    else {
+      return false;
+    }
+  }
+
+  private function remove_room_messages($room_id){
+    if (isset($room_id) && !empty($room_id)){
+      global $wpdb;
+      $table = $wpdb->prefix.'chat_message';
+      $where = array('roomID' => $room_id);
+      $format = array('%d');
+      $result = $wpdb->delete($table,$where,$format);
+      if ($result){
+        return true;
+      }
+      else {
+        return false;
+      }
+    }
+    else {
+      return false;
+    }
+  }
+
+  public function remove_room($room_id){
+    if (isset($room_id) && !empty($room_id)){
+      global $wpdb;
+      $table = $wpdb->prefix.'chat_room';
+      $where = array('id' => $room_id);
+      $format = array('%d');
+      $result = $wpdb->delete($table,$where,$format);
+      if ($result){
+        $this->remove_room_participants($room_id);
+        $this->remove_room_messages($room_id);
+        return true;
+      }
+      else {
+        return false;
+      }
+    }
+    else {
+      return false;
+    }
+  }
+
   public function get_single_room_participant_by_user_id($room_id, $user_id){
     global $wpdb;
     $result = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}chat_participant WHERE roomID='{$room_id}' AND userID='{$user_id}'");
@@ -409,6 +468,15 @@ class Wp_Chat_Model_Database {
   public function is_participant_in_room($room_id, $user_id){
     global $wpdb;
     $result = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}chat_participant WHERE roomID='{$room_id}' AND userID='{$user_id}'");
+    if (empty($result)){
+      return false;
+    }
+    return true;
+  }
+
+  public function is_room_owner($room_id, $user_id){
+    global $wpdb;
+    $result = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}chat_room WHERE id='{$room_id}' AND ownerID='{$user_id}'");
     if (empty($result)){
       return false;
     }

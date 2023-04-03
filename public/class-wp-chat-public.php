@@ -834,6 +834,67 @@ class Wp_Chat_Public {
 		die(json_encode($response));
 	}
 
+	public function wp_chat_remove_room(){
+		$this->user_id = get_current_user_id();
+		if (!isset($this->user_id) || empty($this->user_id)){
+			$response = array(
+				'success' => false,
+				'message' => __( 'You must be connected to be able to do that', 'wp-chat' ).'.',
+			);
+			die(json_encode($response));
+		}
+
+		$user = $this->model->get_user_by_id($this->user_id);
+		if (!isset($user) || empty($user)){
+			$response = array(
+				'success' => false,
+				'message' => __( 'User is not existing' , 'wp-chat' ).'.',
+			);
+			die(json_encode($response));
+		}
+
+		if (!isset($_REQUEST['room_id']) || empty($_REQUEST['room_id'])){
+			$response = array(
+				'success' => false,
+				'message' => __( 'Missing informations' , 'wp-chat' ).'.',
+			);
+			die(json_encode($response));
+		}
+
+		$room = $this->model->get_room_by_id(esc_attr($_REQUEST['room_id']));
+		if (!isset($room) || empty($room)){
+			$response = array(
+				'success' => false,
+				'message' => __( 'Conversation cannot be found' , 'wp-chat' ).'.',
+			);
+			die(json_encode($response));
+		}
+
+
+		if ($this->model->is_room_owner($room->id, $this->user_id)){
+			if ($this->model->remove_room($room->id)){
+				$response = array(
+					'success' => true,
+					'message' => __( "Room removed successfully." , 'wp-chat' ).'.',
+				);
+			}
+			else {
+				$response = array(
+					'success' => false,
+					'message' => __( "Failed to remove the room. Please try again." , 'wp-chat' ).'.',
+				);
+			}
+
+		}
+		else {
+			$response = array(
+				'success' => false,
+				'message' => __( "You must be the owner of the conversation to do this." , 'wp-chat' ).'.',
+			);
+		}
+		die(json_encode($response));
+	}
+
 	public function randomPassword() {
 		$alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
 		$pass = array(); //remember to declare $pass as an array
