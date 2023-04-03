@@ -271,25 +271,62 @@ class Wp_Chat_Model_Database {
 
   public function get_room_details_by_id($room_id, $user_from_id){
     global $wpdb;
-    $results = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}chat_participant WHERE userID <> '{$user_from_id}' AND roomID = '{$room_id}'");
-    $user_names = array();
+    $results = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}chat_room WHERE id = '{$room_id}'");
     $thumbnails = array();
+    $room_name = __( 'Nameless chat' , 'wp-chat' );
     if (isset($results) && !empty($results)){
       foreach($results as $k => $result){
-        $user = $this->get_user_by_id($result->userID);
-        array_push($thumbnails, $user['avatar']);
-        array_push($user_names, $user['display_name']);
+        if ( isset($result->name) && !empty($result->name) ){
+          $room_name = $result->name;
+        }
+        //if no name, generate name
+        else {
+          $room_name = $this->generate_room_name($this->get_room_users($room_id, $user_from_id));
+        }
+        $thumbnails = $this->get_room_thumbnails($room_id, $user_from_id);
       }
       return array(
-        'room_name' => $this->generate_room_name($user_names),
+        'room_name' => $room_name,
         'room_thumbnails' => $thumbnails,
       );
     }
     else {
       return array(
-        'room_name' => __( 'Nameless chat' , 'wp-chat' ),
+        'room_name' => $room_name,
         'room_thumbnails' => array(),
       );
+    }
+  }
+
+  private function get_room_thumbnails($room_id, $user_from_id){
+    global $wpdb;
+    $results = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}chat_participant WHERE userID <> '{$user_from_id}' AND roomID = '{$room_id}'");
+    $thumbnails = array();
+    if (isset($results) && !empty($results)){
+      foreach($results as $k => $result){
+        $user = $this->get_user_by_id($result->userID);
+        array_push($thumbnails, $user['avatar']);
+      }
+      return $thumbnails;
+    }
+    else {
+      return array();
+    }
+  }
+
+  private function get_room_users($room_id, $user_from_id){
+    global $wpdb;
+    $results = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}chat_participant WHERE userID <> '{$user_from_id}' AND roomID = '{$room_id}'");
+    $user_names = array();
+    if (isset($results) && !empty($results)){
+      foreach($results as $k => $result){
+        $user = $this->get_user_by_id($result->userID);
+        array_push($user_names, $user['display_name']);
+      }
+      return $user_names;
+    }
+    else {
+      return array();
     }
   }
 
