@@ -34,10 +34,8 @@
             },
             beforeSend: function (jqXHR, settings) {
               let url = settings.url + "?" + settings.data;
-              console.log(url);
             },
             success: function (data) {
-              console.log(data);
               if (data.success == true) {
                 update_user_search_results(data.matches);
               }
@@ -119,38 +117,10 @@
         } else {
           alert(__("This user is already selected.", "wp-chat"));
         }
-
-        /*var user_id = jQuery(this).data('id');
-				$.ajax({
-					type: 'POST',
-					dataType: 'json',
-					url: wp_chat_datas.ajax_url,
-					data: {
-						'action': 'wp_chat_create_room',
-						'to': user_id,
-					},
-					beforeSend: function (jqXHR, settings) {
-							let url = settings.url + "?" + settings.data;
-							console.log(url);
-					},
-					success: function(data) {
-						if (data.success == true){
-							create_room_box(data);
-						}
-						else {
-							alert(data.message);
-							console.warn(data.message);
-						}
-					},
-					error: function(error) {
-						console.error(error);
-					}
-				});*/
       }
     );
 
     jQuery('body').on('click', '.wp-chat-dialog.blank .wp-chat-new-dialog-create-dialog', function(){
-        console.log('ici');
         let dialog = jQuery(this).closest('.wp-chat-dialog.blank');
         let room_name = dialog.find('.wp-chat-dialog-title input').val();
         let room_public = dialog.find('input[name="room-public-checkbox"]').is(':checked');
@@ -158,7 +128,6 @@
         dialog.find('.wp-chat-add-participant-content .wp-chat-participants-selected .wp-chat-participant-selected').each(function(){
             participants.push(jQuery(this).data('id'));
         });
-        console.log(room_name, room_public, participants);
         $.ajax({
             type: 'POST',
             dataType: 'json',
@@ -171,11 +140,10 @@
             },
             beforeSend: function (jqXHR, settings) {
                     let url = settings.url + "?" + settings.data;
-                    console.log(url);
             },
             success: function(data) {
-                console.log(data);
                 if (data.success == true){
+                    jQuery('.wp-chat-dialog.blank').remove();
                     create_room_box(data);
                 }
                 else {

@@ -118,8 +118,8 @@
 								return true;
 							}
 							else {
-								alert(data.message);
 								console.warn(data.message);
+								alert(data.message);
 							}
 						},
 						error: function(error) {
@@ -146,7 +146,6 @@
 					},
 					beforeSend: function (jqXHR, settings) {
 							let url = settings.url + "?" + settings.data;
-							//console.log(url);
 					},
 					success: function(data) {
 						if (data.success == true){
@@ -154,8 +153,7 @@
 							refresh_chat_dialogs(data.content);
 						}
 						else {
-							alert(data.message);
-							console.warn(data.message);
+							console.error(data.message);
 						}
 					},
 					error: function(error) {
@@ -260,7 +258,6 @@
 						if ( 
 							$('#wp-chat-window').find('.wp-chat-window-archive[data-room-id='+room.room_id+']').data('room-section') != room_section
 						){
-							console.log('Room section differs');
 							$('#wp-chat-window').find('.wp-chat-window-archive[data-room-id='+room.room_id+']').appendTo(jQuery('#wp-chat-window').find('.wp-chat-window-archives .wp-chat-window-archives-section[data-section="'+room_section+'"]>ul'));
 						}
 
@@ -371,15 +368,14 @@
 					},
 					beforeSend: function (jqXHR, settings) {
 							let url = settings.url + "?" + settings.data;
-							console.log(url);
 					},
 					success: function(data) {
 						if (data.success == true){
 							refresh_view();
 						}
 						else {
-							alert(data.message);
 							console.warn(data.message);
+							alert(data.message);
 						}
 					},
 					error: function(error) {
@@ -422,7 +418,6 @@
 						},
 						beforeSend: function (jqXHR, settings) {
 								let url = settings.url + "?" + settings.data;
-								//console.log(url);
 						},
 						success: function(data) {
 							if (data.success == true){
@@ -468,8 +463,8 @@
 							refresh_view();
 						}
 						else {
-							alert(data.message);
 							console.warn(data.message);
+							alert(data.message);
 						}
 					},
 					error: function(error) {
@@ -561,8 +556,8 @@
 						 refresh_view();
 						}
 						else {
-							alert(data.message);
 							console.warn(data.message);
+							alert(data.message);
 						}
 					},
 					error: function(error) {
@@ -589,15 +584,14 @@
 					},
 					beforeSend: function (jqXHR, settings) {
 							let url = settings.url + "?" + settings.data;
-							console.log(url);
 					},
 					success: function(data) {
 						if (data.success == true){
 							update_room_participants_list_view(room_id);
 						}
 						else {
-							alert(data.message);
 							console.warn(data.message);
+							alert(data.message);
 						}
 					},
 					error: function(error) {
@@ -610,6 +604,7 @@
 			let search_participants_timeout = null;
 			jQuery('body').on('input', '.wp-chat-dialog .wp-chat-dialog-popup.popup-participants .wp-chat-add-participant-input', function(){
 				let search = jQuery(this).val();
+				var room_id = jQuery(this).closest('.wp-chat-dialog').data('room-id');
 				clearTimeout(search_participants_timeout);
 				search_participants_timeout = setTimeout(function(){
 					$.ajax({
@@ -617,8 +612,9 @@
 						dataType: 'json',
 						url: wp_chat_datas.ajax_url,
 						data: {
-							'action': 'wp_chat_search_participant',
-							'search': search
+							'action': 'wp_chat_search_users',
+							'search': search,
+							'room_id': room_id
 						},
 						beforeSend: function (jqXHR, settings) {
 								let url = settings.url + "?" + settings.data;
@@ -673,8 +669,8 @@
 							update_room_participants_list_view(room_id);
 						}
 						else {
-							alert(data.message);
 							console.warn(data.message);
+							alert(data.message);
 						}
 					},
 					error: function(error) {
@@ -720,10 +716,8 @@
 					},
 					beforeSend: function (jqXHR, settings) {
 							let url = settings.url + "?" + settings.data;
-							console.log(url);
 					},
 					success: function(data) {
-						console.log(data);
 						if (data.success == true){
 							jQuery('.wp-chat-dialog[data-room-id='+room_id+']').find('.wp-chat-dialog-popup.popup-room .wp-chat-dialog-popup-title input').val(data.room.name);
 							if (data.room.public == "1"){
@@ -734,8 +728,8 @@
 							}
 						}
 						else {
-							alert(data.message);
 							console.warn(data.message);
+							alert(data.message);
 						}
 					},
 					error: function(error) {
@@ -789,8 +783,8 @@
 							jQuery('.wp-chat-dialog[data-room-id='+room_id+']').find('.wp-chat-dialog-popup.popup-room').remove();
 						}
 						else {
-							alert(data.message);
 							console.warn(data.message);
+							alert(data.message);
 						}
 					},
 					error: function(error) {
@@ -855,7 +849,6 @@ function format_messages(messages){
 }
 
 function create_room_box(data){
-	console.log('create room box');
 	var room_open = false;
 	var room_reduced = false;
 	jQuery('body').find('.wp-chat-dialog').each(function(){
@@ -866,7 +859,6 @@ function create_room_box(data){
 			}
 		}
 	});
-
 	if (room_open){
 		if (room_reduced) {
 			var room = jQuery('.wp-chat-dialog[data-room-id='+data.room_id+']');
@@ -875,7 +867,6 @@ function create_room_box(data){
 		}
 	}
 	else {
-		jQuery('.wp-chat-dialog.blank').remove();
 		create_empty_room(data.room_id);
 		update_room_informations(data);
 		var last_message_id = -1;

@@ -1,17 +1,19 @@
 - système de message vu via un attribut sur la room avec les participants qui l'ont lu reset à chaque nouveau message
 - garder les fenêtres ouvertes via des cookies
 - notifications de nouveaux messages
-- pouvoir supprimer une conversation
 - affichage des messages au scroll en ajax
 - n'afficher les messages que 30 par 30
 - devoir nommer quelqu'un d'autre owner pour pouvoir quitter la conversation
 - dans le refresh view, ne recuperer que le dernier message ?
 - afficher la date de la dernière activité d'une conv dans les archives
-- changer le système de création de room, pouvoir créer une room en ajoutant plusieurs personnes
 - ajouter des logs en cas d'erreur
 - les archives blink au refresh
-- traduire les messages "system" sortants et non pas entrant, pour traduire dans la langue choisie par l'utilisateur et non par le site (si on change la langue du site ça traduit les chaines)
-- exclure les utilisateurs déjà selectionné du résultat de la recherche à la création d'une conversation
+- créer des tests unitaires
+- protéger toutes les fonctions de l'injection SQL
+- exclure les utilisateurs déjà selectionné du résultat de la recherche à la création d'une conversation et à l'ajout de participant
+- room, participant et message avec unique id
+- pouvoir quitter la conversation dans le menu dialog popup
+
 
 -- menu admin --
 - pouvoir ajouter un id ou une class custom au chat
@@ -29,7 +31,13 @@
 - problème avec les caractères spéciaux dans les titres des rooms
 - afficher les archives dans l'ordre de la last activity
 - gestion des traductions
+- pouvoir supprimer une conversation
+- changer le système de création de room, pouvoir créer une room en ajoutant plusieurs personnes
 
--- menu admin -- 
+
+-- DONE menu admin -- 
 - pouvoir choisir si on active ou non le chat
 - pouvoir régler la refresh rate des rooms
+
+-- pas possible --
+- traduire les messages "system" sortants et non pas entrant, pour traduire dans la langue choisie par l'utilisateur et non par le site (si on change la langue du site ça traduit les chaines)
