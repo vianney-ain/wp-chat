@@ -1,18 +1,18 @@
 - système de message vu via un attribut sur la room avec les participants qui l'ont lu reset à chaque nouveau message
 - garder les fenêtres ouvertes via des cookies
-- notifications de nouveaux messages
 - affichage des messages au scroll en ajax
 - n'afficher les messages que 30 par 30
 - devoir nommer quelqu'un d'autre owner pour pouvoir quitter la conversation
 - dans le refresh view, ne recuperer que le dernier message ?
 - afficher la date de la dernière activité d'une conv dans les archives
 - ajouter des logs en cas d'erreur
-- les archives blink au refresh
 - créer des tests unitaires
-- protéger toutes les fonctions de l'injection SQL
-- exclure les utilisateurs déjà selectionné du résultat de la recherche à la création d'une conversation et à l'ajout de participant
 - room, participant et message avec unique id
 - pouvoir quitter la conversation dans le menu dialog popup
+- ajouter le titre en balise "title" sur une room reduced
+- notification sonore nouveau message entrant 
+- notification dans le header de la page au nouveau message entrant
+- ajout un popup nouveau message quand on est en train de scroll dans une conversation
 
 
 -- menu admin --
@@ -33,6 +33,10 @@
 - gestion des traductions
 - pouvoir supprimer une conversation
 - changer le système de création de room, pouvoir créer une room en ajoutant plusieurs personnes
+- protéger toutes les fonctions de l'injection SQL
+- exclure les utilisateurs déjà selectionné du résultat de la recherche à la création d'une conversation et à l'ajout de participant
+- les archives blink au refresh
+- notifications de nouveaux messages
 
 
 -- DONE menu admin -- 

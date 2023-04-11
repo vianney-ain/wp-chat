@@ -147,7 +147,7 @@
        </div>
        <div class="wp-chat-dialog-popup-content">
        <div class="wp-chat-dialog-popup-content-row">
-          <div class="wp-chat-dialog-popup-content-row-label"><?php _e( 'Leave conversation' , 'wp-chat' ); ?> :</div><button class="wp-chat-leave-room-action wp_chat_btn"><?php _e('Leave'); ?></button>
+          <div class="wp-chat-dialog-popup-content-row-label"><?php _e( 'Leave conversation' , 'wp-chat' ); ?> :</div><button class="wp-chat-leave-room-action wp_chat_btn"><?php _e('Leave', 'wp-chat'); ?></button>
         </div>
        </div>
      </div>
@@ -163,7 +163,7 @@
          <div class="wp-chat-icon chat"></div>
        </div>
        <div id="wp-chat-menu-archives"></div>
-       <div id="wp-chat-window" class="">
+       <div id="wp-chat-window" class="active">
          <div class="wp-chat-window-header">
            <h3 class="wp-chat-title"><?php _e( 'Conversations' , 'wp-chat' ); ?></h3>
            <div class="wp-chat-window-close">

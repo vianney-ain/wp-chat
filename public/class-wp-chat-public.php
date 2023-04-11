@@ -711,10 +711,35 @@ class Wp_Chat_Public {
 		return implode($pass); //turn the array into a string
 	}
 
+	private function update_read_messages($rooms){
+		try {
+			if (!isset($rooms) || empty($rooms) || sizeof($rooms) == 0){
+				return;
+			}
+			$active_rooms = array();
+
+			foreach($rooms as $key => $room_id){
+				array_push($active_rooms, intval($room_id));
+				$room = $this->model->get_room_by_id(intval($room_id));
+	
+				if (!isset($room) || empty($room)){
+					throw new Exception(__( 'Conversation cannot be found' , 'wp-chat' ).'.');
+				}
+
+				$this->model->update_room_message_read_status($room_id, $this->user_id);
+			}
+
+		}
+		catch (Exception $e) {
+			$this->error_message($e);
+		}
+	}
+
 	public function wp_chat_refresh_view(){
 		try {
 			$this->model->check_tables();
 			$this->user_id = get_current_user_id();
+			
 			if (!isset($this->user_id) || empty($this->user_id)){
 				$response = array(
 					'success' => false,
@@ -722,6 +747,10 @@ class Wp_Chat_Public {
 				);
 				die(json_encode($response));
 			}
+
+			if (isset($_REQUEST['active_rooms']) && !empty($_REQUEST['active_rooms'])){
+				$this->update_read_messages($_REQUEST['active_rooms']);
+			}				
 	
 			$user_rooms = $this->model->get_user_private_rooms($this->user_id);
 			$public_rooms = $this->model->get_public_rooms($this->user_id);
@@ -779,7 +808,6 @@ class Wp_Chat_Public {
 			$this->error_message($e);
 		}
 	}
-
 
 	public function wp_chat_get_room_details(){
 		try {

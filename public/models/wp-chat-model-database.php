@@ -45,6 +45,9 @@ class Wp_Chat_Model_Database {
       if (!$this->table_exist($wpdb->base_prefix."chat_message")){
         $this->create_messages_table();
       }
+      if (!$this->table_exist($wpdb->base_prefix."chat_read")){
+        $this->create_read_table();
+      }
       return true;
     }
     catch (Exception $e){
@@ -279,6 +282,16 @@ class Wp_Chat_Model_Database {
 
     $message_id = $wpdb->insert_id;
     $this->update_room_last_message($room_id);
+
+    $table = $wpdb->prefix.'chat_read';
+    $data = array('messageID' => $message_id, 'userID' => $user_id, 'readDate' => current_time('mysql'));
+    $format = array('%d','%d','%s','%s', '%s');
+    $result = $wpdb->insert($table,$data,$format);
+
+    if($wpdb->last_error !== '') {
+      throw new Exception($wpdb->last_error);
+    }
+
     return $message_id;
   }
 
@@ -321,6 +334,57 @@ class Wp_Chat_Model_Database {
     return false;
   }
 
+  //loop in messages from other users in room, and mark them as read
+  public function update_room_message_read_status($room_id, $user_id){
+    global $wpdb;
+    $query = "SELECT * FROM {$wpdb->prefix}chat_message WHERE type != 'system' AND userID != '%d' AND roomID='%d' ORDER BY created DESC";
+    $params = array($user_id, $room_id);
+    $prepared_query = $wpdb->prepare($query, $params);
+    if (isset($prepared_query) && !empty($prepared_query)){
+      $results = $wpdb->get_results($prepared_query);
+
+      if($wpdb->last_error !== '') {
+        throw new Exception($wpdb->last_error);
+      }
+      if (isset($results) && !empty($results) && sizeof($results) > 0){
+        foreach ($results as $key => $message){
+          $this->mark_message_as_read($message->id, $user_id);
+        }
+      }
+    }
+    else {
+      throw new Exception(__('Invalid query in', 'wp-chat').' get_message_by_room().');
+    }
+  }
+
+  //if a message is not already read, mark it as read
+  public function mark_message_as_read($message_id, $user_id){
+    global $wpdb;
+    $query = "SELECT * FROM {$wpdb->prefix}chat_read WHERE userID = '%d' AND messageID = '%d' LIMIT 1";
+    $params = array($user_id, $message_id);
+    $prepared_query = $wpdb->prepare($query, $params);
+    if (isset($prepared_query) && !empty($prepared_query)){
+      $results = $wpdb->get_results($prepared_query);
+
+      if($wpdb->last_error !== '') {
+        throw new Exception($wpdb->last_error);
+      }
+      if (empty($results)){
+        $table = $wpdb->prefix.'chat_read';
+        $data = array('messageID' => $message_id, 'userID' => $user_id, 'readDate' => current_time('mysql'));
+        $format = array('%d','%d','%s','%s', '%s');
+        $result = $wpdb->insert($table,$data,$format);
+    
+        if($wpdb->last_error !== '') {
+          throw new Exception($wpdb->last_error);
+        }
+      }
+    }
+    else {
+      throw new Exception(__('Invalid query in', 'wp-chat').' get_message_by_room().');
+    }
+  }
+
   public function get_message_by_room($room_id){
 
     global $wpdb;
@@ -337,6 +401,7 @@ class Wp_Chat_Model_Database {
       if (isset($results) && !empty($results) && is_array($results)){
         foreach($results as $key => $result){
           $results[$key]->user = $this->get_user_by_id($result->userID);
+          $results[$key]->read = $this->get_message_read_status($result->id);
         }
       }
       return array_reverse($results);
@@ -345,6 +410,25 @@ class Wp_Chat_Model_Database {
       throw new Exception(__('Invalid query in', 'wp-chat').' get_message_by_room().');
     }
 
+  }
+
+  public function get_message_read_status($message_id){
+    global $wpdb;
+    $query = "SELECT * FROM {$wpdb->prefix}chat_read WHERE messageID='%d' ORDER BY readDate DESC";
+    $params = array($message_id);
+    $prepared_query = $wpdb->prepare($query, $params);
+    if (isset($prepared_query) && !empty($prepared_query)){
+      $results = $wpdb->get_results($prepared_query);
+
+      if($wpdb->last_error !== '') {
+        throw new Exception($wpdb->last_error);
+      }
+
+      return array_reverse($results);
+    }
+    else {
+      throw new Exception(__('Invalid query in', 'wp-chat').' get_message_by_room().');
+    }
   }
 
   public function get_room_details_by_id($room_id, $user_from_id){
@@ -948,24 +1032,27 @@ class Wp_Chat_Model_Database {
     // set the default character set and collation for the table
     $charset_collate = $wpdb->get_charset_collate();
     // Check that the table does not already exist before continuing
-    $sql = "CREATE TABLE IF NOT EXISTS `{$wpdb->base_prefix}chat_read` (
+    $query = "CREATE TABLE IF NOT EXISTS `{$wpdb->base_prefix}chat_read` (
       id bigint(20) NOT NULL UNIQUE AUTO_INCREMENT,
-      participantID bigint(20) NOT NULL,
-      roomID bigint(20) NOT NULL,
+      userID bigint(20) NOT NULL,
       messageID bigint(20) NOT NULL,
-      created datetime NOT NULL,
-      PRIMARY KEY (id),
-      FOREIGN KEY (participantID) REFERENCES {$wpdb->base_prefix}chat_participant.id,
-      FOREIGN KEY (roomID) REFERENCES {$wpdb->base_prefix}chat_room.id,
-      FOREIGN KEY (messageID) REFERENCES {$wpdb->base_prefix}messageID.id
+      readDate datetime
     )";
     require_once ABSPATH . 'wp-admin/includes/upgrade.php';
     dbDelta( $sql );
-    $is_error = empty( $wpdb->last_error );
-    if (isset($wpdb->last_error) && !empty($wpdb->last_error)){
-      var_dump($wpdb->last_error);
+    $params = array();
+    $prepared_query = $wpdb->prepare($query, $params);
+    if (isset($prepared_query) && !empty($prepared_query)){
+      $wpdb->query($prepared_query);
+
+      if($wpdb->last_error !== '') {
+        throw new Exception($wpdb->last_error);
+      }
+      return true;
     }
-    return $is_error;
+    else {
+      throw new Exception(__('Invalid query in', 'wp-chat').' create_read_table().');
+    }
   }
 
 

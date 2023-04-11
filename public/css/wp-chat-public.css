@@ -43,11 +43,32 @@
   z-index: 99;
 }
 
+.wp-chat-menu-toggler .wp-chat-menu-toggler-new-message {
+  content:"";
+  position:absolute;
+  top:0;
+  left:0;
+  border-radius:99px;
+  min-width:15px;
+  width:fit-content;
+  height:15px;
+  background:var(--wp-chat-primary);
+  color:#fff;
+  font-size:8px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:0 4px;
+  max-width:30px;
+  overflow:hidden;
+}
+
 .wp-chat-icon {
   background: var(--wp-chat-primary);
   width: 30px;
   height: 30px;
   transition: all 0.3s ease;
+  position:relative;
 }
 
 .wp-chat-icon.icon-blue {
@@ -303,6 +324,18 @@
   min-width: 44px;
 }
 
+
+#wp-chat-window .wp-chat-window-archives ul li.wp-chat-window-archive.newMessage .wp-chat-window-archive-avatar:before {
+  content:"";
+  position:absolute;
+  top:0;
+  left:0;
+  border-radius:99px;
+  width:10px;
+  height:10px;
+  background:var(--wp-chat-primary);
+}
+
 #wp-chat-window .wp-chat-window-archives ul li.wp-chat-window-archive .wp-chat-window-archive-avatar.grouped {
   background: transparent;
 }
@@ -369,6 +402,10 @@
   font-size: 12px;
 }
 
+#wp-chat-window .wp-chat-window-archives ul li.wp-chat-window-archive.newMessage .wp-chat-window-archive-content .wp-chat-window-archive-last-comment {
+  font-weight:bold;
+}
+
 #wp-chat-window .wp-chat-window-archives ul li.wp-chat-window-archive:hover .wp-chat-window-archive-actions {
   opacity: 1;
 }
@@ -418,7 +455,7 @@
 #wp-chat-dialogs {
   position: fixed;
   bottom: 0;
-  right: 50px;
+  right: 75px;
   z-index: 99;
   display: flex;
   flex-direction: row;
@@ -647,6 +684,26 @@
   cursor: pointer;
   overflow: hidden;
   border-radius: 9999px;
+}
+
+.wp-chat-dialog.reduced .wp-chat-dialog-reduced .wp-chat-dialog-new-message {
+  content:"";
+  position:absolute;
+  top:0;
+  left:0;
+  border-radius:99px;
+  min-width:15px;
+  width:fit-content;
+  height:15px;
+  background:var(--wp-chat-primary);
+  color:#fff;
+  font-size:8px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:0 4px;
+  max-width:30px;
+  overflow:hidden;
 }
 
 .wp-chat-dialog.reduced .wp-chat-dialog-reduced img {
