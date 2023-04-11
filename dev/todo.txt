@@ -13,6 +13,7 @@
 - notification sonore nouveau message entrant 
 - notification dans le header de la page au nouveau message entrant
 - ajout un popup nouveau message quand on est en train de scroll dans une conversation
+- si on supprime une conversation ça supprime les reads aussi
 
 
 -- menu admin --

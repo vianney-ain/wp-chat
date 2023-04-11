@@ -335,10 +335,10 @@ class Wp_Chat_Model_Database {
   }
 
   //loop in messages from other users in room, and mark them as read
-  public function update_room_message_read_status($room_id, $user_id){
+  public function update_room_message_read_status($room_id, $user_id, $nb_message){
     global $wpdb;
-    $query = "SELECT * FROM {$wpdb->prefix}chat_message WHERE type != 'system' AND userID != '%d' AND roomID='%d' ORDER BY created DESC";
-    $params = array($user_id, $room_id);
+    $query = "SELECT * FROM {$wpdb->prefix}chat_message WHERE type != 'system' AND userID != '%d' AND roomID='%d' ORDER BY created DESC LIMIT %d";
+    $params = array($user_id, $room_id, $nb_message);
     $prepared_query = $wpdb->prepare($query, $params);
     if (isset($prepared_query) && !empty($prepared_query)){
       $results = $wpdb->get_results($prepared_query);
@@ -353,7 +353,7 @@ class Wp_Chat_Model_Database {
       }
     }
     else {
-      throw new Exception(__('Invalid query in', 'wp-chat').' get_message_by_room().');
+      throw new Exception(__('Invalid query in', 'wp-chat').' update_room_message_read_status().');
     }
   }
 
@@ -381,15 +381,15 @@ class Wp_Chat_Model_Database {
       }
     }
     else {
-      throw new Exception(__('Invalid query in', 'wp-chat').' get_message_by_room().');
+      throw new Exception(__('Invalid query in', 'wp-chat').' mark_message_as_read().');
     }
   }
 
-  public function get_message_by_room($room_id){
+  public function get_message_by_room($room_id, $nb_message){
 
     global $wpdb;
-    $query = "SELECT * FROM {$wpdb->prefix}chat_message WHERE roomID='%d' ORDER BY created DESC";
-    $params = array($room_id);
+    $query = "SELECT * FROM {$wpdb->prefix}chat_message WHERE roomID='%d' ORDER BY created DESC LIMIT %d";
+    $params = array($room_id, $nb_message);
     $prepared_query = $wpdb->prepare($query, $params);
     if (isset($prepared_query) && !empty($prepared_query)){
       $results = $wpdb->get_results($prepared_query);

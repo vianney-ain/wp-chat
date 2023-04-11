@@ -114,7 +114,7 @@
 						},
 						success: function(data) {
 							if (data.success == true){
-								refresh_view();
+								refresh_view(function(response){});
 								return true;
 							}
 							else {
@@ -130,31 +130,52 @@
 			}
 
 			function get_active_rooms(){
-				var active_rooms = [];
-				jQuery('.wp-chat-dialog').each(function(){
+				var rooms = [];
+
+				jQuery('.wp-chat-window-archive').each(function(){
+					var room = {
+						id : jQuery(this).data('room-id'),
+						is_open : false,
+						offset : 0,
+						is_active : false,
+					};
+
+					if (jQuery('.wp-chat-dialog[data-room-id="'+room['id']+'"]').length > 0){
+						room.is_open = true;
+						room.offset = jQuery('.wp-chat-dialog[data-room-id="'+room['id']+'"]').data('room-offset');
+						if (!jQuery('.wp-chat-dialog[data-room-id="'+room['id']+'"]').hasClass('scrolling') && 
+							!jQuery('.wp-chat-dialog[data-room-id="'+room['id']+'"]').hasClass('reduced')){
+							room.is_active = true;
+						}
+					}
+
+					rooms.push(room);
+				});
+
+				/*jQuery('.wp-chat-dialog').each(function(){
 					if (!jQuery(this).hasClass('scrolling') && !jQuery(this).hasClass('reduced') && jQuery('#wp-chat-window .wp-chat-window-archives .wp-chat-window-archive[data-room-id="'+jQuery(this).data('room-id')+'"]').hasClass('newMessage')){
 						active_rooms.push(jQuery(this).data('room-id'));
 					}
-				});
-				return active_rooms;
+				});*/
+				return rooms;
 			}
 
 			if (wp_chat_datas.wp_chat_options['wp-chat-disable-ajax-checkbox'] != '1'){
 				var refresh_room_interval = setInterval(function(){
-					refresh_view();
+					refresh_view(function(response){});
 				}, wp_chat_datas.wp_chat_options['wp-chat-refresh-rate-input']);
 			}
-			refresh_view();	
+			refresh_view(function(response){});
 			
-			function refresh_view(){
-				var active_rooms = get_active_rooms();
+			function refresh_view(refreshCallback){
+				var rooms = get_active_rooms();
 				$.ajax({
 					type: 'POST',
 					dataType: 'json',
 					url: wp_chat_datas.ajax_url,
 					data: {
 						'action': 'wp_chat_refresh_view',
-						'active_rooms': active_rooms
+						'rooms': rooms
 					},
 					beforeSend: function (jqXHR, settings) {
 							let url = settings.url + "?" + settings.data;
@@ -163,6 +184,7 @@
 						if (data.success == true){
 							refresh_chat_window(data.content);
 							refresh_chat_dialogs(data.content);
+							refreshCallback(true);
 						}
 						else {
 							console.error(data.message);
@@ -221,6 +243,7 @@
 							
 							if (room.messages.length > 0){
 								that.attr('data-last-message', room.messages.at(-1).id);
+								that.attr('data-first-message', room.messages.at(0).id);
 							}
 							that.addClass('updated');
 						}
@@ -470,7 +493,7 @@
 					},
 					success: function(data) {
 						if (data.success == true){
-							refresh_view();
+							refresh_view(function(response){});
 						}
 						else {
 							console.warn(data.message);
@@ -520,7 +543,7 @@
 						},
 						success: function(data) {
 							if (data.success == true){
-								refresh_view();
+								refresh_view(function(response){});
 							}
 							else {
 								alert(data.message);
@@ -559,7 +582,7 @@
 					success: function(data) {
 						if (data.success == true){
 							create_room_box(data);
-							refresh_view();
+							refresh_view(function(response){});
 						}
 						else {
 							console.warn(data.message);
@@ -575,20 +598,28 @@
 
 			//allow user to see new message if he's not scrolling in the conversation
 			$("body").on("dialog-scroll", ".wp-chat-dialog-content", function(){
+				var that = $(this)
+				if ($(this).height() + $(this).scrollTop()+50 > $(this)[0].scrollHeight){
+					$(this).closest('.wp-chat-dialog').removeClass('scrolling');
+				}
+				else {
+					$(this).closest('.wp-chat-dialog').addClass('scrolling');
+				}
 
-					if ($(this).height() + $(this).scrollTop()+50 > $(this)[0].scrollHeight){
-						$(this).closest('.wp-chat-dialog').removeClass('scrolling');
-					}
-					else {
-						$(this).closest('.wp-chat-dialog').addClass('scrolling');
-					}
+				if ($(this).scrollTop() == 0){
+					//TODO - load more messages
+					console.log('...Loading more messages...');
+					var offset = $(this).closest('.wp-chat-dialog').data('room-offset');
+					$(this).closest('.wp-chat-dialog').data('room-offset', parseInt(offset) + parseInt(wp_chat_datas.message_amount));
+					
+					var old_scroll_height = that[0].scrollHeight;
 
-					if ($(this).scrollTop() == 0){
-						//TODO - load more messages
-						console.log('...Loading more messages...');
-						var offset = $(this).closest('.wp-chat-dialog').data('room-offset');
-						console.log(offset);
-					}
+					refresh_view(function(response){
+						if (response){
+							that.scrollTop(that[0].scrollHeight - old_scroll_height);
+						}
+					});
+				}
 			});
 
 			$('body').on('click', '.wp-chat-dialog .wp-chat-dialog-thumbnail', function(){
@@ -652,7 +683,7 @@
 								 }
 							 });
 						 }
-						 refresh_view();
+						 refresh_view(function(response){});
 						}
 						else {
 							console.warn(data.message);
@@ -878,7 +909,7 @@
 					},
 					success: function(data) {
 						if (data.success == true){
-							refresh_view();
+							refresh_view(function(response){});
 							jQuery('.wp-chat-dialog[data-room-id='+room_id+']').find('.wp-chat-dialog-popup.popup-room').remove();
 						}
 						else {
@@ -898,7 +929,7 @@
 
 
 function create_empty_room(room_id){
-	let html = '<div class="wp-chat-dialog" data-room-offset="0" data-room-id="'+room_id+'" data-last-message="-1"><div class="wp-chat-dialog-reduced"> <img src="'+wp_chat_datas.default_img+'" alt=""> </div><div class="wp-chat-dialog-header"> <div class="wp-chat-dialog-thumbnail"> <img src="'+wp_chat_datas.default_img+'" alt=""> </div><div class="wp-chat-dialog-title">Conversation sans nom</div><div class="wp-chat-dialog-header-actions"> <div class="wp-chat-dialog-header-action reduce-dialog"> <div class="wp-chat-icon reduce"></div></div><div class="wp-chat-dialog-header-action close-dialog"> <div class="wp-chat-icon close"></div></div></div></div><div class="wp-chat-dialog-content"></div><div class="wp-chat-dialog-footer"> <input type="text"> <div class="send-btn"> <div class="wp-chat-icon send"></div></div></div></div>';
+	let html = '<div class="wp-chat-dialog" data-room-offset="0" data-room-id="'+room_id+'" data-first-message="-1" data-last-message="-1"><div class="wp-chat-dialog-reduced"> <img src="'+wp_chat_datas.default_img+'" alt=""> </div><div class="wp-chat-dialog-header"> <div class="wp-chat-dialog-thumbnail"> <img src="'+wp_chat_datas.default_img+'" alt=""> </div><div class="wp-chat-dialog-title">Conversation sans nom</div><div class="wp-chat-dialog-header-actions"> <div class="wp-chat-dialog-header-action reduce-dialog"> <div class="wp-chat-icon reduce"></div></div><div class="wp-chat-dialog-header-action close-dialog"> <div class="wp-chat-icon close"></div></div></div></div><div class="wp-chat-dialog-content"></div><div class="wp-chat-dialog-footer"> <input type="text"> <div class="send-btn"> <div class="wp-chat-icon send"></div></div></div></div>';
 	jQuery('#wp-chat-dialogs').prepend(html);
 	listenForScrollEvent(jQuery(".wp-chat-dialog[data-room-id="+room_id+"] .wp-chat-dialog-content"));
 }
@@ -915,11 +946,12 @@ function update_room_informations(room){
 	}
 }
 
-function update_room_messages(room_id, messages, last_message_id){
+function update_room_messages(room_id, messages, first_message_id, last_message_id){
 	if (room_id){
 		jQuery('.wp-chat-dialog[data-room-id='+room_id+']').find('.wp-chat-dialog-content').empty().append(messages);
 		//scroll back to bottom
 		jQuery('.wp-chat-dialog[data-room-id='+room_id+']').find('.wp-chat-dialog-content').scrollTop(jQuery('.wp-chat-dialog[data-room-id='+room_id+']').find('.wp-chat-dialog-content')[0].scrollHeight);
+		jQuery('.wp-chat-dialog[data-room-id='+room_id+']').attr('data-first-message', first_message_id);
 		jQuery('.wp-chat-dialog[data-room-id='+room_id+']').attr('data-last-message', last_message_id);
 	}
 }
@@ -968,11 +1000,13 @@ function create_room_box(data){
 	else {
 		create_empty_room(data.room_id);
 		update_room_informations(data);
+		var first_message_id = -1;
 		var last_message_id = -1;
 		if (data.messages.length > 0){
+			first_message_id = data.messages.at(0).id;
 			last_message_id = data.messages.at(-1).id;
 		}
-		update_room_messages(data.room_id, format_messages(data.messages), last_message_id);
+		update_room_messages(data.room_id, format_messages(data.messages), first_message_id, last_message_id);
 	}
 
 }
