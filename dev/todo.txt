@@ -13,7 +13,7 @@
 - notification sonore nouveau message entrant 
 - notification dans le header de la page au nouveau message entrant
 - ajout un popup nouveau message quand on est en train de scroll dans une conversation
-- si on supprime une conversation ça supprime les reads aussi
+- afficher les archives par ordre de message récent
 
 
 -- menu admin --
@@ -38,6 +38,7 @@
 - exclure les utilisateurs déjà selectionné du résultat de la recherche à la création d'une conversation et à l'ajout de participant
 - les archives blink au refresh
 - notifications de nouveaux messages
+- si on supprime une conversation ça supprime les reads aussi
 
 
 -- DONE menu admin -- 

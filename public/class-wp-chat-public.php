@@ -723,7 +723,7 @@ class Wp_Chat_Public {
 				$room = $this->model->get_room_by_id(intval($room_data['id']));
 	
 				if (!isset($room) || empty($room)){
-					throw new Exception(__( 'Conversation cannot be found' , 'wp-chat' ).'.');
+					return;
 				}
 
 				if (isset($room_data['is_active']) && !empty($room_data['is_active']) && $room_data['is_active'] == 'true'){

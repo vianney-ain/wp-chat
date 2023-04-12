@@ -616,11 +616,11 @@ class Wp_Chat_Model_Database {
     }
   }
 
-  private function remove_room_messages($room_id){
-    if (isset($room_id) && !empty($room_id)){
+  private function remove_message_reads($message_id){
+    if (isset($message_id) && !empty($message_id)){
       global $wpdb;
-      $table = $wpdb->prefix.'chat_message';
-      $where = array('roomID' => $room_id);
+      $table = $wpdb->prefix.'chat_read';
+      $where = array('messageID' => $message_id);
       $format = array('%d');
       $result = $wpdb->delete($table,$where,$format);
       if($wpdb->last_error !== '') {
@@ -632,6 +632,46 @@ class Wp_Chat_Model_Database {
       else {
         return false;
       }
+    }
+    else {
+      return false;
+    }
+  }
+
+  private function remove_room_messages($room_id){
+    if (isset($room_id) && !empty($room_id)){
+
+      global $wpdb;
+      $query = "SELECT * FROM {$wpdb->prefix}chat_message WHERE roomID=%d";
+      $params = array($room_id);
+      $prepared_query = $wpdb->prepare($query, $params);
+      if (isset($prepared_query) && !empty($prepared_query)){
+        $results = $wpdb->get_results($prepared_query);
+
+        if($wpdb->last_error !== '') {
+          throw new Exception($wpdb->last_error);
+        }
+
+        if (isset($results) && !empty($results) && sizeof($results) > 0){
+          foreach ($results as $key => $message){
+            $this->remove_message_reads($message->id);
+          }
+        }
+      }
+      
+      $table = $wpdb->prefix.'chat_message';
+      $where = array('roomID' => $room_id);
+      $deleteResult = $wpdb->delete($table,$where,$format);
+      if($wpdb->last_error !== '') {
+        throw new Exception($wpdb->last_error);
+      }
+      if ($deleteResult){
+        return true;
+      }
+      else {
+        return false;
+      }
+
     }
     else {
       return false;
