@@ -579,14 +579,6 @@
 				remove_room(room_id);
 			});
 
-			$('body').on('click', '.wp-chat-dialog .wp-chat-popup-content-remove-room-btn', function(){
-				var room_id;
-				if ($(this).closest('.wp-chat-dialog').length > 0){
-					room_id = $(this).closest('.wp-chat-dialog').attr('data-room-id');
-				}
-				remove_room(room_id);
-			});
-
 			function remove_room(room_id){
 				if (room_id == 'undefined' || room_id == null){
 					alert(__("An error occured.", 'wp-chat'));
@@ -912,11 +904,19 @@
 					success: function(data) {
 						if (data.success == true){
 							jQuery('.wp-chat-dialog[data-room-id='+room_id+']').find('.wp-chat-dialog-popup.popup-room .wp-chat-dialog-popup-title input').val(data.room.name);
+							console.log(data.room.public);
+							jQuery('.wp-chat-dialog[data-room-id='+room_id+']').find('.wp-chat-dialog-popup.popup-room .wp-chat-dialog-popup-property.change-room-public').data('value', 0);
+							jQuery('.wp-chat-dialog[data-room-id='+room_id+']').find('.wp-chat-dialog-popup.popup-room .wp-chat-dialog-popup-property.change-room-archive').data('value', 0);
 							if (data.room.public == "1"){
-								jQuery('.wp-chat-dialog[data-room-id='+room_id+']').find('.wp-chat-dialog-popup.popup-room input[name="room-public-checkbox"]').prop( "checked", true );
+								jQuery('.wp-chat-dialog[data-room-id='+room_id+']').find('.wp-chat-dialog-popup.popup-room .wp-chat-dialog-popup-property.change-room-public').data('value', 1);
+								jQuery('.wp-chat-dialog[data-room-id='+room_id+']').find('.wp-chat-dialog-popup.popup-room .wp-chat-dialog-popup-property.change-room-public').addClass('public');
+								jQuery('.wp-chat-dialog[data-room-id='+room_id+']').find('.wp-chat-dialog-popup.popup-room .wp-chat-dialog-popup-property.change-room-public span').text(__('Public conversation', 'wp-chat'));
 							}
 							if (data.room.archived == "1"){
-								jQuery('.wp-chat-dialog[data-room-id='+room_id+']').find('.wp-chat-dialog-popup.popup-room input[name="room-archived-checkbox"]').prop( "checked", true );
+								jQuery('.wp-chat-dialog[data-room-id='+room_id+']').find('.wp-chat-dialog-popup.popup-room .wp-chat-dialog-popup-property.change-room-archive').data('value', 1);
+								jQuery('.wp-chat-dialog[data-room-id='+room_id+']').find('.wp-chat-dialog-popup.popup-room .wp-chat-dialog-popup-property.change-room-archive').addClass('archived');
+								jQuery('.wp-chat-dialog[data-room-id='+room_id+']').find('.wp-chat-dialog-popup.popup-room .wp-chat-dialog-popup-property.change-room-archive span').text(__('Conversation archived' , 'wp-chat'));
+								
 							}
 						}
 						else {
@@ -930,13 +930,49 @@
 				});
 			}
 
+			jQuery('body').on('click', '.wp-chat-dialog .wp-chat-dialog-popup.popup-room .wp-chat-dialog-popup-property', function(e){
+				if (jQuery(this).hasClass('change-room-public')){
+					if (jQuery(this).data('value') == 0){
+						jQuery(this).data('value', 1);
+						jQuery(this).find('span').text(__('Public conversation', 'wp-chat'));
+						jQuery(this).addClass('public');
+					}
+					else {
+						jQuery(this).data('value', 0);
+						jQuery(this).find('span').text(__('Private conversation', 'wp-chat'));
+						jQuery(this).removeClass('public');
+					}
+				}
+				if (jQuery(this).hasClass('change-room-archive')){
+					if (jQuery(this).data('value') == 0){
+						jQuery(this).data('value', 1);
+						jQuery(this).find('span').text(__('Conversation archived' , 'wp-chat'));
+						jQuery(this).addClass('archived');
+					}
+					else {
+						jQuery(this).data('value', 0);
+						jQuery(this).find('span').text(__('Archive conversation' , 'wp-chat'));
+						jQuery(this).removeClass('archived');
+					}
+				}
+
+				if (jQuery(this).hasClass('delete-room')){
+					var room_id;
+					if ($(this).closest('.wp-chat-dialog').length > 0){
+						room_id = $(this).closest('.wp-chat-dialog').attr('data-room-id');
+					}
+					remove_room(room_id);
+				}
+			});
+
 
 			jQuery('body').on('click', '.wp-chat-dialog-popup.popup-room .wp-chat-dialog-popup-footer button', function(){
 				let room_id = jQuery(this).closest('.wp-chat-dialog').attr('data-room-id');
 				let room_name = jQuery('.wp-chat-dialog[data-room-id='+room_id+']').find('.wp-chat-dialog-popup.popup-room .wp-chat-dialog-popup-title input').val();
-				let public_checkbox = jQuery('.wp-chat-dialog[data-room-id='+room_id+']').find('.wp-chat-dialog-popup.popup-room input[name="room-public-checkbox"]').is(':checked');
-				let archived_checkbox = jQuery('.wp-chat-dialog[data-room-id='+room_id+']').find('.wp-chat-dialog-popup.popup-room input[name="room-archived-checkbox"]').is(':checked');
-				edit_room_details(room_id, room_name, public_checkbox, archived_checkbox);
+				console.log(room_id);
+				var archived_value = jQuery('.wp-chat-dialog[data-room-id='+room_id+']').find('.wp-chat-dialog-popup .wp-chat-dialog-popup-content ul li.change-room-archive').data('value');
+				var public_value = jQuery('.wp-chat-dialog[data-room-id='+room_id+']').find('.wp-chat-dialog-popup .wp-chat-dialog-popup-content ul li.change-room-public').data('value');
+				edit_room_details(room_id, room_name, public_value, archived_value);
 			});
 
 			jQuery('body').on('keypress', '.wp-chat-dialog-popup.popup-room .wp-chat-dialog-popup-title input', function(event){

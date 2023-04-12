@@ -3,13 +3,10 @@
 - affichage des messages au scroll en ajax
 - n'afficher les messages que 30 par 30
 - devoir nommer quelqu'un d'autre owner pour pouvoir quitter la conversation
-- dans le refresh view, ne recuperer que le dernier message ?
 - afficher la date de la dernière activité d'une conv dans les archives
 - ajouter des logs en cas d'erreur
 - créer des tests unitaires
 - room, participant et message avec unique id
-- pouvoir quitter la conversation dans le menu dialog popup
-- ajouter le titre en balise "title" sur une room reduced
 - notification sonore nouveau message entrant 
 - ajout un popup nouveau message quand on est en train de scroll dans une conversation
 
@@ -41,7 +38,8 @@
 - afficher les archives par ordre de message récent
 - ne pas compter les notifications pour une room publique ou nous ne sommes pas présent
 - notification dans le header de la page au nouveau message entrant
-
+- ajouter le titre en balise "title" sur une room reduced
+- pouvoir quitter la conversation dans le menu dialog popup
 
 -- DONE menu admin -- 
 - pouvoir choisir si on active ou non le chat

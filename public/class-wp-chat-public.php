@@ -896,11 +896,11 @@ class Wp_Chat_Public {
 			$public = '0';
 			$archived = '0';
 			
-			if (esc_attr($_REQUEST['public']) == 'true'){
+			if ( esc_attr($_REQUEST['public']) == 'true' || esc_attr($_REQUEST['public']) == '1' ){
 				$public = '1';
 			}
 
-			if (esc_attr($_REQUEST['archived']) == 'true'){
+			if ( esc_attr($_REQUEST['archived']) == 'true' || esc_attr($_REQUEST['archived']) == '1' ){
 				$archived = '1';
 			}
 

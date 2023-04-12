@@ -118,15 +118,11 @@
          <div class="wp-chat-dialog-popup-title"><input type="text" placeholder="<?php _e( 'Conversation title' , 'wp-chat' ); ?>"></div>
        </div>
        <div class="wp-chat-dialog-popup-content">
-        <div class="wp-chat-dialog-popup-content-row">
-         <div class="wp-chat-dialog-popup-content-row-label"><?php _e( 'Public conversation' , 'wp-chat' ); ?> :</div><label class="wp-chat-switch"><input type="checkbox" name="room-public-checkbox" /><span></span></label>
-        </div>
-        <div class="wp-chat-dialog-popup-content-row">
-          <div class="wp-chat-dialog-popup-content-row-label"><?php _e( 'Archive conversation' , 'wp-chat' ); ?> :</div><label class="wp-chat-switch"><input type="checkbox" name="room-archived-checkbox" /><span></span></label>
-        </div>
-        <div class="wp-chat-dialog-popup-content-row">
-          <div class="wp-chat-dialog-popup-content-row-label"><?php _e( 'Delete conversation' , 'wp-chat' ); ?> :</div><button class="wp_chat_btn wp-chat-popup-content-remove-room-btn"><?php _e('Delete'); ?></button>
-        </div>
+        <ul>
+          <li class="wp-chat-dialog-popup-property change-room-public" data-value="0"><div class="wp-chat-icon"></div><span><?php _e( 'Private conversation' , 'wp-chat' ); ?></span></li>
+          <li class="wp-chat-dialog-popup-property change-room-archive" data-value="0"><div class="wp-chat-icon"></div><span><?php _e( 'Archive conversation' , 'wp-chat' ); ?></span></li>
+          <li class="wp-chat-dialog-popup-property delete-room"><div class="wp-chat-icon bin"></div><span><?php _e( 'Delete conversation' , 'wp-chat' ); ?></span></li>
+        </ul>
        </div>
        <div class="wp-chat-dialog-popup-footer">
          <button><?php _e( 'Save' , 'wp-chat' ); ?></button>
@@ -146,9 +142,9 @@
          <div class="wp-chat-dialog-popup-title"><label for="" class="wp-chat-dialog-popup-title-label"><?php _e( 'Conversation title' , 'wp-chat' ); ?></label></div>
        </div>
        <div class="wp-chat-dialog-popup-content">
-       <div class="wp-chat-dialog-popup-content-row">
-          <div class="wp-chat-dialog-popup-content-row-label"><?php _e( 'Leave conversation' , 'wp-chat' ); ?> :</div><button class="wp-chat-leave-room-action wp_chat_btn"><?php _e('Leave', 'wp-chat'); ?></button>
-        </div>
+          <ul>
+            <li class="wp-chat-dialog-popup-property wp-chat-leave-room-action"><div class="wp-chat-icon exit"></div><?php _e( 'Leave conversation' , 'wp-chat' ); ?></li>
+          </ul>
        </div>
      </div>
 

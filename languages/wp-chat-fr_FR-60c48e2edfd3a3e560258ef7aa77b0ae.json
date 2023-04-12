@@ -1,5 +1,5 @@
 {
-    "translation-revision-date": "2023-04-06 17:17+0000",
+    "translation-revision-date": "2023-04-12 15:01+0000",
     "generator": "Loco https://localise.biz/",
     "source": "public/js/wp-chat-public.js",
     "domain": "wp-chat",
@@ -13,14 +13,32 @@
             "An error occured.": [
                 "Une erreur est survenue."
             ],
+            "Archive conversation": [
+                "Archiver la conversation"
+            ],
             "archived": [
                 "archiv\u00e9"
             ],
             "Are you sure you want to delete this conversation ?": [
                 "\u00cates-vous s\u00fbr de vouloir supprimer cette conversation ?"
             ],
+            "Conversation archived": [
+                "Conversation archiv\u00e9e"
+            ],
+            "new message": [
+                "nouveau message"
+            ],
+            "new messages": [
+                "nouveaux messages"
+            ],
+            "Private conversation": [
+                "Conversation priv\u00e9e"
+            ],
             "public": [
                 "publique"
+            ],
+            "Public conversation": [
+                "Conversation publique"
             ],
             "WP-Chat window is not enabled": [
                 "WP-Chat n'est pas activ\u00e9"

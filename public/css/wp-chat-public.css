@@ -125,6 +125,32 @@
   mask: url("../img/icons/dots_horizontal.svg") no-repeat center;
 }
 
+.wp-chat-icon.bin {
+  -webkit-mask: url("../img/icons/bin.svg") no-repeat center;
+  mask: url("../img/icons/bin.svg") no-repeat center;
+}
+
+.wp-chat-icon.archive {
+  -webkit-mask: url("../img/icons/archive.svg") no-repeat center;
+  mask: url("../img/icons/archive.svg") no-repeat center;
+}
+
+.wp-chat-icon.eye {
+  -webkit-mask: url("../img/icons/eye.svg") no-repeat center;
+  mask: url("../img/icons/eye.svg") no-repeat center;
+}
+
+.wp-chat-icon.eye_closed {
+  -webkit-mask: url("../img/icons/eye_closed.svg") no-repeat center;
+  mask: url("../img/icons/eye_closed.svg") no-repeat center;
+}
+
+.wp-chat-icon.exit {
+  -webkit-mask: url("../img/icons/exit.svg") no-repeat center;
+  mask: url("../img/icons/exit.svg") no-repeat center;
+}
+
+
 .wp-chat-menu-toggler:hover .wp-chat-icon {
   background: var(--wp-chat-primary-active);
 }
@@ -819,8 +845,67 @@
   min-height: 300px;
   overflow-x: hidden;
   overflow-y: auto;
-  padding: 10px;
 }
+
+.wp-chat-dialog-popup .wp-chat-dialog-popup-content ul {
+  list-style:none;
+  margin:0;
+  padding:0;
+}
+
+.wp-chat-dialog-popup .wp-chat-dialog-popup-content ul li {
+  padding:5px 10px;
+  cursor:pointer;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.wp-chat-dialog-popup .wp-chat-dialog-popup-content ul li:not(:last-child) {
+  border-bottom:1px solid #ddd;
+}
+
+.wp-chat-dialog-popup .wp-chat-dialog-popup-content ul li:hover {
+  background:#ddd;
+}
+
+.wp-chat-dialog-popup .wp-chat-dialog-popup-content ul li .wp-chat-icon {
+  width:20px;
+  height:20px;
+  background:#222;
+  margin-right:10px;
+}
+
+.wp-chat-dialog-popup .wp-chat-dialog-popup-content ul li.change-room-public.public {
+  background:#8D7DC9;
+}
+
+.wp-chat-dialog-popup .wp-chat-dialog-popup-content ul li.change-room-public.public .wp-chat-icon {
+  -webkit-mask: url("../img/icons/eye.svg") no-repeat center;
+  mask: url("../img/icons/eye.svg") no-repeat center;
+}
+
+.wp-chat-dialog-popup .wp-chat-dialog-popup-content ul li.change-room-public .wp-chat-icon {
+  -webkit-mask: url("../img/icons/eye_closed.svg") no-repeat center;
+  mask: url("../img/icons/eye_closed.svg") no-repeat center;
+}
+
+.wp-chat-dialog-popup .wp-chat-dialog-popup-content ul li.change-room-archive.archived {
+  background:#dfdfa3;
+}
+
+.wp-chat-dialog-popup .wp-chat-dialog-popup-content ul li.change-room-archive.archived .wp-chat-icon {
+  -webkit-mask: url("../img/icons/archive.svg") no-repeat center;
+  mask: url("../img/icons/archive.svg") no-repeat center;
+}
+
+.wp-chat-dialog-popup .wp-chat-dialog-popup-content ul li.change-room-archive .wp-chat-icon {
+  -webkit-mask: url("../img/icons/unarchive.svg") no-repeat center;
+  mask: url("../img/icons/unarchive.svg") no-repeat center;
+}
+
+
 
 .wp-chat-dialog-popup .wp-chat-dialog-popup-content .wp-chat-dialog-popup-participants-list {
   list-style: none;
