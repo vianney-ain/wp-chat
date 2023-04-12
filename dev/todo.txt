@@ -13,7 +13,7 @@
 - notification sonore nouveau message entrant 
 - notification dans le header de la page au nouveau message entrant
 - ajout un popup nouveau message quand on est en train de scroll dans une conversation
-- afficher les archives par ordre de message récent
+- ne pas compter les notifications pour une room publique ou nous ne sommes pas présent
 
 
 -- menu admin --
@@ -40,6 +40,7 @@
 - notifications de nouveaux messages
 - si on supprime une conversation ça supprime les reads aussi
 - vérifier que la tab est active quand on appuis met le message sur vu
+- afficher les archives par ordre de message récent
 
 
 -- DONE menu admin -- 
