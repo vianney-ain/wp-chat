@@ -11,7 +11,6 @@
 - pouvoir quitter la conversation dans le menu dialog popup
 - ajouter le titre en balise "title" sur une room reduced
 - notification sonore nouveau message entrant 
-- notification dans le header de la page au nouveau message entrant
 - ajout un popup nouveau message quand on est en train de scroll dans une conversation
 
 
@@ -41,6 +40,7 @@
 - vérifier que la tab est active quand on appuis met le message sur vu
 - afficher les archives par ordre de message récent
 - ne pas compter les notifications pour une room publique ou nous ne sommes pas présent
+- notification dans le header de la page au nouveau message entrant
 
 
 -- DONE menu admin -- 

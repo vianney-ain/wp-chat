@@ -4,6 +4,9 @@
 
 	var isTabActive = true;
 
+	var default_page_title = document.title;
+	var page_title = default_page_title;
+
 	window.onfocus = function () { 
 		isTabActive = true; 
 	  }; 
@@ -323,11 +326,13 @@
 						$('#wp-chat-window').find('.wp-chat-window-archive[data-room-id='+room.room_id+'] .wp-chat-window-archive-content .wp-chat-window-archive-title').append('<span class="wp-chat-window-archive-status '+room_status_class+'">'+room_status_label+'</span>');
 
 						var message = '';
-						if (room.messages[room.messages.length - 1].message.length > wp_chat_datas.text_extract_length){
-							message = room.messages[room.messages.length - 1].message.substring(0,wp_chat_datas.text_extract_length)+'...';
-						}
-						else {
-							message = room.messages[room.messages.length - 1].message;
+						if (room.messages.length > 0){
+							if (room.messages[room.messages.length - 1].message.length > wp_chat_datas.text_extract_length){
+								message = room.messages[room.messages.length - 1].message.substring(0,wp_chat_datas.text_extract_length)+'...';
+							}
+							else {
+								message = room.messages[room.messages.length - 1].message;
+							}
 						}
 
 						var has_unread_message = false;
@@ -471,12 +476,51 @@
 					}
 				});
 				if (new_message_count > 0){
+
+					var new_message_title = new_message_count + ' ' +__('new messages', 'wp-chat');
+					if (new_message_count == 1){
+						new_message_title = new_message_count + ' ' +__('new message', 'wp-chat');
+					}
 					if (new_message_count > 99){
 						new_message_count = '99+';
+						new_message_title = new_message_count + ' ' +__('new message', 'wp-chat');
 					}
+
+					change_page_title(new_message_title);
+					
 					jQuery('.wp-chat-menu-toggler').append('<div class="wp-chat-menu-toggler-new-message">'+new_message_count+'</div>');
 				}
+				else {
+					stop_page_title_change();
+				}
+			}
 
+			var notification_change_title_interval = null;
+
+			function start_page_title_change(){
+				stop_page_title_change();
+				notification_change_title_interval = setInterval(function(){
+					if (document.title == default_page_title){
+						document.title = page_title;
+					}
+					else {
+						document.title = default_page_title;
+					}
+				}, 2000);
+			}
+
+			function change_page_title(title){
+				if (notification_change_title_interval == null){
+					start_page_title_change();
+				}
+				page_title = title;
+			}
+
+
+			function stop_page_title_change(){
+				clearInterval(notification_change_title_interval);
+				notification_change_title_interval = null;
+				document.title = default_page_title;
 			}
 
 			
