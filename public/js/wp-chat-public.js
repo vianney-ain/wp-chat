@@ -458,7 +458,7 @@
 				var new_message_count = 0;
 				jQuery('.wp-chat-menu-toggler').removeClass('newMessage');
 				jQuery('.wp-chat-menu-toggler').find('.wp-chat-menu-toggler-new-message').remove();
-				$('#wp-chat-window .wp-chat-window-archives .wp-chat-window-archive').each(function(){
+				$('#wp-chat-window .wp-chat-window-archives .wp-chat-window-archives-section[data-section="own"] .wp-chat-window-archive').each(function(){
 					jQuery('.wp-chat-dialog[data-room-id="'+jQuery(this).data('room-id')+'"]').find('.wp-chat-dialog-new-message').remove();
 					if (jQuery(this).hasClass('newMessage')){
 						new_message_count += parseInt(jQuery(this).data('unread-message'));

@@ -57,7 +57,7 @@ class Wp_Chat_Public {
 		$this->version = $version;
 		$this->options = $options;
 
-		$this->message_amount = 10;
+		$this->message_amount = 50;
 
 		$this->user_id = get_current_user_id();
 

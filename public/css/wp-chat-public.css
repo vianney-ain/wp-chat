@@ -334,6 +334,7 @@
   width:10px;
   height:10px;
   background:var(--wp-chat-primary);
+  z-index:99;
 }
 
 #wp-chat-window .wp-chat-window-archives ul li.wp-chat-window-archive .wp-chat-window-archive-avatar.grouped {
