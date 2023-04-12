@@ -39,6 +39,7 @@
 - les archives blink au refresh
 - notifications de nouveaux messages
 - si on supprime une conversation ça supprime les reads aussi
+- vérifier que la tab est active quand on appuis met le message sur vu
 
 
 -- DONE menu admin -- 

@@ -2,6 +2,17 @@
 	'use strict';
 	const { __, _x, _n, _nx } = wp.i18n;
 
+	var isTabActive = true;
+
+	window.onfocus = function () { 
+		isTabActive = true; 
+	  }; 
+	  
+	window.onblur = function () { 
+	isTabActive = false; 
+	}; 
+	  
+
 	 	jQuery(document).ready(function(){
 
 			$('body').on('keyup', '#wp-chat-window .wp-chat-search input', function(){
@@ -144,7 +155,8 @@
 						room.is_open = true;
 						room.offset = jQuery('.wp-chat-dialog[data-room-id="'+room['id']+'"]').data('room-offset');
 						if (!jQuery('.wp-chat-dialog[data-room-id="'+room['id']+'"]').hasClass('scrolling') && 
-							!jQuery('.wp-chat-dialog[data-room-id="'+room['id']+'"]').hasClass('reduced')){
+							!jQuery('.wp-chat-dialog[data-room-id="'+room['id']+'"]').hasClass('reduced') && 
+							isTabActive ){
 							room.is_active = true;
 						}
 					}
