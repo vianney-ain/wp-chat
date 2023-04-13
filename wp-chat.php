@@ -1,22 +1,12 @@
 <?php
 
 /**
- * The plugin bootstrap file
- *
- * This file is read by WordPress to generate the plugin information in the plugin
- * admin area. This file also includes all of the dependencies used by the plugin,
- * registers the activation and deactivation functions, and defines a function
- * that starts the plugin.
- *
- * @link             https://vianneyain.com/
- * @since             0.2.22
- * @package           Wp_Chat
  *
  * @wordpress-plugin
  * Plugin Name:       WP-Chat
  * Plugin URI:        https://indexwebmarketing.com/
  * Description:       Allow WordPress users to start instant messaging.
- * Version:           0.2.22
+ * Version:           0.2.23
  * Author:            Vianney AÏN
  * Author URI:        https://vianneyain.com/
  * License:           GPL-2.0+
@@ -31,11 +21,9 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 /**
- * Currently plugin version.
- * Start at version 0.2.22 and use SemVer - https://semver.org
- * Rename this for your plugin and update it as you release new versions.
+ * Current plugin version.
  */
-define( 'WP_CHAT_VERSION', '0.2.22' );
+define( 'WP_CHAT_VERSION', '0.2.23' );
 
 /**
  * The code that runs during plugin activation.
@@ -66,11 +54,6 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-wp-chat.php';
 
 /**
  * Begins execution of the plugin.
- *
- * Since everything within the plugin is registered via hooks,
- * then kicking off the plugin from this point in the file does
- * not affect the page life cycle.
- *
  */
 function run_wp_chat() {
 	$plugin = new Wp_Chat();

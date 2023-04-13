@@ -1,35 +1,13 @@
 <?php
-
-/**
- * Wp_Chat_Model_Database
- */
 class Wp_Chat_Model_Database {
 	
-	/**
-	 * plugin_name
-	 *
-	 * @var string
-	 */
 	private $plugin_name;
 	
-	/**
-	 * version
-	 *
-	 * @var string
-	 */
 	private $version;
   
-  /**
-   * __construct
-   *
-   * @param  string $plugin_name
-   * @param  string $version
-   */
   public function __construct( $plugin_name, $version ) {
-
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
-
 	}
 
 
