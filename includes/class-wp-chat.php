@@ -64,11 +64,14 @@ class Wp_Chat {
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
-		$disable = '0';
 		if (!isset(get_option('wp-chat-general-settings')['wp-chat-disable-plugin-checkbox']) || get_option('wp-chat-general-settings')['wp-chat-disable-plugin-checkbox'] != '1'){
 			$this->define_public_hooks();
 		}
-		
+
+		ini_set('display_errors', 1);
+		ini_set('display_startup_errors', 1);
+		error_reporting(E_ALL);
+				
 	}
 
 	/**
@@ -139,7 +142,7 @@ class Wp_Chat {
 	 */
 	private function define_admin_hooks() {
 		$plugin_admin = new Wp_Chat_Admin( $this->get_plugin_name(), $this->get_version(), $this->get_options() );
-		add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), array( $plugin_admin, 'add_action_links' ) );
+		//add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), array( $plugin_admin, 'add_action_links' ) );
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'register_settings_page' );
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'register_settings' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
@@ -223,17 +226,9 @@ class Wp_Chat {
 	public function get_options() {
 		return $options = array(
 			'wp-chat-general-settings-default' => array(
-				'wp-chat-disable-plugin-checkbox' => array(
-					'value' => '0',
-				),
-				'wp-chat-disable-ajax-checkbox' => array(
-					'value' => '0',
-				),
-				'wp-chat-refresh-rate-input' => array(
-					'value' => '2500', //2.5 s
-					'minimum' => '500', // 0.5 s
-					'maximum' => '3600000'//1 hour
-				),
+				'wp-chat-disable-plugin-checkbox' => '0',
+				'wp-chat-disable-ajax-checkbox' => '0',
+				'wp-chat-refresh-rate-input' => '2500'
 			),
 			'theme_settings_defaults' => array(
 

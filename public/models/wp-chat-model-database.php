@@ -717,7 +717,6 @@ class Wp_Chat_Model_Database {
     $prepared_query = $wpdb->prepare($query, $params);
     if (isset($prepared_query) && !empty($prepared_query)){
       $results = $wpdb->get_results($prepared_query);
-
       if($wpdb->last_error !== '') {
         throw new Exception($wpdb->last_error);
       }
@@ -726,7 +725,10 @@ class Wp_Chat_Model_Database {
         $user = get_user_by_id($user_to_id);
         array_values($results)[0]->name = $user['display_name'];
       }
-      return array_values($results)[0];
+      if (sizeof($results) > 0){
+        $results = array_values($results)[0];
+      }
+      return $results;
     }
     else {
       throw new Exception(__('Invalid query in', 'wp-chat').' get_room_by_id().');

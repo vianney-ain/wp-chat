@@ -9,14 +9,14 @@
  * that starts the plugin.
  *
  * @link             https://vianneyain.com/
- * @since             0.2.21
+ * @since             0.2.22
  * @package           Wp_Chat
  *
  * @wordpress-plugin
  * Plugin Name:       WP-Chat
  * Plugin URI:        https://indexwebmarketing.com/
  * Description:       Allow WordPress users to start instant messaging.
- * Version:           0.2.21
+ * Version:           0.2.22
  * Author:            Vianney AÏN
  * Author URI:        https://vianneyain.com/
  * License:           GPL-2.0+
@@ -32,10 +32,10 @@ if ( ! defined( 'WPINC' ) ) {
 
 /**
  * Currently plugin version.
- * Start at version 0.2.21 and use SemVer - https://semver.org
+ * Start at version 0.2.22 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'WP_CHAT_VERSION', '0.2.21' );
+define( 'WP_CHAT_VERSION', '0.2.22' );
 
 /**
  * The code that runs during plugin activation.
@@ -82,3 +82,22 @@ add_action('init', function() {
 		run_wp_chat();
 	}
 });
+
+add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), 'add_action_links' );
+
+function add_action_links ( $links ) {
+	// Build and escape the URL.
+	$url = esc_url( add_query_arg(
+		'page',
+		'wp-chat',
+		get_admin_url() . 'admin.php'
+	) );
+	// Create the link.
+	$settings_link = "<a href='$url'>" . __( 'Settings', 'wp-chat' ) . '</a>';
+	// Adds the link to the end of the array.
+	array_push(
+		$links,
+		$settings_link
+	);
+	return $links;
+}

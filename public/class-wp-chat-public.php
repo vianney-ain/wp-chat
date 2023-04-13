@@ -783,8 +783,12 @@ class Wp_Chat_Public {
 						'public' => $room->public,
 						'archived' => $room->archived,
 						'created' => $room->created,
-						'is_owner' => $isOwner
+						'is_owner' => $isOwner,
+						'is_open' => false,
+						'is_active' => false,
+						'is_reduced' => false,
 					);
+
 					if ($this->model->is_participant_in_room($room->id, $this->user_id)){
 						$current_room['is_user_in'] = true;
 					}
@@ -808,6 +812,9 @@ class Wp_Chat_Public {
 						foreach ($rooms_datas as $key => $room_data){
 							if ($room_data['id'] == $current_room['room_id']){
 								$nb_message_to_load+= intval($room_data['offset']);
+								$current_room['is_open'] = filter_var($room_data['is_open'], FILTER_VALIDATE_BOOLEAN);
+								$current_room['is_active'] = filter_var($room_data['is_active'], FILTER_VALIDATE_BOOLEAN);
+								$current_room['is_reduced'] = filter_var($room_data['is_reduced'], FILTER_VALIDATE_BOOLEAN);
 							}
 						}
 					}

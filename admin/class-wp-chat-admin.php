@@ -311,7 +311,7 @@ class Wp_Chat_Admin {
 		}
 		else if ( isset($args['options_defaults']) && is_array($args['options_defaults']) ){
 			$options_defaults = $args['options_defaults'];
-			$option = $options_defaults[$field_id]['value'];
+			$option = $options_defaults[$field_id];
 		}
 		?>
 
@@ -353,7 +353,7 @@ class Wp_Chat_Admin {
 		$field_id = $args['label_for'];
 		if (isset($args['options_defaults']) && is_array($args['options_defaults'])){
 			$options_defaults = $args['options_defaults'];
-			$field_default = $options_defaults[$field_id]['value'];
+			$field_default = $options_defaults[$field_id];
 		}
 		$option = $field_default;
 
@@ -367,7 +367,7 @@ class Wp_Chat_Admin {
 
 		?>
 
-		<input type="number" name="<?php echo $this->plugin_name . $section . '[' . $field_id . ']'; ?>" id="<?php echo $this->plugin_name . $section . '[' . $field_id . ']'; ?>" value="<?php echo esc_attr( $option ); ?>" class="small-text" min="<?php echo $options_defaults[$field_id]['minimum']; ?>" max="<?php echo $options_defaults[$field_id]['maximum']; ?>" />
+		<input type="number" name="<?php echo $this->plugin_name . $section . '[' . $field_id . ']'; ?>" id="<?php echo $this->plugin_name . $section . '[' . $field_id . ']'; ?>" value="<?php echo esc_attr( $option ); ?>" class="small-text" min="500" max="3600000" />
 
 		<?php
 
