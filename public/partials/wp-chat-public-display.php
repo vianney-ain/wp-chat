@@ -1,44 +1,20 @@
 <?php
 
-/**
- * Provide a public-facing view for the plugin
- *
- * This file is used to markup the public-facing aspects of the plugin.
- *
- * @link       https://https://vianneyain.com/
- * @since      1.0.0
- *
- * @package    Wp_Chat
- * @subpackage Wp_Chat/public/partials
- */
-
  class Wp_Chat_Public_View {
 
   	/**
 	 * The ID of this plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 * @var      string    $plugin_name    The ID of this plugin.
 	 */
 	private $plugin_name;
 
 	/**
 	 * The version of this plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
 	 */
 	private $version;
 
   
 	/**
 	 * Initialize the class and set its properties.
-	 *
-	 * @since    1.0.0
-	 * @param      string    $plugin_name       The name of the plugin.
-	 * @param      string    $version    The version of this plugin.
 	 */
   public function __construct( $plugin_name, $version ) {
 
@@ -83,6 +59,7 @@
      </div>
      <?php
    }
+   
    public function participant_popup_view(){
      ?>
      <div class="wp-chat-dialog-popup popup-participants">
