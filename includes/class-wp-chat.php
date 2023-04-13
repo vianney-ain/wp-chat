@@ -6,9 +6,6 @@
  * A class definition that includes attributes and functions used across both the
  * public-facing side of the site and the admin area.
  *
- * @link       https://https://vianneyain.com/
- * @since      1.0.0
- *
  * @package    Wp_Chat
  * @subpackage Wp_Chat/includes
  */
@@ -22,10 +19,6 @@
  * Also maintains the unique identifier of this plugin as well as the current
  * version of the plugin.
  *
- * @since      1.0.0
- * @package    Wp_Chat
- * @subpackage Wp_Chat/includes
- * @author     Vianney AÏN <vianney.iwm@gmail.com>
  */
 class Wp_Chat {
 
@@ -33,7 +26,6 @@ class Wp_Chat {
 	 * The loader that's responsible for maintaining and registering all hooks that power
 	 * the plugin.
 	 *
-	 * @since    1.0.0
 	 * @access   protected
 	 * @var      Wp_Chat_Loader    $loader    Maintains and registers all hooks for the plugin.
 	 */
@@ -42,7 +34,6 @@ class Wp_Chat {
 	/**
 	 * The unique identifier of this plugin.
 	 *
-	 * @since    1.0.0
 	 * @access   protected
 	 * @var      string    $plugin_name    The string used to uniquely identify this plugin.
 	 */
@@ -51,7 +42,6 @@ class Wp_Chat {
 	/**
 	 * The current version of the plugin.
 	 *
-	 * @since    1.0.0
 	 * @access   protected
 	 * @var      string    $version    The current version of the plugin.
 	 */
@@ -64,7 +54,6 @@ class Wp_Chat {
 	 * Load the dependencies, define the locale, and set the hooks for the admin area and
 	 * the public-facing side of the site.
 	 *
-	 * @since    1.0.0
 	 */
 	public function __construct() {
 		if ( defined( 'WP_CHAT_VERSION' ) ) {
@@ -76,7 +65,7 @@ class Wp_Chat {
 		$this->set_locale();
 		$this->define_admin_hooks();
 		$disable = '0';
-		if (get_option('wp-chat-general-settings')['wp-chat-disable-plugin-checkbox'] != '1'){
+		if (!isset(get_option('wp-chat-general-settings')['wp-chat-disable-plugin-checkbox']) || get_option('wp-chat-general-settings')['wp-chat-disable-plugin-checkbox'] != '1'){
 			$this->define_public_hooks();
 		}
 		
@@ -95,7 +84,6 @@ class Wp_Chat {
 	 * Create an instance of the loader which will be used to register the hooks
 	 * with WordPress.
 	 *
-	 * @since    1.0.0
 	 * @access   private
 	 */
 	private function load_dependencies() {
@@ -133,7 +121,6 @@ class Wp_Chat {
 	 * Uses the Wp_Chat_i18n class in order to set the domain and to register the hook
 	 * with WordPress.
 	 *
-	 * @since    1.0.0
 	 * @access   private
 	 */
 	public function set_locale() {
@@ -142,24 +129,17 @@ class Wp_Chat {
 			false,
 			dirname( dirname( plugin_basename( __FILE__ ) ) ) . '/languages/'
 		);
-
-		/*$plugin_i18n = new Wp_Chat_i18n( $this->get_plugin_name(), $this->get_version() );
-
-		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );*/
-
 	}
 
 	/**
 	 * Register all of the hooks related to the admin area functionality
 	 * of the plugin.
 	 *
-	 * @since    1.0.0
 	 * @access   private
 	 */
 	private function define_admin_hooks() {
-
 		$plugin_admin = new Wp_Chat_Admin( $this->get_plugin_name(), $this->get_version(), $this->get_options() );
-
+		add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), array( $plugin_admin, 'add_action_links' ) );
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'register_settings_page' );
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'register_settings' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
@@ -171,7 +151,6 @@ class Wp_Chat {
 	 * Register all of the hooks related to the public-facing functionality
 	 * of the plugin.
 	 *
-	 * @since    1.0.0
 	 * @access   private
 	 */
 	private function define_public_hooks() {
@@ -208,7 +187,6 @@ class Wp_Chat {
 	/**
 	 * Run the loader to execute all of the hooks with WordPress.
 	 *
-	 * @since    1.0.0
 	 */
 	public function run() {
 		$this->loader->run();
@@ -218,7 +196,6 @@ class Wp_Chat {
 	 * The name of the plugin used to uniquely identify it within the context of
 	 * WordPress and to define internationalization functionality.
 	 *
-	 * @since     1.0.0
 	 * @return    string    The name of the plugin.
 	 */
 	public function get_plugin_name() {
@@ -228,7 +205,6 @@ class Wp_Chat {
 	/**
 	 * The reference to the class that orchestrates the hooks with the plugin.
 	 *
-	 * @since     1.0.0
 	 * @return    Wp_Chat_Loader    Orchestrates the hooks of the plugin.
 	 */
 	public function get_loader() {
@@ -238,7 +214,6 @@ class Wp_Chat {
 	/**
 	 * Retrieve the version number of the plugin.
 	 *
-	 * @since     1.0.0
 	 * @return    string    The version number of the plugin.
 	 */
 	public function get_version() {
@@ -248,9 +223,17 @@ class Wp_Chat {
 	public function get_options() {
 		return $options = array(
 			'wp-chat-general-settings-default' => array(
-				'wp-chat-disable-plugin-checkbox' => '0',
-				'wp-chat-disable-ajax-checkbox' => '0',
-				'wp-chat-refresh-rate-input' => '2500',
+				'wp-chat-disable-plugin-checkbox' => array(
+					'value' => '0',
+				),
+				'wp-chat-disable-ajax-checkbox' => array(
+					'value' => '0',
+				),
+				'wp-chat-refresh-rate-input' => array(
+					'value' => '2500', //2.5 s
+					'minimum' => '500', // 0.5 s
+					'maximum' => '3600000'//1 hour
+				),
 			),
 			'theme_settings_defaults' => array(
 

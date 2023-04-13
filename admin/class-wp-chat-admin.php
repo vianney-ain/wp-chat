@@ -109,7 +109,6 @@ class Wp_Chat_Admin {
 	* @since    1.0.0
 	*/
 	public function register_settings_page() {
-
 		add_menu_page(
 			__( 'Home', 'wp-chat' ),//page title
 			__( 'WP Chat', 'wp-chat' ), //menu title
@@ -129,6 +128,24 @@ class Wp_Chat_Admin {
 			$this->plugin_name.'-theme',                              // menu_slug
 			array( $this, 'display_theme_settings_page' ) // callable function
 		);
+	}
+
+	public function add_action_links($links){
+		// Build and escape the URL.
+		$url = esc_url( add_query_arg(
+			'page',
+			$this->plugin_name,
+			get_admin_url() . 'admin.php'
+		) );
+		var_dump($url);
+		// Create the link.
+		$settings_link = "<a href='$url'>" . __( 'Settings' ) . '</a>';
+		// Adds the link to the end of the array.
+		array_push(
+			$links,
+			$settings_link
+		);
+		return $links;
 	}
 
 	public function display_general_settings_page() {
@@ -289,15 +306,13 @@ class Wp_Chat_Admin {
 
 		$options = get_option( $this->plugin_name . $section );
 
-		$option = $options[ $field_id ];
-
-		if (isset($args['options_defaults']) && is_array($args['options_defaults']) && isset($_POST['reset-settings']) && !empty($_POST['reset-settings']) ){
-			$options_defaults = $args['options_defaults'];
-
-			$field_default = $options_defaults[$field_id];
-			$option = $field_default;
+		if (isset($options[$field_id]) && !empty($options[$field_id])){
+			$option = $options[ $field_id ];
 		}
-		
+		else if ( isset($args['options_defaults']) && is_array($args['options_defaults']) ){
+			$options_defaults = $args['options_defaults'];
+			$option = $options_defaults[$field_id]['value'];
+		}
 		?>
 
 		<label for="<?php echo $this->plugin_name . $section . '[' . $field_id . ']'; ?>">
@@ -335,11 +350,10 @@ class Wp_Chat_Admin {
 	}
 
 	public function sandbox_add_settings_field_input_number( $args ) {
-
 		$field_id = $args['label_for'];
 		if (isset($args['options_defaults']) && is_array($args['options_defaults'])){
 			$options_defaults = $args['options_defaults'];
-			$field_default = $options_defaults[$field_id];
+			$field_default = $options_defaults[$field_id]['value'];
 		}
 		$option = $field_default;
 
@@ -353,7 +367,7 @@ class Wp_Chat_Admin {
 
 		?>
 
-		<input type="number" name="<?php echo $this->plugin_name . $section . '[' . $field_id . ']'; ?>" id="<?php echo $this->plugin_name . $section . '[' . $field_id . ']'; ?>" value="<?php echo esc_attr( $option ); ?>" class="small-text" min="<?php echo $args['minimum']; ?>" max="<?php echo $args['maximum']; ?>" />
+		<input type="number" name="<?php echo $this->plugin_name . $section . '[' . $field_id . ']'; ?>" id="<?php echo $this->plugin_name . $section . '[' . $field_id . ']'; ?>" value="<?php echo esc_attr( $option ); ?>" class="small-text" min="<?php echo $options_defaults[$field_id]['minimum']; ?>" max="<?php echo $options_defaults[$field_id]['maximum']; ?>" />
 
 		<?php
 
