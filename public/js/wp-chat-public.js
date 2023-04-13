@@ -1,20 +1,23 @@
+var user_data_rooms;
+
+var isTabActive = true;
+
+var default_page_title = document.title;
+var page_title = default_page_title;
+
+const { __, _x, _n, _nx } = wp.i18n;
+
+window.onfocus = function () { 
+	isTabActive = true; 
+}; 
+  
+window.onblur = function () { 
+	isTabActive = false; 
+}; 
+
+
 (function( $ ) {
 	'use strict';
-	const { __, _x, _n, _nx } = wp.i18n;
-
-	var isTabActive = true;
-
-	var default_page_title = document.title;
-	var page_title = default_page_title;
-
-	window.onfocus = function () { 
-		isTabActive = true; 
-	  }; 
-	  
-	window.onblur = function () { 
-	isTabActive = false; 
-	}; 
-	  
 
 	 	jQuery(document).ready(function(){
 
@@ -62,23 +65,19 @@
 			//Click on WP Chat Dialog Box Close Icon
 			jQuery('body').on('click','.wp-chat-dialog-header-action.close-dialog', function(){
 				jQuery(this).closest('.wp-chat-dialog').remove();
+				wpChatUpdateUserRoomsDatas();
 			});
 
 			//Click on WP Chat Dialog Box Reduce Icon
 			jQuery('body').on('click','.wp-chat-dialog-header-action.reduce-dialog', function(){
-				var title = jQuery(this).closest('.wp-chat-dialog').find('.wp-chat-dialog-header .wp-chat-dialog-title').attr('title');
-				jQuery(this).closest('.wp-chat-dialog').attr('title', title);
-				jQuery(this).closest('.wp-chat-dialog').addClass('reduced');
-				jQuery(this).closest('.wp-chat-dialog').appendTo('#wp-chat-menu-archives');
+				var room_id = jQuery(this).closest('.wp-chat-dialog').data('room-id');
+				wpChatReduceRoom(room_id);
 			});
 
 			//Click on WP Chat Dialog Box Reduced Thumbnail
 			jQuery('body').on('click','.wp-chat-dialog.reduced', function(){
 				var room_id = jQuery(this).attr('data-room-id');
-				jQuery(this).removeClass('reduced');
-				jQuery(this).prependTo('#wp-chat-dialogs');
-				jQuery('.wp-chat-dialog[data-room-id='+room_id+']').find('.wp-chat-dialog-content').scrollTop(jQuery('.wp-chat-dialog[data-room-id='+room_id+']').find('.wp-chat-dialog-content')[0].scrollHeight);
-				jQuery(this).closest('.wp-chat-dialog').attr('title', '');
+				wpChatUnreduceRoom(room_id);
 			});
 
 			jQuery('body').on('click', '.wp-chat-window-archives-menu .wp-chat-window-archives-menu-item', function(){
@@ -146,49 +145,34 @@
 				}
 			}
 
-			function get_active_rooms(){
-				var rooms = [];
-
-				jQuery('.wp-chat-window-archive').each(function(){
-					var room = {
-						id : jQuery(this).data('room-id'),
-						is_open : false,
-						offset : 0,
-						is_active : false,
-					};
-
-					if (jQuery('.wp-chat-dialog[data-room-id="'+room['id']+'"]').length > 0){
-						room.is_open = true;
-						room.offset = jQuery('.wp-chat-dialog[data-room-id="'+room['id']+'"]').data('room-offset');
-						if (!jQuery('.wp-chat-dialog[data-room-id="'+room['id']+'"]').hasClass('scrolling') && 
-							!jQuery('.wp-chat-dialog[data-room-id="'+room['id']+'"]').hasClass('reduced') && 
-							isTabActive ){
-							room.is_active = true;
-						}
-					}
-
-					rooms.push(room);
-				});
-
-				return rooms;
-			}
 
 			if (wp_chat_datas.wp_chat_options['wp-chat-disable-ajax-checkbox'] != '1'){
 				var refresh_room_interval = setInterval(function(){
 					refresh_view(function(response){});
 				}, wp_chat_datas.wp_chat_options['wp-chat-refresh-rate-input']);
 			}
+
+			user_data_rooms = JSON.parse(wpChatGetCookie('wp-chat-user-cookie-'+wp_chat_datas.user_id));
+
+			if (user_data_rooms && user_data_rooms.length > 0){
+				if (user_data_rooms.length > 0){
+					jQuery.each(user_data_rooms, function (key, room){
+						if (room.is_open){
+							wpChatOpenRoom(room.id, room.is_reduced);
+						}
+					});
+				}
+			}
 			refresh_view(function(response){});
 			
 			function refresh_view(refreshCallback){
-				var rooms = get_active_rooms();
 				$.ajax({
 					type: 'POST',
 					dataType: 'json',
 					url: wp_chat_datas.ajax_url,
 					data: {
 						'action': 'wp_chat_refresh_view',
-						'rooms': rooms
+						'rooms': user_data_rooms
 					},
 					beforeSend: function (jqXHR, settings) {
 							let url = settings.url + "?" + settings.data;
@@ -622,6 +606,10 @@
 					return;
 				}
 				var room_id = jQuery(this).closest('.wp-chat-window-archive').attr('data-room-id');
+				wpChatOpenRoom(room_id, false);			
+			});
+
+			function wpChatOpenRoom(room_id, reduced){
 				$.ajax({
 					type: 'POST',
 					dataType: 'json',
@@ -635,19 +623,20 @@
 					},
 					success: function(data) {
 						if (data.success == true){
-							create_room_box(data);
+							create_room_box(data, reduced);
+							wpChatUpdateUserRoomsDatas();	
 							refresh_view(function(response){});
 						}
 						else {
+							removeRoomFromUserData(room_id);
 							console.warn(data.message);
-							alert(data.message);
 						}
 					},
 					error: function(error) {
 						console.error(error);
 					}
 				});
-			});
+			}
 
 
 			//allow user to see new message if he's not scrolling in the conversation
@@ -973,7 +962,6 @@
 			jQuery('body').on('click', '.wp-chat-dialog-popup.popup-room .wp-chat-dialog-popup-footer button', function(){
 				let room_id = jQuery(this).closest('.wp-chat-dialog').attr('data-room-id');
 				let room_name = jQuery('.wp-chat-dialog[data-room-id='+room_id+']').find('.wp-chat-dialog-popup.popup-room .wp-chat-dialog-popup-title input').val();
-				console.log(room_id);
 				var archived_value = jQuery('.wp-chat-dialog[data-room-id='+room_id+']').find('.wp-chat-dialog-popup .wp-chat-dialog-popup-content ul li.change-room-archive').data('value');
 				var public_value = jQuery('.wp-chat-dialog[data-room-id='+room_id+']').find('.wp-chat-dialog-popup .wp-chat-dialog-popup-content ul li.change-room-public').data('value');
 				edit_room_details(room_id, room_name, public_value, archived_value);
@@ -1030,9 +1018,19 @@
 })( jQuery );
 
 
-function create_empty_room(room_id){
-	let html = '<div class="wp-chat-dialog" data-room-offset="0" data-room-id="'+room_id+'" data-first-message="-1" data-last-message="-1"><div class="wp-chat-dialog-reduced"> <img src="'+wp_chat_datas.default_img+'" alt=""> </div><div class="wp-chat-dialog-header"> <div class="wp-chat-dialog-thumbnail"> <img src="'+wp_chat_datas.default_img+'" alt=""> </div><div class="wp-chat-dialog-title">Conversation sans nom</div><div class="wp-chat-dialog-header-actions"> <div class="wp-chat-dialog-header-action reduce-dialog"> <div class="wp-chat-icon reduce"></div></div><div class="wp-chat-dialog-header-action close-dialog"> <div class="wp-chat-icon close"></div></div></div></div><div class="wp-chat-dialog-content"></div><div class="wp-chat-dialog-footer"> <input type="text"> <div class="send-btn"> <div class="wp-chat-icon send"></div></div></div></div>';
-	jQuery('#wp-chat-dialogs').prepend(html);
+function create_empty_room(room_id, reduced){
+	var reducedClass = '';
+	if (reduced){
+		reducedClass = 'reduced'
+	}
+	let html = '<div class="wp-chat-dialog '+reducedClass+'" data-room-offset="0" data-room-id="'+room_id+'" data-first-message="-1" data-last-message="-1"><div class="wp-chat-dialog-reduced"> <img src="'+wp_chat_datas.default_img+'" alt=""> </div><div class="wp-chat-dialog-header"> <div class="wp-chat-dialog-thumbnail"> <img src="'+wp_chat_datas.default_img+'" alt=""> </div><div class="wp-chat-dialog-title">Conversation sans nom</div><div class="wp-chat-dialog-header-actions"> <div class="wp-chat-dialog-header-action reduce-dialog"> <div class="wp-chat-icon reduce"></div></div><div class="wp-chat-dialog-header-action close-dialog"> <div class="wp-chat-icon close"></div></div></div></div><div class="wp-chat-dialog-content"></div><div class="wp-chat-dialog-footer"> <input type="text"> <div class="send-btn"> <div class="wp-chat-icon send"></div></div></div></div>';
+	if (reduced){
+		jQuery('#wp-chat-menu-archives').prepend(html);
+	}
+	else {
+		jQuery('#wp-chat-dialogs').prepend(html);
+	}
+	
 	listenForScrollEvent(jQuery(".wp-chat-dialog[data-room-id="+room_id+"] .wp-chat-dialog-content"));
 }
 
@@ -1081,7 +1079,7 @@ function format_messages(messages){
 	return messages_html;
 }
 
-function create_room_box(data){
+function create_room_box(data, reduced){
 	var room_open = false;
 	var room_reduced = false;
 	jQuery('body').find('.wp-chat-dialog').each(function(){
@@ -1100,7 +1098,7 @@ function create_room_box(data){
 		}
 	}
 	else {
-		create_empty_room(data.room_id);
+		create_empty_room(data.room_id, reduced);
 		update_room_informations(data);
 		var first_message_id = -1;
 		var last_message_id = -1;
@@ -1142,4 +1140,90 @@ function display_room_thumbnail(room_id, thumbnails){
 		});
 	}
 	return thumbnails_html;
+}
+
+function wpChatSetCookie(name,value,days) {
+	var expires = "";
+	if (days) {
+		var date = new Date();
+		date.setTime(date.getTime() + (days*24*60*60*1000));
+		expires = "; expires=" + date.toUTCString();
+	}
+	document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+}
+function wpChatGetCookie(name) {
+	var nameEQ = name + "=";
+	var ca = document.cookie.split(';');
+	for(var i=0;i < ca.length;i++) {
+		var c = ca[i];
+		while (c.charAt(0)==' ') c = c.substring(1,c.length);
+		if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+	}
+	return null;
+}
+function wpChatEraseCookie(name) {   
+	document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+}
+
+function wpChatUpdateUserRoomsDatas(){
+	var rooms = [];
+
+	jQuery('.wp-chat-window-archive').each(function(){
+		var room = {
+			id : jQuery(this).data('room-id'),
+			is_open : false,
+			offset : 0,
+			is_active : false,
+			is_reduced : false
+		};
+
+		if (jQuery('.wp-chat-dialog[data-room-id="'+room['id']+'"]').length > 0){
+			room.is_open = true;
+			room.offset = jQuery('.wp-chat-dialog[data-room-id="'+room['id']+'"]').data('room-offset');
+			if (!jQuery('.wp-chat-dialog[data-room-id="'+room['id']+'"]').hasClass('scrolling') && 
+				!jQuery('.wp-chat-dialog[data-room-id="'+room['id']+'"]').hasClass('reduced') && 
+				isTabActive ){
+				room.is_active = true;
+			}
+			if (jQuery('.wp-chat-dialog[data-room-id="'+room['id']+'"]').hasClass('reduced')){
+				room.is_reduced = true;
+			}
+		}
+
+		rooms.push(room);
+	});
+
+	if (rooms.length > 0){
+		wpChatSetCookie('wp-chat-user-cookie-'+wp_chat_datas.user_id, JSON.stringify(rooms), 30);
+	}			
+	user_data_rooms = rooms;
+	return rooms;
+}
+
+function wpChatReduceRoom(room_id){
+	if (!room_id || room_id == 0 || room_id < 0)
+		return;
+	var title = jQuery('.wp-chat-dialog[data-room-id='+room_id+']').find('.wp-chat-dialog-header .wp-chat-dialog-title').attr('title');
+	jQuery('.wp-chat-dialog[data-room-id='+room_id+']').attr('title', title);
+	jQuery('.wp-chat-dialog[data-room-id='+room_id+']').addClass('reduced');
+	jQuery('.wp-chat-dialog[data-room-id='+room_id+']').appendTo('#wp-chat-menu-archives');
+	wpChatUpdateUserRoomsDatas();
+}
+
+function wpChatUnreduceRoom(room_id){
+	jQuery('.wp-chat-dialog[data-room-id='+room_id+']').removeClass('reduced');
+	jQuery('.wp-chat-dialog[data-room-id='+room_id+']').prependTo('#wp-chat-dialogs');
+	jQuery('.wp-chat-dialog[data-room-id='+room_id+']').find('.wp-chat-dialog-content').scrollTop(jQuery('.wp-chat-dialog[data-room-id='+room_id+']').find('.wp-chat-dialog-content')[0].scrollHeight);
+	jQuery('.wp-chat-dialog[data-room-id='+room_id+']').attr('title', '');
+	wpChatUpdateUserRoomsDatas();
+}
+
+function removeRoomFromUserData(room_id){
+	if (user_data_rooms.length > 0){
+		jQuery.each(user_data_rooms, function (key, room){
+			if (room.id == room_id){
+				delete user_data_rooms[key];
+			}
+		});
+	}
 }

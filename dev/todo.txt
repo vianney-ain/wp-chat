@@ -1,7 +1,3 @@
-- système de message vu via un attribut sur la room avec les participants qui l'ont lu reset à chaque nouveau message
-- garder les fenêtres ouvertes via des cookies
-- affichage des messages au scroll en ajax
-- n'afficher les messages que 30 par 30
 - devoir nommer quelqu'un d'autre owner pour pouvoir quitter la conversation
 - afficher la date de la dernière activité d'une conv dans les archives
 - ajouter des logs en cas d'erreur
@@ -40,6 +36,10 @@
 - notification dans le header de la page au nouveau message entrant
 - ajouter le titre en balise "title" sur une room reduced
 - pouvoir quitter la conversation dans le menu dialog popup
+- n'afficher les messages que 30 par 30
+- affichage des messages au scroll en ajax
+- système de message vu
+- garder les fenêtres ouvertes via des cookies
 
 -- DONE menu admin -- 
 - pouvoir choisir si on active ou non le chat
