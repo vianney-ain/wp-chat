@@ -903,8 +903,12 @@
 					},
 					success: function(data) {
 						if (data.success == true){
-							jQuery('.wp-chat-dialog[data-room-id='+room_id+']').find('.wp-chat-dialog-popup.popup-room .wp-chat-dialog-popup-title input').val(data.room.name);
-							console.log(data.room.public);
+							if (jQuery('.wp-chat-dialog[data-room-id='+room_id+']').find('.wp-chat-dialog-popup.popup-room .wp-chat-dialog-popup-title input').length > 0){
+								jQuery('.wp-chat-dialog[data-room-id='+room_id+']').find('.wp-chat-dialog-popup.popup-room .wp-chat-dialog-popup-title input').val(data.room.name);
+							}
+							if (jQuery('.wp-chat-dialog[data-room-id='+room_id+']').find('.wp-chat-dialog-popup.popup-room .wp-chat-dialog-popup-title .wp-chat-dialog-popup-title-label').length > 0){
+								jQuery('.wp-chat-dialog[data-room-id='+room_id+']').find('.wp-chat-dialog-popup.popup-room .wp-chat-dialog-popup-title .wp-chat-dialog-popup-title-label').text(data.room.name);
+							}
 							jQuery('.wp-chat-dialog[data-room-id='+room_id+']').find('.wp-chat-dialog-popup.popup-room .wp-chat-dialog-popup-property.change-room-public').data('value', 0);
 							jQuery('.wp-chat-dialog[data-room-id='+room_id+']').find('.wp-chat-dialog-popup.popup-room .wp-chat-dialog-popup-property.change-room-archive').data('value', 0);
 							if (data.room.public == "1"){
