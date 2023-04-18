@@ -9,10 +9,12 @@ const { __, _x, _n, _nx } = wp.i18n;
 
 window.onfocus = function () { 
 	isTabActive = true; 
+	wpChatUpdateUserRoomsDatas();
 }; 
   
 window.onblur = function () { 
 	isTabActive = false; 
+	wpChatUpdateUserRoomsDatas();
 }; 
 
 
@@ -167,10 +169,8 @@ window.onblur = function () {
 					},
 					beforeSend: function (jqXHR, settings) {
 							let url = settings.url + "?" + settings.data;
-							console.log(url);
 					},
 					success: function(data) {
-						console.log(data);
 						if (data.success == true){
 							if (jQuery('#index-chat-window').length == 0) return;
 							if (!data){
@@ -182,10 +182,12 @@ window.onblur = function () {
 						}
 						else {
 							console.error(data.message);
+							refreshCallback(false);
 						}
 					},
 					error: function(error) {
 						console.error(error);
+						refreshCallback(false);
 					}
 				});
 				jQuery('#index-chat-dialogs .index-chat-dialog').each(function(){
@@ -1182,7 +1184,6 @@ function wpChatUpdateUserRoomsDatas(){
 			is_active : false,
 			is_reduced : false
 		};
-
 		if (jQuery('.index-chat-dialog[data-room-id="'+room['id']+'"]').length > 0){
 			room.is_open = true;
 			room.offset = jQuery('.index-chat-dialog[data-room-id="'+room['id']+'"]').data('room-offset');

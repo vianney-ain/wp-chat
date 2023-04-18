@@ -61,13 +61,15 @@ class index_chat {
 		add_filter( 'plugins_api', array( $this, 'info' ), 20, 3 );
 		add_filter( 'site_transient_update_plugins', array( $this, 'update' ) );
 		add_action( 'upgrader_process_complete', array( $this, 'purge' ), 10, 2 );
-
+		
 		//add direct links to plugins.php page
 		add_filter( 'plugin_action_links_' . $basename, array( $this, 'add_action_links' ) );
 
 		$this->load_dependencies();
 		$this->set_locale();
-		$this->define_admin_hooks();
+		if (is_admin()){
+			$this->define_admin_hooks();
+		}
 		if (!isset(get_option('index-chat-general-settings')['index-chat-disable-plugin-checkbox']) || get_option('index-chat-general-settings')['index-chat-disable-plugin-checkbox'] != '1'){
 			$this->define_public_hooks();
 		}				
@@ -107,7 +109,6 @@ class index_chat {
 	}
 
 	function info( $res, $action, $args ) {
-
 		// do nothing if you're not getting plugin information right now
 		if( 'plugin_information' !== $action ) {
 			return $res;
@@ -157,7 +158,6 @@ class index_chat {
 	}
 
 	public function update( $transient ) {
-
 		if ( empty($transient->checked ) ) {
 			return $transient;
 		}

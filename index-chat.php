@@ -6,7 +6,7 @@
  * Plugin Name:       Index Chat
  * Plugin URI:        https://indexwebmarketing.com/
  * Description:       Allow WordPress users to start instant messaging.
- * Version:           0.3.2
+ * Version:           0.3.3
  * Author:            Vianney AÏN
  * Author URI:        https://vianneyain.com/
  * License:           GPL-2.0+
@@ -20,14 +20,10 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
 /**
  * Current plugin version.
  */
-define( 'INDEX_CHAT_VERSION', '0.3.2' );
+define( 'INDEX_CHAT_VERSION', '0.3.3' );
 
 /**
  * The code that runs during plugin activation.

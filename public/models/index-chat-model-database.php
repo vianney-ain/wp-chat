@@ -4,6 +4,13 @@ class index_chat_Model_Database {
 	private $plugin_name;
 	
 	private $version;
+
+  private $tables = array(
+    'room' => 'index_chat_room',
+    'participant' => 'index_chat_participant',
+    'message' => 'index_chat_message',
+    'read' => 'index_chat_read'
+  );
   
   public function __construct( $plugin_name, $version ) {
 		$this->plugin_name = $plugin_name;
@@ -14,16 +21,16 @@ class index_chat_Model_Database {
   public function check_tables(){
     try {
       global $wpdb;
-      if (!$this->table_exist($wpdb->base_prefix."chat_room")){
+      if (!$this->table_exist($wpdb->prefix.$this->tables['room'])){
         $this->create_room_table();
       }
-      if (!$this->table_exist($wpdb->base_prefix."chat_participant")){
+      if (!$this->table_exist($wpdb->prefix.$this->tables['participant'])){
         $this->create_participants_table();
       }
-      if (!$this->table_exist($wpdb->base_prefix."chat_message")){
+      if (!$this->table_exist($wpdb->prefix.$this->tables['message'])){
         $this->create_messages_table();
       }
-      if (!$this->table_exist($wpdb->base_prefix."chat_read")){
+      if (!$this->table_exist($wpdb->prefix.$this->tables['read'])){
         $this->create_read_table();
       }
       return true;
@@ -181,7 +188,7 @@ class index_chat_Model_Database {
 
   public function is_room_private($room_id){
     global $wpdb;
-    $query = "SELECT * FROM {$wpdb->prefix}chat_room WHERE id='%d' LIMIT 1";
+    $query = "SELECT * FROM {$wpdb->prefix}{$this->tables['room']} WHERE id='%d' LIMIT 1";
     $params = array($room_id);
     $prepared_query = $wpdb->prepare($query, $params);
     if (isset($prepared_query) && !empty($prepared_query)){
@@ -191,7 +198,7 @@ class index_chat_Model_Database {
         throw new Exception($wpdb->last_error);
       }
 
-      if ($result[0]->public == '0'){
+      if ($result && $result[0]->public == '0'){
         return true;
       }
       return false;
@@ -207,7 +214,7 @@ class index_chat_Model_Database {
   **/
   public function room_participants_count($room_id){
     global $wpdb;
-    $query = "SELECT count(*) as total FROM {$wpdb->prefix}chat_participant WHERE roomID=%d";
+    $query = "SELECT count(*) as total FROM {$wpdb->prefix}{$this->tables['participant']} WHERE roomID=%d";
     $params = array($room_id);
     $prepared_query = $wpdb->prepare($query, $params);
     if (isset($prepared_query) && !empty($prepared_query)){
@@ -249,7 +256,7 @@ class index_chat_Model_Database {
   ***/
   public function send_message($room_id, $user_id, $message){
     global $wpdb;
-    $table = $wpdb->prefix.'chat_message';
+    $table = $wpdb->prefix.$this->tables['message'];
     $data = array('userID' => $user_id, 'roomID' => $room_id, 'message' => $message, 'created' => current_time('mysql'), 'type' => '');
     $format = array('%d','%d','%s','%s', '%s');
     $result = $wpdb->insert($table,$data,$format);
@@ -261,7 +268,7 @@ class index_chat_Model_Database {
     $message_id = $wpdb->insert_id;
     $this->update_room_last_message($room_id);
 
-    $table = $wpdb->prefix.'chat_read';
+    $table = $wpdb->prefix.$this->tables['read'];
     $data = array('messageID' => $message_id, 'userID' => $user_id, 'readDate' => current_time('mysql'));
     $format = array('%d','%d','%s','%s', '%s');
     $result = $wpdb->insert($table,$data,$format);
@@ -279,7 +286,7 @@ class index_chat_Model_Database {
   ***/
   public function send_system_message($room_id, $message){
     global $wpdb;
-    $table = $wpdb->prefix.'chat_message';
+    $table = $wpdb->prefix.$this->tables['message'];
     $data = array('userID' => -1, 'roomID' => $room_id, 'message' => $message, 'created' => current_time('mysql'), 'type' => 'system');
     $format = array('%d','%d','%s','%s', '%s');
     $result = $wpdb->insert($table,$data,$format);
@@ -295,7 +302,7 @@ class index_chat_Model_Database {
 
   public function update_room_last_message($room_id){
     global $wpdb;
-    $table = $wpdb->prefix.'chat_room';
+    $table = $wpdb->prefix.$this->tables['room'];
     $data = array('lastMessage' => current_time('mysql'));
     $where = array('id' => $room_id);
     $format = array('%s');
@@ -315,7 +322,7 @@ class index_chat_Model_Database {
   //loop in messages from other users in room, and mark them as read
   public function update_room_message_read_status($room_id, $user_id, $nb_message){
     global $wpdb;
-    $query = "SELECT * FROM {$wpdb->prefix}chat_message WHERE type != 'system' AND userID != '%d' AND roomID='%d' ORDER BY created DESC LIMIT %d";
+    $query = "SELECT * FROM {$wpdb->prefix}{$this->tables['message']} WHERE type != 'system' AND userID != '%d' AND roomID='%d' ORDER BY created DESC LIMIT %d";
     $params = array($user_id, $room_id, $nb_message);
     $prepared_query = $wpdb->prepare($query, $params);
     if (isset($prepared_query) && !empty($prepared_query)){
@@ -338,7 +345,7 @@ class index_chat_Model_Database {
   //if a message is not already read, mark it as read
   public function mark_message_as_read($message_id, $user_id){
     global $wpdb;
-    $query = "SELECT * FROM {$wpdb->prefix}chat_read WHERE userID = '%d' AND messageID = '%d' LIMIT 1";
+    $query = "SELECT * FROM {$wpdb->prefix}{$this->tables['read']} WHERE userID = '%d' AND messageID = '%d' LIMIT 1";
     $params = array($user_id, $message_id);
     $prepared_query = $wpdb->prepare($query, $params);
     if (isset($prepared_query) && !empty($prepared_query)){
@@ -348,7 +355,7 @@ class index_chat_Model_Database {
         throw new Exception($wpdb->last_error);
       }
       if (empty($results)){
-        $table = $wpdb->prefix.'chat_read';
+        $table = $wpdb->prefix.$this->tables['read'];
         $data = array('messageID' => $message_id, 'userID' => $user_id, 'readDate' => current_time('mysql'));
         $format = array('%d','%d','%s','%s', '%s');
         $result = $wpdb->insert($table,$data,$format);
@@ -366,7 +373,7 @@ class index_chat_Model_Database {
   public function get_message_by_room($room_id, $nb_message){
 
     global $wpdb;
-    $query = "SELECT * FROM {$wpdb->prefix}chat_message WHERE roomID='%d' ORDER BY created DESC LIMIT %d";
+    $query = "SELECT * FROM {$wpdb->prefix}{$this->tables['message']} WHERE roomID='%d' ORDER BY created DESC LIMIT %d";
     $params = array($room_id, $nb_message);
     $prepared_query = $wpdb->prepare($query, $params);
     if (isset($prepared_query) && !empty($prepared_query)){
@@ -392,7 +399,7 @@ class index_chat_Model_Database {
 
   public function get_message_read_status($message_id){
     global $wpdb;
-    $query = "SELECT * FROM {$wpdb->prefix}chat_read WHERE messageID='%d' ORDER BY readDate DESC";
+    $query = "SELECT * FROM {$wpdb->prefix}{$this->tables['read']} WHERE messageID='%d' ORDER BY readDate DESC";
     $params = array($message_id);
     $prepared_query = $wpdb->prepare($query, $params);
     if (isset($prepared_query) && !empty($prepared_query)){
@@ -414,7 +421,7 @@ class index_chat_Model_Database {
     $thumbnails = array();
     $room_name = __( 'Nameless chat' , 'index-chat' );
 
-    $query = "SELECT * FROM {$wpdb->prefix}chat_room WHERE id = %d";
+    $query = "SELECT * FROM {$wpdb->prefix}{$this->tables['room']} WHERE id = %d";
     $params = array($room_id);
     $prepared_query = $wpdb->prepare($query, $params);
 
@@ -457,7 +464,7 @@ class index_chat_Model_Database {
 
   private function get_room_thumbnails($room_id, $user_from_id){
     global $wpdb;
-    $results = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}chat_participant WHERE userID <> '{$user_from_id}' AND roomID = '{$room_id}'");
+    $results = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}{$this->tables['participant']} WHERE userID <> '{$user_from_id}' AND roomID = '{$room_id}'");
     $thumbnails = array();
     if (isset($results) && !empty($results)){
       foreach($results as $k => $result){
@@ -473,7 +480,7 @@ class index_chat_Model_Database {
 
   private function get_room_users($room_id, $user_from_id){
     global $wpdb;
-    $results = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}chat_participant WHERE userID <> '{$user_from_id}' AND roomID = '{$room_id}'");
+    $results = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}{$this->tables['participant']} WHERE userID <> '{$user_from_id}' AND roomID = '{$room_id}'");
     $user_names = array();
     if (isset($results) && !empty($results)){
       foreach($results as $k => $result){
@@ -494,11 +501,11 @@ class index_chat_Model_Database {
 
     
     if (!$include_current){
-      $query = "SELECT * FROM {$wpdb->prefix}chat_participant WHERE userID <> '%d' AND roomID = '%d'";
+      $query = "SELECT * FROM {$wpdb->prefix}{$this->tables['participant']} WHERE userID <> '%d' AND roomID = '%d'";
       $params = array($user_from_id, $room_id);
     }
     else {
-      $query = "SELECT * FROM {$wpdb->prefix}chat_participant WHERE roomID = '%d'";
+      $query = "SELECT * FROM {$wpdb->prefix}{$this->tables['participant']} WHERE roomID = '%d'";
       $params = array($room_id);
     }
     
@@ -551,7 +558,7 @@ class index_chat_Model_Database {
         //do nothing for now
       }
       global $wpdb;
-      $table = $wpdb->prefix.'chat_participant';
+      $table = $wpdb->prefix.$this->tables['participant'];
       $where = array('roomID' => $room_id, 'userID' => $user_id);
       $format = array('%d','%d');
       $result = $wpdb->delete($table,$where,$format);
@@ -575,7 +582,7 @@ class index_chat_Model_Database {
   private function remove_room_participants($room_id){
     if (isset($room_id) && !empty($room_id)){
       global $wpdb;
-      $table = $wpdb->prefix.'chat_participant';
+      $table = $wpdb->prefix.$this->tables['participant'];
       $where = array('roomID' => $room_id);
       $format = array('%d');
       $result = $wpdb->delete($table,$where,$format);
@@ -597,7 +604,7 @@ class index_chat_Model_Database {
   private function remove_message_reads($message_id){
     if (isset($message_id) && !empty($message_id)){
       global $wpdb;
-      $table = $wpdb->prefix.'chat_read';
+      $table = $wpdb->prefix.$this->tables['read'];
       $where = array('messageID' => $message_id);
       $format = array('%d');
       $result = $wpdb->delete($table,$where,$format);
@@ -620,7 +627,7 @@ class index_chat_Model_Database {
     if (isset($room_id) && !empty($room_id)){
 
       global $wpdb;
-      $query = "SELECT * FROM {$wpdb->prefix}chat_message WHERE roomID=%d";
+      $query = "SELECT * FROM {$wpdb->prefix}{$this->tables['message']} WHERE roomID=%d";
       $params = array($room_id);
       $prepared_query = $wpdb->prepare($query, $params);
       if (isset($prepared_query) && !empty($prepared_query)){
@@ -637,7 +644,7 @@ class index_chat_Model_Database {
         }
       }
       
-      $table = $wpdb->prefix.'chat_message';
+      $table = $wpdb->prefix.$this->tables['message'];
       $where = array('roomID' => $room_id);
       $deleteResult = $wpdb->delete($table,$where,$format);
       if($wpdb->last_error !== '') {
@@ -659,7 +666,7 @@ class index_chat_Model_Database {
   public function remove_room($room_id){
     if (isset($room_id) && !empty($room_id)){
       global $wpdb;
-      $table = $wpdb->prefix.'chat_room';
+      $table = $wpdb->prefix.$this->tables['room'];
       $where = array('id' => $room_id);
       $format = array('%d');
       $result = $wpdb->delete($table,$where,$format);
@@ -684,13 +691,13 @@ class index_chat_Model_Database {
 
   public function get_single_room_participant_by_user_id($room_id, $user_id){
     global $wpdb;
-    $result = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}chat_participant WHERE roomID='{$room_id}' AND userID='{$user_id}'");
+    $result = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}{$this->tables['participant']} WHERE roomID='{$room_id}' AND userID='{$user_id}'");
     return $result;
   }
 
   public function get_room_by_id($room_id, $user_to_id = null){
     global $wpdb;
-    $query = "SELECT * FROM {$wpdb->prefix}chat_room WHERE id=%d LIMIT 1";
+    $query = "SELECT * FROM {$wpdb->prefix}{$this->tables['room']} WHERE id=%d LIMIT 1";
     $params = array($room_id);
     $prepared_query = $wpdb->prepare($query, $params);
     if (isset($prepared_query) && !empty($prepared_query)){
@@ -716,7 +723,7 @@ class index_chat_Model_Database {
   //Return only privates rooms user is in
   public function get_user_private_rooms($user_id){
     global $wpdb;
-    $query = "SELECT * FROM {$wpdb->prefix}chat_participant as Participant INNER JOIN {$wpdb->prefix}chat_room as Room ON Participant.roomID = Room.id WHERE Participant.userID = %d AND Room.public = %d";
+    $query = "SELECT * FROM {$wpdb->prefix}{$this->tables['participant']} as Participant INNER JOIN {$wpdb->prefix}{$this->tables['room']} as Room ON Participant.roomID = Room.id WHERE Participant.userID = %d AND Room.public = %d";
     $params = array($user_id, 0);
     $prepared_query = $wpdb->prepare($query, $params);
     if (isset($prepared_query) && !empty($prepared_query)){
@@ -736,7 +743,7 @@ class index_chat_Model_Database {
   //Return all publics rooms, no parameters needed
   public function get_public_rooms(){
     global $wpdb;
-    $query = "SELECT * FROM {$wpdb->prefix}chat_room as Room WHERE Room.public = %d";
+    $query = "SELECT * FROM {$wpdb->prefix}{$this->tables['room']} as Room WHERE Room.public = %d";
     $params = array(1);
     $prepared_query = $wpdb->prepare($query, $params);
     if (isset($prepared_query) && !empty($prepared_query)){
@@ -756,13 +763,13 @@ class index_chat_Model_Database {
   //Return all publics rooms the current user is in
   public function get_user_public_rooms($user_id){
     global $wpdb;
-    $result = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}chat_participant as Participant INNER JOIN {$wpdb->prefix}chat_room as Room ON Participant.roomID = Room.id WHERE Participant.userID = '{$user_id}' AND Room.public = 1");
+    $result = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}{$this->tables['participant']} as Participant INNER JOIN {$wpdb->prefix}{$this->tables['room']} as Room ON Participant.roomID = Room.id WHERE Participant.userID = '{$user_id}' AND Room.public = 1");
     return $result;
   }
 
   public function get_user_participations($user_id){
     global $wpdb;
-    $query = "SELECT * FROM {$wpdb->prefix}chat_participant WHERE userID = %d";
+    $query = "SELECT * FROM {$wpdb->prefix}{$this->tables['participant']} WHERE userID = %d";
     $params = array($user_id);
     $prepared_query = $wpdb->prepare($query, $params);
     if (isset($prepared_query) && !empty($prepared_query)){
@@ -787,7 +794,7 @@ class index_chat_Model_Database {
    */
   public function is_participant_in_room($room_id, $user_id){
     global $wpdb;
-    $query = "SELECT * FROM {$wpdb->prefix}chat_participant WHERE roomID = %d AND userID = %d";
+    $query = "SELECT * FROM {$wpdb->prefix}{$this->tables['participant']} WHERE roomID = %d AND userID = %d";
     $params = array($room_id, $user_id);
     $prepared_query = $wpdb->prepare($query, $params);
     if (isset($prepared_query) && !empty($prepared_query)){
@@ -809,7 +816,7 @@ class index_chat_Model_Database {
 
   public function is_room_owner($room_id, $user_id){
     global $wpdb;
-    $query = "SELECT * FROM {$wpdb->prefix}chat_room WHERE id='%d' AND ownerID='%d'";
+    $query = "SELECT * FROM {$wpdb->prefix}{$this->tables['room']} WHERE id='%d' AND ownerID='%d'";
     $params = array($room_id, $user_id);
     $prepared_query = $wpdb->prepare($query, $params);
     if (isset($prepared_query) && !empty($prepared_query)){
@@ -831,7 +838,7 @@ class index_chat_Model_Database {
 
   public function create_room($to, $from){
     global $wpdb;
-    $table = $wpdb->prefix.'chat_room';
+    $table = $wpdb->prefix.$this->tables['room'];
     $data = array('name' => '', 'created' => current_time('mysql'), 'ownerID' => $from, 'public' => false, 'archived' => false);
     $format = array('%s','%s','%d', '%d', '%d');
     $wpdb->insert($table,$data,$format);
@@ -846,7 +853,7 @@ class index_chat_Model_Database {
 
   public function create_room_2($room_params, $from){
     global $wpdb;
-    $table = $wpdb->prefix.'chat_room';
+    $table = $wpdb->prefix.$this->tables['room'];
     $name = '';
     $public = false;
 
@@ -888,7 +895,7 @@ class index_chat_Model_Database {
 
   public function create_participant($room_id, $user_id){
     global $wpdb;
-    $table = $wpdb->prefix.'chat_participant';
+    $table = $wpdb->prefix.$this->tables['participant'];
     $data = array('userID' => $user_id, 'roomID' => $room_id);
     $format = array('%d','%d');
     $wpdb->insert($table,$data,$format);
@@ -903,7 +910,7 @@ class index_chat_Model_Database {
 
   public function edit_room_details($room_id, $room_name, $public, $archived){
     global $wpdb;
-    $table = $wpdb->prefix.'chat_room';
+    $table = $wpdb->prefix.$this->tables['room'];
     $data = array('name' => $room_name, 'public' => $public, 'archived' => $archived);
     $where = array('id' => $room_id);
     $format = array('%s', '%d', '%d');
@@ -953,7 +960,7 @@ class index_chat_Model_Database {
     // set the default character set and collation for the table
     $charset_collate = $wpdb->get_charset_collate();
     // Check that the table does not already exist before continuing
-    $query = "CREATE TABLE IF NOT EXISTS `{$wpdb->base_prefix}chat_room` (
+    $query = "CREATE TABLE IF NOT EXISTS `{$wpdb->prefix}{$this->tables['room']}` (
       id bigint(20) NOT NULL UNIQUE AUTO_INCREMENT,
       name varchar(200),
       created datetime,
@@ -961,8 +968,7 @@ class index_chat_Model_Database {
       lastMessage datetime,
       public BOOLEAN,
       archived BOOLEAN,
-      PRIMARY KEY (id),
-      FOREIGN KEY (ownerID) REFERENCES {$wpdb->base_prefix}users.id
+      PRIMARY KEY (id)
     )";
     require_once ABSPATH . 'wp-admin/includes/upgrade.php';
     dbDelta( $sql );
@@ -987,13 +993,11 @@ class index_chat_Model_Database {
     // set the default character set and collation for the table
     $charset_collate = $wpdb->get_charset_collate();
     // Check that the table does not already exist before continuing
-    $query = "CREATE TABLE IF NOT EXISTS `{$wpdb->base_prefix}chat_participant` (
+    $query = "CREATE TABLE IF NOT EXISTS `{$wpdb->prefix}{$this->tables['participant']}` (
       id bigint(20) NOT NULL UNIQUE AUTO_INCREMENT,
       userID bigint(20) NOT NULL,
       roomID bigint(20) NOT NULL,
-      PRIMARY KEY (id),
-      FOREIGN KEY (userID) REFERENCES {$wpdb->base_prefix}users.id,
-      FOREIGN KEY (roomID) REFERENCES {$wpdb->base_prefix}chat_room.id
+      PRIMARY KEY (id)
     )";
     require_once ABSPATH . 'wp-admin/includes/upgrade.php';
     dbDelta( $sql );
@@ -1018,16 +1022,14 @@ class index_chat_Model_Database {
     // set the default character set and collation for the table
     $charset_collate = $wpdb->get_charset_collate();
     // Check that the table does not already exist before continuing
-    $query = "CREATE TABLE IF NOT EXISTS `{$wpdb->base_prefix}chat_message` (
+    $query = "CREATE TABLE IF NOT EXISTS `{$wpdb->prefix}{$this->tables['message']}` (
       id bigint(20) NOT NULL UNIQUE AUTO_INCREMENT,
       userID bigint(20) NOT NULL,
       roomID bigint(20) NOT NULL,
       message text NOT NULL,
       created datetime,
       type varchar(200),
-      PRIMARY KEY (id),
-      FOREIGN KEY (userID) REFERENCES {$wpdb->base_prefix}users.id,
-      FOREIGN KEY (roomID) REFERENCES {$wpdb->base_prefix}chat_room.id
+      PRIMARY KEY (id)
     )";
     require_once ABSPATH . 'wp-admin/includes/upgrade.php';
     dbDelta( $sql );
@@ -1052,7 +1054,7 @@ class index_chat_Model_Database {
     // set the default character set and collation for the table
     $charset_collate = $wpdb->get_charset_collate();
     // Check that the table does not already exist before continuing
-    $query = "CREATE TABLE IF NOT EXISTS `{$wpdb->base_prefix}chat_read` (
+    $query = "CREATE TABLE IF NOT EXISTS `{$wpdb->prefix}{$this->tables['read']}` (
       id bigint(20) NOT NULL UNIQUE AUTO_INCREMENT,
       userID bigint(20) NOT NULL,
       messageID bigint(20) NOT NULL,

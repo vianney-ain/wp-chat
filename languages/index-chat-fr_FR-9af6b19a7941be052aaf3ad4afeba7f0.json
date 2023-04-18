@@ -1,5 +1,5 @@
 {
-    "translation-revision-date": "2023-04-12 15:00+0000",
+    "translation-revision-date": "2023-04-18 14:55+0000",
     "generator": "Loco https://localise.biz/",
     "source": "public/js/index-chat-public.js",
     "domain": "index-chat",
@@ -7,7 +7,7 @@
         "index-chat": {
             "": {
                 "domain": "index-chat",
-                "lang": "fr_CA",
+                "lang": "fr_FR",
                 "plural-forms": "nplurals=2; plural=n > 1;"
             },
             "An error occured.": [
@@ -25,6 +25,9 @@
             "Conversation archived": [
                 "Conversation archiv\u00e9e"
             ],
+            "index-chat window is not enabled": [
+                "index-chat n'est pas activ\u00e9"
+            ],
             "new message": [
                 "nouveau message"
             ],
@@ -39,9 +42,6 @@
             ],
             "Public conversation": [
                 "Conversation publique"
-            ],
-            "index-chat window is not enabled": [
-                "index-chat n'est pas activ\u00e9"
             ]
         }
     }

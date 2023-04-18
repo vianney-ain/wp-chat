@@ -136,7 +136,7 @@
          <div class="index-chat-icon chat"></div>
        </div>
        <div id="index-chat-menu-archives"></div>
-       <div id="index-chat-window" class="active">
+       <div id="index-chat-window" class="">
          <div class="index-chat-window-header">
            <h3 class="index-chat-title"><?php _e( 'Conversations' , 'index-chat' ); ?></h3>
            <div class="index-chat-window-close">

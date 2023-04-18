@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-12 14:55+0000\n"
+"POT-Creation-Date: 2023-04-18 14:54+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -18,55 +18,55 @@ msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "X-Generator: Loco https://localise.biz/"
 
-#: public/class-index-chat-public.php:466
+#: public/class-index-chat-public.php:422
 #, php-format
 msgid "%1$s has been added to the conversation by %2$s"
 msgstr ""
 
-#: public/class-index-chat-public.php:531
+#: public/class-index-chat-public.php:487
 #, php-format
 msgid "%1$s has been removed from the conversation by %2$s"
 msgstr ""
 
-#: public/class-index-chat-public.php:915
+#: public/class-index-chat-public.php:878
 #, php-format
 msgid "%1$s has changed the title of this conversation for \"%2$s\""
 msgstr ""
 
-#: public/class-index-chat-public.php:469
+#: public/class-index-chat-public.php:425
 #, php-format
 msgid "%s has been added to the conversation"
 msgstr ""
 
-#: public/class-index-chat-public.php:534
+#: public/class-index-chat-public.php:490
 #, php-format
 msgid "%s has been removed from the conversation"
 msgstr ""
 
-#: public/class-index-chat-public.php:910
+#: public/class-index-chat-public.php:873
 #, php-format
 msgid "%s has removed the title of this conversation"
 msgstr ""
 
-#: public/class-index-chat-public.php:589
+#: public/class-index-chat-public.php:545
 #, php-format
 msgid "%s joined the room"
 msgstr ""
 
-#: public/class-index-chat-public.php:639
+#: public/class-index-chat-public.php:595
 #, php-format
 msgid "%s left the conversation"
 msgstr ""
 
-#: public/partials/index-chat-public-display.php:102
+#: public/partials/index-chat-public-display.php:79
 msgid "Add a participant"
 msgstr ""
 
-#: public/partials/index-chat-public-display.php:72
+#: public/partials/index-chat-public-display.php:48
 msgid "Add participants"
 msgstr ""
 
-#: admin/class-index-chat-admin.php:200
+#: admin/class-index-chat-admin.php:137
 msgid "Ajax refresh rate (in milliseconds)"
 msgstr ""
 
@@ -74,83 +74,90 @@ msgstr ""
 msgid "Allow WordPress users to start instant messaging."
 msgstr ""
 
-#: public/class-index-chat-public.php:280 public/class-index-chat-public.php:374
-#: public/class-index-chat-public.php:485 public/class-index-chat-public.php:548
-#: public/class-index-chat-public.php:651
+#: public/class-index-chat-public.php:236
+#: public/class-index-chat-public.php:330
+#: public/class-index-chat-public.php:441
+#: public/class-index-chat-public.php:504
+#: public/class-index-chat-public.php:607
 msgid "An error occured, please try again"
 msgstr ""
 
-#: public/js/index-chat-public.js:584
+#: public/js/index-chat-public.js:574
 msgid "An error occured."
 msgstr ""
 
-#: public/models/index-chat-model-database.php:558
-#: public/models/index-chat-model-database.php:561
+#: public/models/index-chat-model-database.php:543
+#: public/models/index-chat-model-database.php:546
 msgid "and"
 msgstr ""
 
-#: public/partials/index-chat-public-display.php:123
-#: public/js/index-chat-public.js:954
+#: public/partials/index-chat-public-display.php:100
+#: public/js/index-chat-public.js:952
 msgid "Archive conversation"
 msgstr ""
 
-#: public/js/index-chat-public.js:305 public/js/index-chat-public.js:423
+#: public/js/index-chat-public.js:295 public/js/index-chat-public.js:413
 msgid "archived"
 msgstr ""
 
-#: public/js/index-chat-public.js:586
+#: public/js/index-chat-public.js:576
 msgid "Are you sure you want to delete this conversation ?"
 msgstr ""
 
-#: public/js/index-chat-public.js:918 public/js/index-chat-public.js:949
+#: public/js/index-chat-public.js:916 public/js/index-chat-public.js:947
 msgid "Conversation archived"
 msgstr ""
 
-#: public/class-index-chat-public.php:219 public/class-index-chat-public.php:266
-#: public/class-index-chat-public.php:399 public/class-index-chat-public.php:456
-#: public/class-index-chat-public.php:517 public/class-index-chat-public.php:577
-#: public/class-index-chat-public.php:632 public/class-index-chat-public.php:681
-#: public/class-index-chat-public.php:840 public/class-index-chat-public.php:893
+#: public/class-index-chat-public.php:175
+#: public/class-index-chat-public.php:222
+#: public/class-index-chat-public.php:355
+#: public/class-index-chat-public.php:412
+#: public/class-index-chat-public.php:473
+#: public/class-index-chat-public.php:533
+#: public/class-index-chat-public.php:588
+#: public/class-index-chat-public.php:637
+#: public/class-index-chat-public.php:803
+#: public/class-index-chat-public.php:856
 msgid "Conversation cannot be found"
 msgstr ""
 
-#: public/class-index-chat-public.php:871
+#: public/class-index-chat-public.php:834
 msgid "Conversation name is required"
 msgstr ""
 
-#: public/partials/index-chat-public-display.php:54
-#: public/partials/index-chat-public-display.php:118
-#: public/partials/index-chat-public-display.php:142
+#: public/partials/index-chat-public-display.php:30
+#: public/partials/index-chat-public-display.php:95
+#: public/partials/index-chat-public-display.php:119
 msgid "Conversation title"
 msgstr ""
 
-#: public/partials/index-chat-public-display.php:164
+#: public/partials/index-chat-public-display.php:141
 msgid "Conversations"
 msgstr ""
 
-#: public/partials/index-chat-public-display.php:184
+#: public/partials/index-chat-public-display.php:161
 msgid "Create one !"
 msgstr ""
 
-#: public/partials/index-chat-public-display.php:124
+#: public/partials/index-chat-public-display.php:101
 msgid "Delete conversation"
 msgstr ""
 
 #. slug
-#: admin/class-index-chat-admin.php:186
+#: admin/class-index-chat-admin.php:123
 msgid "Disable Ajax refresh"
 msgstr ""
 
 #. slug
-#: admin/class-index-chat-admin.php:172 admin/class-index-chat-admin.php:232
+#: admin/class-index-chat-admin.php:109 admin/class-index-chat-admin.php:168
 msgid "Disable index-chat"
 msgstr ""
 
-#: public/class-index-chat-public.php:692
+#: public/class-index-chat-public.php:648
 msgid "Failed to remove the room. Please try again."
 msgstr ""
 
-#: admin/class-index-chat-admin.php:114
+#: admin/class-index-chat-admin.php:53
 msgid "Home"
 msgstr ""
 
@@ -162,91 +169,107 @@ msgstr ""
 msgid "https://vianneyain.com/"
 msgstr ""
 
-#: admin/class-index-chat-admin.php:239
+#: admin/class-index-chat-admin.php:175
 msgid "If checked, it will turn off the WP Chat plugin."
 msgstr ""
 
-#: public/models/index-chat-model-database.php:158
-#: public/models/index-chat-model-database.php:222
-#: public/models/index-chat-model-database.php:246
-#: public/models/index-chat-model-database.php:356
-#: public/models/index-chat-model-database.php:384
-#: public/models/index-chat-model-database.php:410
-#: public/models/index-chat-model-database.php:430
-#: public/models/index-chat-model-database.php:475
-#: public/models/index-chat-model-database.php:548
-#: public/models/index-chat-model-database.php:732
-#: public/models/index-chat-model-database.php:752
-#: public/models/index-chat-model-database.php:772
-#: public/models/index-chat-model-database.php:797
-#: public/models/index-chat-model-database.php:826
-#: public/models/index-chat-model-database.php:848
-#: public/models/index-chat-model-database.php:967
-#: public/models/index-chat-model-database.php:1001
-#: public/models/index-chat-model-database.php:1032
-#: public/models/index-chat-model-database.php:1066
-#: public/models/index-chat-model-database.php:1094
+#. page title
+#. Name of the plugin
+#: admin/class-index-chat-admin.php:54
+msgid "Index Chat"
+msgstr ""
+
+#: public/js/index-chat-public.js:1124
+msgid "index-chat window is not enabled"
+msgstr ""
+
+#: public/models/index-chat-model-database.php:143
+#: public/models/index-chat-model-database.php:207
+#: public/models/index-chat-model-database.php:231
+#: public/models/index-chat-model-database.php:341
+#: public/models/index-chat-model-database.php:369
+#: public/models/index-chat-model-database.php:395
+#: public/models/index-chat-model-database.php:415
+#: public/models/index-chat-model-database.php:460
+#: public/models/index-chat-model-database.php:533
+#: public/models/index-chat-model-database.php:719
+#: public/models/index-chat-model-database.php:739
+#: public/models/index-chat-model-database.php:759
+#: public/models/index-chat-model-database.php:784
+#: public/models/index-chat-model-database.php:813
+#: public/models/index-chat-model-database.php:835
+#: public/models/index-chat-model-database.php:954
+#: public/models/index-chat-model-database.php:987
+#: public/models/index-chat-model-database.php:1016
+#: public/models/index-chat-model-database.php:1048
+#: public/models/index-chat-model-database.php:1076
 msgid "Invalid query in"
 msgstr ""
 
-#: public/partials/index-chat-public-display.php:146
+#: public/partials/index-chat-public-display.php:123
 msgid "Leave conversation"
 msgstr ""
 
-#: public/class-index-chat-public.php:254
+#: public/class-index-chat-public.php:210
 msgid "Message cannot be empty"
 msgstr ""
 
-#: public/class-index-chat-public.php:276
+#: public/class-index-chat-public.php:232
 msgid "Message sent"
 msgstr ""
 
-#: public/class-index-chat-public.php:214 public/class-index-chat-public.php:250
-#: public/class-index-chat-public.php:389 public/class-index-chat-public.php:441
-#: public/class-index-chat-public.php:450 public/class-index-chat-public.php:505
-#: public/class-index-chat-public.php:513 public/class-index-chat-public.php:565
-#: public/class-index-chat-public.php:627 public/class-index-chat-public.php:676
-#: public/class-index-chat-public.php:836 public/class-index-chat-public.php:875
+#: public/class-index-chat-public.php:170
+#: public/class-index-chat-public.php:206
+#: public/class-index-chat-public.php:345
+#: public/class-index-chat-public.php:397
+#: public/class-index-chat-public.php:406
+#: public/class-index-chat-public.php:461
+#: public/class-index-chat-public.php:469
+#: public/class-index-chat-public.php:521
+#: public/class-index-chat-public.php:583
+#: public/class-index-chat-public.php:632
+#: public/class-index-chat-public.php:799
+#: public/class-index-chat-public.php:838
 msgid "Missing informations"
 msgstr ""
 
-#: public/models/index-chat-model-database.php:437
-#: public/models/index-chat-model-database.php:515
-#: public/models/index-chat-model-database.php:565
+#: public/models/index-chat-model-database.php:422
+#: public/models/index-chat-model-database.php:500
+#: public/models/index-chat-model-database.php:550
 msgid "Nameless chat"
 msgstr ""
 
-#: public/js/index-chat-public.js:491 public/js/index-chat-public.js:495
+#: public/js/index-chat-public.js:481 public/js/index-chat-public.js:485
 msgid "new message"
 msgstr ""
 
-#: public/js/index-chat-public.js:489
+#: public/js/index-chat-public.js:479
 msgid "new messages"
 msgstr ""
 
-#: public/models/index-chat-model-database.php:561
+#: public/models/index-chat-model-database.php:546
 msgid "others"
 msgstr ""
 
-#: public/partials/index-chat-public-display.php:95
+#: public/partials/index-chat-public-display.php:72
 msgid "Participants"
 msgstr ""
 
-#: public/partials/index-chat-public-display.php:122
-#: public/js/index-chat-public.js:942
+#: public/partials/index-chat-public-display.php:99
+#: public/js/index-chat-public.js:940
 msgid "Private conversation"
 msgstr ""
 
-#: public/js/index-chat-public.js:301 public/js/index-chat-public.js:419
+#: public/js/index-chat-public.js:291 public/js/index-chat-public.js:409
 msgid "public"
 msgstr ""
 
-#: public/partials/index-chat-public-display.php:63
-#: public/js/index-chat-public.js:913 public/js/index-chat-public.js:937
+#: public/partials/index-chat-public-display.php:39
+#: public/js/index-chat-public.js:911 public/js/index-chat-public.js:935
 msgid "Public conversation"
 msgstr ""
 
-#: public/partials/index-chat-public-display.php:178
+#: public/partials/index-chat-public-display.php:155
 msgid "Public conversations"
 msgstr ""
 
@@ -258,82 +281,83 @@ msgstr ""
 msgid "Reset settings to default"
 msgstr ""
 
-#: public/class-index-chat-public.php:688
+#: public/class-index-chat-public.php:644
 msgid "Room removed successfully."
 msgstr ""
 
-#: public/partials/index-chat-public-display.php:128
+#: public/partials/index-chat-public-display.php:105
 msgid "Save"
 msgstr ""
 
-#: public/partials/index-chat-public-display.php:173
+#: public/partials/index-chat-public-display.php:150
 msgid "Search"
 msgstr ""
 
 #. id
-#: admin/class-index-chat-admin.php:165 admin/class-index-chat-admin.php:225
+#: admin/class-index-chat-admin.php:102 admin/class-index-chat-admin.php:161
+#: includes/class-index-chat.php:357
 msgid "Settings"
 msgstr ""
 
-#: public/class-index-chat-public.php:475
+#: public/class-index-chat-public.php:431
 msgid "Somebody has been added to the conversation"
 msgstr ""
 
-#: public/class-index-chat-public.php:472
+#: public/class-index-chat-public.php:428
 #, php-format
 msgid "Somebody has been added to the conversation by %s"
 msgstr ""
 
-#: public/class-index-chat-public.php:540
+#: public/class-index-chat-public.php:496
 msgid "Somebody has been removed from the conversation"
 msgstr ""
 
-#: public/class-index-chat-public.php:537
+#: public/class-index-chat-public.php:493
 #, php-format
 msgid "Somebody has been removed from the conversation by %s"
 msgstr ""
 
-#: public/class-index-chat-public.php:642
+#: public/class-index-chat-public.php:598
 msgid "Somebody left the conversation"
 msgstr ""
 
-#: public/partials/index-chat-public-display.php:81
+#: public/partials/index-chat-public-display.php:57
 msgid "Start chatting"
 msgstr ""
 
-#: public/class-index-chat-public.php:525
+#: public/class-index-chat-public.php:481
 msgid "The owner of the conversation cannot be removed from it"
 msgstr ""
 
 #. parent slug
 #. page title
-#: admin/class-index-chat-admin.php:126 admin/class-index-chat-admin.php:127
+#: admin/class-index-chat-admin.php:65 admin/class-index-chat-admin.php:66
 msgid "Theme"
 msgstr ""
 
-#: public/class-index-chat-public.php:931
+#: public/class-index-chat-public.php:894
 #, php-format
 msgid "This conversation has been archived by %s"
 msgstr ""
 
-#: public/class-index-chat-public.php:934
+#: public/class-index-chat-public.php:897
 msgid "This conversation is no longer archived"
 msgstr ""
 
-#: public/class-index-chat-public.php:924
+#: public/class-index-chat-public.php:887
 msgid "This conversation is now private"
 msgstr ""
 
-#: public/class-index-chat-public.php:921
+#: public/class-index-chat-public.php:884
 msgid "This conversation is now public"
 msgstr ""
 
-#: public/models/index-chat-model-database.php:860
-#: public/models/index-chat-model-database.php:898
+#: public/models/index-chat-model-database.php:847
+#: public/models/index-chat-model-database.php:885
 msgid "This is the beginning of the conversation"
 msgstr ""
 
-#: public/class-index-chat-public.php:460
+#: public/class-index-chat-public.php:416
 msgid "This user is already in this conversation"
 msgstr ""
 
@@ -341,15 +365,20 @@ msgstr ""
 msgid "This user is already selected."
 msgstr ""
 
-#: public/class-index-chat-public.php:260
+#: public/class-index-chat-public.php:216
 msgid "User cannot be found"
 msgstr ""
 
-#: public/class-index-chat-public.php:318 public/class-index-chat-public.php:394
-#: public/class-index-chat-public.php:437 public/class-index-chat-public.php:446
-#: public/class-index-chat-public.php:501 public/class-index-chat-public.php:509
-#: public/class-index-chat-public.php:571 public/class-index-chat-public.php:623
-#: public/class-index-chat-public.php:672 public/class-index-chat-public.php:867
+#: public/class-index-chat-public.php:274
+#: public/class-index-chat-public.php:350
+#: public/class-index-chat-public.php:393
+#: public/class-index-chat-public.php:402
+#: public/class-index-chat-public.php:457
+#: public/class-index-chat-public.php:465
+#: public/class-index-chat-public.php:527
+#: public/class-index-chat-public.php:579
+#: public/class-index-chat-public.php:628
+#: public/class-index-chat-public.php:830
 msgid "User is not existing"
 msgstr ""
 
@@ -357,52 +386,41 @@ msgstr ""
 msgid "Vianney AÏN"
 msgstr ""
 
-#. page title
-#: admin/class-index-chat-admin.php:115
-msgid "WP Chat"
-msgstr ""
-
-#: admin/class-index-chat-admin.php:245
+#: admin/class-index-chat-admin.php:181
 msgid "WP Chat refresh rate (in milliseconds)"
 msgstr ""
 
-#. Name of the plugin
-msgid "index-chat"
-msgstr ""
-
-#: public/js/index-chat-public.js:1114
-msgid "index-chat window is not enabled"
-msgstr ""
-
-#: public/class-index-chat-public.php:582
+#: public/class-index-chat-public.php:538
 msgid "You are not allowed to see this conversation"
 msgstr ""
 
-#: public/class-index-chat-public.php:223 public/class-index-chat-public.php:270
-#: public/class-index-chat-public.php:656
+#: public/class-index-chat-public.php:179
+#: public/class-index-chat-public.php:226
+#: public/class-index-chat-public.php:612
 msgid "You are not in this conversation"
 msgstr ""
 
-#: public/partials/index-chat-public-display.php:183
+#: public/partials/index-chat-public-display.php:160
 msgid "You are not participating to any conversation for now."
 msgstr ""
 
-#: public/class-index-chat-public.php:521
+#: public/class-index-chat-public.php:477
 msgid "You are not the owner of this conversation"
 msgstr ""
 
-#: public/class-index-chat-public.php:347
+#: public/class-index-chat-public.php:303
 msgid "You must add at least 1 participant to create a private room"
 msgstr ""
 
-#: public/class-index-chat-public.php:146 public/class-index-chat-public.php:753
+#: public/class-index-chat-public.php:102
+#: public/class-index-chat-public.php:709
 msgid "You must be connected to be able to do that"
 msgstr ""
 
-#: public/class-index-chat-public.php:696
+#: public/class-index-chat-public.php:652
 msgid "You must be the owner of the conversation to do this."
 msgstr ""
 
-#: public/partials/index-chat-public-display.php:177
+#: public/partials/index-chat-public-display.php:154
 msgid "Your conversations"
 msgstr ""
