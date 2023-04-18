@@ -51,7 +51,7 @@ class index_chat_Admin {
 	public function register_settings_page() {
 		add_menu_page(
 			__( 'Home', 'index-chat' ),//page title
-			__( 'WP Chat', 'index-chat' ), //menu title
+			__( 'Index Chat', 'index-chat' ), //menu title
 			'manage_options',//capability
 			$this->plugin_name,//menu slug
 			array( $this, 'display_general_settings_page' ), // callable function

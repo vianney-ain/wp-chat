@@ -6,7 +6,7 @@
  * Plugin Name:       Index Chat
  * Plugin URI:        https://indexwebmarketing.com/
  * Description:       Allow WordPress users to start instant messaging.
- * Version:           0.3.1
+ * Version:           0.3.2
  * Author:            Vianney AÏN
  * Author URI:        https://vianneyain.com/
  * License:           GPL-2.0+
@@ -27,7 +27,7 @@ error_reporting(E_ALL);
 /**
  * Current plugin version.
  */
-define( 'index_chat_VERSION', '0.3.1' );
+define( 'INDEX_CHAT_VERSION', '0.3.2' );
 
 /**
  * The code that runs during plugin activation.
@@ -60,7 +60,7 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-index-chat.php';
  * Begins execution of the plugin.
  */
 function run_index_chat() {
-	$plugin = new index_chat();
+	$plugin = new index_chat(plugin_basename(__FILE__), plugin_basename( __DIR__ ));
 	$plugin->run();
 }
 
@@ -69,22 +69,3 @@ add_action('init', function() {
 		run_index_chat();
 	}
 });
-
-add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), 'add_action_links' );
-
-function add_action_links ( $links ) {
-	// Build and escape the URL.
-	$url = esc_url( add_query_arg(
-		'page',
-		'index-chat',
-		get_admin_url() . 'admin.php'
-	) );
-	// Create the link.
-	$settings_link = "<a href='$url'>" . __( 'Settings', 'index-chat' ) . '</a>';
-	// Adds the link to the end of the array.
-	array_push(
-		$links,
-		$settings_link
-	);
-	return $links;
-}

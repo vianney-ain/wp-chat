@@ -1,0 +1,17 @@
+{
+	"name" : "Index Chat",
+	"slug" : "index-chat",
+	"author" : "<a href='https://indexwebmarketing.com'>Index Web Marketing</a>",
+	"author_profile" : "http://profiles.wordpress.org/indexwebmarketing",
+	"version" : "0.3.2",
+	"download_url" : "https://indexwebmarketing.com/plugins/updater/index-chat/index-chat.zip",
+	"requires" : "5.8",
+	"tested" : "6.2",
+	"requires_php" : "5.3",
+	"last_updated" : "2022-04-18 14:52:00",
+	"sections" : {
+		"description" : "Allow WordPress users to start instant messaging.",
+		"installation" : "Click the activate button and that's it.",
+		"changelog" : "<h4>0.3.2 - April 18 2023</h4><ul><li>Handle plugins updates</li></ul>"
+	}
+}
