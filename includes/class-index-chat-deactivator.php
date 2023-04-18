@@ -4,7 +4,7 @@
  *
  * This class defines all code necessary to run during the plugin's deactivation.
  */
-class Wp_Chat_Deactivator {
+class index_chat_Deactivator {
 
 	/**
 	 * Short Description. (use period)

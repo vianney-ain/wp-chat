@@ -1,5 +1,5 @@
 <?php
-class Wp_Chat_Model_Database {
+class index_chat_Model_Database {
 	
 	private $plugin_name;
 	
@@ -133,7 +133,7 @@ class Wp_Chat_Model_Database {
         }
       }
       else {
-        throw new Exception(__('Invalid query in', 'wp-chat').' search_users_matches().');
+        throw new Exception(__('Invalid query in', 'index-chat').' search_users_matches().');
       }
 
     }
@@ -197,7 +197,7 @@ class Wp_Chat_Model_Database {
       return false;
     }
     else {
-      throw new Exception(__('Invalid query in', 'wp-chat').' is_room_private().');
+      throw new Exception(__('Invalid query in', 'index-chat').' is_room_private().');
     }
   }
 
@@ -221,7 +221,7 @@ class Wp_Chat_Model_Database {
       }
     }
     else {
-      throw new Exception(__('Invalid query in', 'wp-chat').' room_participants_count().');
+      throw new Exception(__('Invalid query in', 'index-chat').' room_participants_count().');
     }
   }
 
@@ -331,7 +331,7 @@ class Wp_Chat_Model_Database {
       }
     }
     else {
-      throw new Exception(__('Invalid query in', 'wp-chat').' update_room_message_read_status().');
+      throw new Exception(__('Invalid query in', 'index-chat').' update_room_message_read_status().');
     }
   }
 
@@ -359,7 +359,7 @@ class Wp_Chat_Model_Database {
       }
     }
     else {
-      throw new Exception(__('Invalid query in', 'wp-chat').' mark_message_as_read().');
+      throw new Exception(__('Invalid query in', 'index-chat').' mark_message_as_read().');
     }
   }
 
@@ -385,7 +385,7 @@ class Wp_Chat_Model_Database {
       return array_reverse($results);
     }
     else {
-      throw new Exception(__('Invalid query in', 'wp-chat').' get_message_by_room().');
+      throw new Exception(__('Invalid query in', 'index-chat').' get_message_by_room().');
     }
 
   }
@@ -405,14 +405,14 @@ class Wp_Chat_Model_Database {
       return array_reverse($results);
     }
     else {
-      throw new Exception(__('Invalid query in', 'wp-chat').' get_message_by_room().');
+      throw new Exception(__('Invalid query in', 'index-chat').' get_message_by_room().');
     }
   }
 
   public function get_room_details_by_id($room_id, $user_from_id){
     global $wpdb;
     $thumbnails = array();
-    $room_name = __( 'Nameless chat' , 'wp-chat' );
+    $room_name = __( 'Nameless chat' , 'index-chat' );
 
     $query = "SELECT * FROM {$wpdb->prefix}chat_room WHERE id = %d";
     $params = array($room_id);
@@ -450,7 +450,7 @@ class Wp_Chat_Model_Database {
 
     }
     else {
-      throw new Exception(__('Invalid query in', 'wp-chat').' get_room_details_by_id().');
+      throw new Exception(__('Invalid query in', 'index-chat').' get_room_details_by_id().');
     }
 
   }
@@ -490,7 +490,7 @@ class Wp_Chat_Model_Database {
   public function get_room_participants($room_id, $user_from_id, $include_current = false){
     global $wpdb;
     $thumbnails = array();
-    $room_name = __( 'Nameless chat' , 'wp-chat' );
+    $room_name = __( 'Nameless chat' , 'index-chat' );
 
     
     if (!$include_current){
@@ -523,7 +523,7 @@ class Wp_Chat_Model_Database {
 
     }
     else {
-      throw new Exception(__('Invalid query in', 'wp-chat').' get_room_details_by_id().');
+      throw new Exception(__('Invalid query in', 'index-chat').' get_room_details_by_id().');
     }
   }
 
@@ -533,14 +533,14 @@ class Wp_Chat_Model_Database {
         return $user_names[0];
       }
       else if (sizeof($user_names) == 2){
-        return $user_names[0].' '.__( 'and', 'wp-chat' ).' '.$user_names[1];
+        return $user_names[0].' '.__( 'and', 'index-chat' ).' '.$user_names[1];
       }
       else if (sizeof($user_names) > 2){
-        return $user_names[0].' '.__( 'and', 'wp-chat' ).' '.(sizeof($user_names)-1).' '.__( 'others', 'wp-chat' );
+        return $user_names[0].' '.__( 'and', 'index-chat' ).' '.(sizeof($user_names)-1).' '.__( 'others', 'index-chat' );
       }
     }
     else {
-      return __( 'Nameless chat', 'wp-chat' );
+      return __( 'Nameless chat', 'index-chat' );
     }
   }
 
@@ -709,7 +709,7 @@ class Wp_Chat_Model_Database {
       return $results;
     }
     else {
-      throw new Exception(__('Invalid query in', 'wp-chat').' get_room_by_id().');
+      throw new Exception(__('Invalid query in', 'index-chat').' get_room_by_id().');
     }
   }
 
@@ -729,7 +729,7 @@ class Wp_Chat_Model_Database {
       return $results;
     }
     else {
-      throw new Exception(__('Invalid query in', 'wp-chat').' get_user_private_rooms().');
+      throw new Exception(__('Invalid query in', 'index-chat').' get_user_private_rooms().');
     }
   }
 
@@ -749,7 +749,7 @@ class Wp_Chat_Model_Database {
       return $results;
     }
     else {
-      throw new Exception(__('Invalid query in', 'wp-chat').' get_public_rooms().');
+      throw new Exception(__('Invalid query in', 'index-chat').' get_public_rooms().');
     }
   }
 
@@ -774,7 +774,7 @@ class Wp_Chat_Model_Database {
       return $results;
     }
     else {
-      throw new Exception(__('Invalid query in', 'wp-chat').' get_user_participations().');
+      throw new Exception(__('Invalid query in', 'index-chat').' get_user_participations().');
     }
   }
   
@@ -803,7 +803,7 @@ class Wp_Chat_Model_Database {
       return true;
     }
     else {
-      throw new Exception(__('Invalid query in', 'wp-chat').' is_participant_in_room().');
+      throw new Exception(__('Invalid query in', 'index-chat').' is_participant_in_room().');
     }
   }
 
@@ -825,7 +825,7 @@ class Wp_Chat_Model_Database {
       return true;
     }
     else {
-      throw new Exception(__('Invalid query in', 'wp-chat').' is_room_owner().');
+      throw new Exception(__('Invalid query in', 'index-chat').' is_room_owner().');
     }
   }
 
@@ -837,7 +837,7 @@ class Wp_Chat_Model_Database {
     $wpdb->insert($table,$data,$format);
     $room_id = $wpdb->insert_id;
     if (isset($room_id) && !empty($room_id)){
-      $this->send_system_message($room_id, __( 'This is the beginning of the conversation', 'wp-chat').'.' );
+      $this->send_system_message($room_id, __( 'This is the beginning of the conversation', 'index-chat').'.' );
       $this->create_participant($room_id, $to);
       $this->create_participant($room_id, $from);
     }
@@ -875,7 +875,7 @@ class Wp_Chat_Model_Database {
     }
 
     if (isset($room_id) && !empty($room_id)){
-      $this->send_system_message($room_id, __( 'This is the beginning of the conversation', 'wp-chat').'.' );
+      $this->send_system_message($room_id, __( 'This is the beginning of the conversation', 'index-chat').'.' );
       $this->create_participant($room_id, $from);
       if (isset($room_params['room_participants']) && !empty($room_params['room_participants']) && sizeof($room_params['room_participants']) > 0){
         foreach($room_params['room_participants'] as $key => $participant_id){
@@ -944,7 +944,7 @@ class Wp_Chat_Model_Database {
       }
     }
     else {
-      throw new Exception(__('Invalid query in', 'wp-chat').' create_room_table().');
+      throw new Exception(__('Invalid query in', 'index-chat').' create_room_table().');
     }
   }
 
@@ -978,7 +978,7 @@ class Wp_Chat_Model_Database {
       return true;
     }
     else {
-      throw new Exception(__('Invalid query in', 'wp-chat').' create_room_table().');
+      throw new Exception(__('Invalid query in', 'index-chat').' create_room_table().');
     }
   }
 
@@ -1009,7 +1009,7 @@ class Wp_Chat_Model_Database {
       return true;
     }
     else {
-      throw new Exception(__('Invalid query in', 'wp-chat').' create_participants_table().');
+      throw new Exception(__('Invalid query in', 'index-chat').' create_participants_table().');
     }
   }
 
@@ -1043,7 +1043,7 @@ class Wp_Chat_Model_Database {
       return true;
     }
     else {
-      throw new Exception(__('Invalid query in', 'wp-chat').' create_participants_table().');
+      throw new Exception(__('Invalid query in', 'index-chat').' create_participants_table().');
     }
   }
 
@@ -1071,7 +1071,7 @@ class Wp_Chat_Model_Database {
       return true;
     }
     else {
-      throw new Exception(__('Invalid query in', 'wp-chat').' create_read_table().');
+      throw new Exception(__('Invalid query in', 'index-chat').' create_read_table().');
     }
   }
 

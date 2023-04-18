@@ -1,12 +1,12 @@
 {
     "translation-revision-date": "2023-04-12 15:00+0000",
     "generator": "Loco https://localise.biz/",
-    "source": "public/js/wp-chat-public.js",
-    "domain": "wp-chat",
+    "source": "public/js/index-chat-public.js",
+    "domain": "index-chat",
     "locale_data": {
-        "wp-chat": {
+        "index-chat": {
             "": {
-                "domain": "wp-chat",
+                "domain": "index-chat",
                 "lang": "fr_CA",
                 "plural-forms": "nplurals=2; plural=n > 1;"
             },
@@ -40,8 +40,8 @@
             "Public conversation": [
                 "Conversation publique"
             ],
-            "WP-Chat window is not enabled": [
-                "WP-Chat n'est pas activ\u00e9"
+            "index-chat window is not enabled": [
+                "index-chat n'est pas activ\u00e9"
             ]
         }
     }

@@ -5,7 +5,7 @@
  * Loads and defines the internationalization files for this plugin
  * so that it is ready for translation.
  */
-class Wp_Chat_i18n {
+class index_chat_i18n {
 
 	/**
 	* The ID of this plugin.
@@ -21,10 +21,8 @@ class Wp_Chat_i18n {
 	* Initialize the class and set its properties.
 	*/
 	public function __construct( $plugin_name, $version ) {
-
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
-
 	}
 
 	/**
@@ -32,13 +30,11 @@ class Wp_Chat_i18n {
 	 */
 	public function load_plugin_textdomain() {
 		load_plugin_textdomain(
-			'wp-chat',
+			'index-chat',
 			false,
 			dirname( dirname( plugin_basename( __FILE__ ) ) ) . '/languages/'
 		);
-
 	}
-
 
 
 }

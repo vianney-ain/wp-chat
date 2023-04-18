@@ -5,6 +5,7 @@
 - room, participant et message avec unique id
 - notification sonore nouveau message entrant 
 - ajout un popup nouveau message quand on est en train de scroll dans une conversation
+- order la liste des participants DESC
 
 
 -- menu admin --

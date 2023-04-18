@@ -6,7 +6,7 @@
  * enqueue the public-facing stylesheet and JavaScript.
  *
  */
-class Wp_Chat_Public {
+class index_chat_Public {
 
 	/**
 	 * The ID of this plugin.
@@ -35,11 +35,11 @@ class Wp_Chat_Public {
 
 		$this->user_id = get_current_user_id();
 
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/models/wp-chat-model-database.php';
-		$this->model = new Wp_Chat_Model_Database($this->plugin_name, $this->version);
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/models/index-chat-model-database.php';
+		$this->model = new index_chat_Model_Database($this->plugin_name, $this->version);
 
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/partials/wp-chat-public-display.php';
-		$this->view = new Wp_Chat_Public_View($this->plugin_name, $this->version);
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/partials/index-chat-public-display.php';
+		$this->view = new index_chat_Public_View($this->plugin_name, $this->version);
 
 	}
 
@@ -47,29 +47,29 @@ class Wp_Chat_Public {
 	 * Register the stylesheets for the public-facing side of the site.
 	 */
 	public function enqueue_styles() {
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/wp-chat-public.css', array(), $this->version, 'all' );
-		wp_enqueue_style( $this->plugin_name.'-dialog-blank', plugin_dir_url( __FILE__ ) . 'css/wp-chat-public-dialog-blank.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/index-chat-public.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->plugin_name.'-dialog-blank', plugin_dir_url( __FILE__ ) . 'css/index-chat-public-dialog-blank.css', array(), $this->version, 'all' );
 	}
 
 	/**
 	 * Register the JavaScript for the public-facing side of the site.
 	 */
 	public function enqueue_scripts() {
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/wp-chat-public.js', array( 'wp-i18n', 'jquery' ), $this->version, false );
-		wp_enqueue_script( $this->plugin_name.'-dialog-blank', plugin_dir_url( __FILE__ ) . 'js/wp-chat-public-dialog-blank.js', array( 'wp-i18n', 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/index-chat-public.js', array( 'wp-i18n', 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_name.'-dialog-blank', plugin_dir_url( __FILE__ ) . 'js/index-chat-public-dialog-blank.js', array( 'wp-i18n', 'jquery' ), $this->version, false );
 		
 		wp_set_script_translations( $this->plugin_name, $this->plugin_name, plugin_dir_path(__DIR__).'languages/' );
 
 		wp_localize_script(
 			$this->plugin_name,
-			'wp_chat_datas',
+			'index_chat_datas',
 			array(
 				'ajax_url' => admin_url( 'admin-ajax.php' ),
 				'plugin_name' => $this->plugin_name,
 				'user_id' => get_current_user_id(),
 				'default_img' => plugin_dir_url( __FILE__ ).'img/default.png',
 				'text_extract_length' => 40,
-				'wp_chat_options' => $this->wp_chat_get_admin_options(),
+				'index_chat_options' => $this->index_chat_get_admin_options(),
 				'message_amount' => $this->message_amount,
 			)
 		);
@@ -86,25 +86,25 @@ class Wp_Chat_Public {
 	/**
 	 * Load translations
 	 */
-	public function wp_chat_load_textdomain() {
-		load_plugin_textdomain( 'wp-chat', FALSE, plugin_dir_path(__DIR__).'languages/' );
+	public function index_chat_load_textdomain() {
+		load_plugin_textdomain( 'index-chat', FALSE, plugin_dir_path(__DIR__).'languages/' );
 	}
 
-	private function wp_chat_get_admin_options(){
-		$general_settings_defaults = $this->options['wp-chat-general-settings-default'];
-		$options = wp_parse_args(get_option('wp-chat-general-settings'), $general_settings_defaults);
+	private function index_chat_get_admin_options(){
+		$general_settings_defaults = $this->options['index-chat-general-settings-default'];
+		$options = wp_parse_args(get_option('index-chat-general-settings'), $general_settings_defaults);
 		return $options;
 	}
 
 	private function is_user_logged_in(){
 		$this->user_id = get_current_user_id();
 		if (!isset($this->user_id) || empty($this->user_id)){
-			throw new Exception(__( 'You must be connected to be able to do that' , 'wp-chat' ));
+			throw new Exception(__( 'You must be connected to be able to do that' , 'index-chat' ));
 		}
 		return $this->user_id;
 	}
 
-	public function wp_chat_search_users(){
+	public function index_chat_search_users(){
 		try {
 			$this->is_user_logged_in();
 			
@@ -154,29 +154,29 @@ class Wp_Chat_Public {
 		}
 	}
 
-	public function wp_chat_get_blank_dialog(){
+	public function index_chat_get_blank_dialog(){
 		$this->view->blank_dialog_view();
 		die();
 	}
-	public function wp_chat_get_participant_popup(){
+	public function index_chat_get_participant_popup(){
 		$this->view->participant_popup_view();
 		die();
 	}
-	public function wp_chat_get_room_details_popup(){
+	public function index_chat_get_room_details_popup(){
 		try {
 			$this->is_user_logged_in();
 
 			if (!isset($_REQUEST['room']) || empty($_REQUEST['room'])){
-				throw new Exception(__( 'Missing informations' , 'wp-chat' ).'.');
+				throw new Exception(__( 'Missing informations' , 'index-chat' ).'.');
 			}
 			$room = $this->model->get_room_by_id(esc_attr($_REQUEST['room']));
 	
 			if (!isset($room) || empty($room)){
-				throw new Exception(__( 'Conversation cannot be found' , 'wp-chat' ).'.');
+				throw new Exception(__( 'Conversation cannot be found' , 'index-chat' ).'.');
 			}
 	
 			if (!$this->model->is_participant_in_room($room->id, $this->user_id)){
-				throw new Exception(__( 'You are not in this conversation' , 'wp-chat' ).'.');
+				throw new Exception(__( 'You are not in this conversation' , 'index-chat' ).'.');
 			}
 			
 			$isOwner = false;
@@ -198,42 +198,42 @@ class Wp_Chat_Public {
 		$this->view->default_view();
 	}
 
-	public function wp_chat_send_message(){
+	public function index_chat_send_message(){
 		try {
 			$this->is_user_logged_in();
 
 			if (!isset($_REQUEST['room']) || empty($_REQUEST['room'])){
-				throw new Exception(__( 'Missing informations' , 'wp-chat' ).'.');
+				throw new Exception(__( 'Missing informations' , 'index-chat' ).'.');
 			}
 
 			if (!isset($_REQUEST['message']) || empty($_REQUEST['message'])){
-				throw new Exception(__( 'Message cannot be empty' , 'wp-chat' ).'.');
+				throw new Exception(__( 'Message cannot be empty' , 'index-chat' ).'.');
 			}
 
 			$from = $this->model->get_user_by_id($this->user_id);
 
 			if (!isset($from) || empty($from)){
-				throw new Exception(__( 'User cannot be found' , 'wp-chat' ).'.');
+				throw new Exception(__( 'User cannot be found' , 'index-chat' ).'.');
 			}
 
 			$room = $this->model->get_room_by_id(esc_attr($_REQUEST['room']));
 
 			if (!isset($room) || empty($room)){
-				throw new Exception(__( 'Conversation cannot be found' , 'wp-chat' ).'.');
+				throw new Exception(__( 'Conversation cannot be found' , 'index-chat' ).'.');
 			}
 
 			if (!$this->model->is_participant_in_room($room->id, $this->user_id)){
-				throw new Exception(__( 'You are not in this conversation' , 'wp-chat' ).'.');
+				throw new Exception(__( 'You are not in this conversation' , 'index-chat' ).'.');
 			}
 
 			if($this->model->send_message($room->id, $from['id'], stripcslashes($_REQUEST['message']), '')){
 				$response = array(
 					'success' => true,
-					'message' => __( 'Message sent' , 'wp-chat' ).'.',
+					'message' => __( 'Message sent' , 'index-chat' ).'.',
 				);
 			}
 			else {
-				throw new Exception(__( 'An error occured, please try again' , 'wp-chat' ).'.');
+				throw new Exception(__( 'An error occured, please try again' , 'index-chat' ).'.');
 			}
 			die(json_encode($response));
 		}
@@ -243,7 +243,7 @@ class Wp_Chat_Public {
 
 	}
 
-	public function wp_chat_create_room(){
+	public function index_chat_create_room(){
 		try {
 			$this->is_user_logged_in();
 
@@ -271,7 +271,7 @@ class Wp_Chat_Public {
 						$to = $this->model->get_user_by_id($participant_id);
 	
 						if (!isset($to) || empty($to)){
-							throw new Exception(__( 'User is not existing' , 'wp-chat' ).'.');
+							throw new Exception(__( 'User is not existing' , 'index-chat' ).'.');
 						};
 	
 						array_push( $room_params['room_participants'], intval($to['id']) );
@@ -300,7 +300,7 @@ class Wp_Chat_Public {
 				
 				//if there's NO PARTICIPANT and the room is PRIVATE, we cannot create the room
 				if (sizeof($room_params['room_participants']) == 0 && !$room_params['room_public']){
-					throw new Exception(__( "You must add at least 1 participant to create a private room" , 'wp-chat' ).'.');
+					throw new Exception(__( "You must add at least 1 participant to create a private room" , 'index-chat' ).'.');
 				}
 	
 				if (!isset($room_id) || empty($room_id)){
@@ -327,7 +327,7 @@ class Wp_Chat_Public {
 	
 			$response = array(
 				'success' => false,
-				'message' => __( 'An error occured, please try again' , 'wp-chat' ).'.',
+				'message' => __( 'An error occured, please try again' , 'index-chat' ).'.',
 			);
 			die(json_encode($response));
 
@@ -337,22 +337,22 @@ class Wp_Chat_Public {
 		}
 	}
 
-	public function wp_chat_get_room_participants(){
+	public function index_chat_get_room_participants(){
 		try {
 			$this->is_user_logged_in();
 
 			if (!isset($_REQUEST['room_id']) || empty($_REQUEST['room_id'])){
-				throw new Exception(__( 'Missing informations' , 'wp-chat' ).'.');
+				throw new Exception(__( 'Missing informations' , 'index-chat' ).'.');
 			}
 			$user = $this->model->get_user_by_id($this->user_id);
 	
 			if (!isset($user) || empty($user)){
-				throw new Exception(__( 'User is not existing' , 'wp-chat' ).'.');
+				throw new Exception(__( 'User is not existing' , 'index-chat' ).'.');
 			}
 	
 			$room = $this->model->get_room_by_id(esc_attr($_REQUEST['room_id']));
 			if (!isset($room) || empty($room)){
-				throw new Exception(__( 'Conversation cannot be found' , 'wp-chat' ).'.');
+				throw new Exception(__( 'Conversation cannot be found' , 'index-chat' ).'.');
 			}
 	
 			$isOwner = false;
@@ -384,51 +384,51 @@ class Wp_Chat_Public {
 		}
 	}
 
-	public function wp_chat_add_room_participant(){
+	public function index_chat_add_room_participant(){
 		try {
 			$this->is_user_logged_in();
 
 			$user = $this->model->get_user_by_id($this->user_id);
 			if (!isset($user) || empty($user)){
-				throw new Exception(__( 'User is not existing' , 'wp-chat' ).'.');
+				throw new Exception(__( 'User is not existing' , 'index-chat' ).'.');
 			}
 
 			if (!isset($_REQUEST['added_user_id']) || empty($_REQUEST['added_user_id'])){
-				throw new Exception(__( 'Missing informations' , 'wp-chat' ).'.');
+				throw new Exception(__( 'Missing informations' , 'index-chat' ).'.');
 			}
 
 			$added_user = $this->model->get_user_by_id($_REQUEST['added_user_id']);
 			if (!isset($added_user) || empty($added_user)){
-				throw new Exception(__( 'User is not existing' , 'wp-chat' ).'.');
+				throw new Exception(__( 'User is not existing' , 'index-chat' ).'.');
 			}
 
 			if (!isset($_REQUEST['room_id']) || empty($_REQUEST['room_id'])){
-				throw new Exception(__( 'Missing informations' , 'wp-chat' ).'.');
+				throw new Exception(__( 'Missing informations' , 'index-chat' ).'.');
 			}
 
 			$room = $this->model->get_room_by_id(esc_attr($_REQUEST['room_id']));
 
 			if (!isset($room) || empty($room)){
-				throw new Exception(__( 'Conversation cannot be found' , 'wp-chat' ).'.');
+				throw new Exception(__( 'Conversation cannot be found' , 'index-chat' ).'.');
 			}
 
 			if ( $this->model->is_participant_in_room($room->id, esc_attr($_REQUEST['added_user_id']) ) ){
-				throw new Exception(__('This user is already in this conversation', 'wp-chat').'.');
+				throw new Exception(__('This user is already in this conversation', 'index-chat').'.');
 			}
 
 			if ( $this->model->create_participant($room->id, esc_attr($_REQUEST['added_user_id']) ) ){
 				$message = '';
 				if (isset($added_user) && !empty($added_user) && isset($user) && !empty($user)){
-					$message = sprintf(__('%1$s has been added to the conversation by %2$s', 'wp-chat'), $added_user['display_name'], $user['display_name']).'.';
+					$message = sprintf(__('%1$s has been added to the conversation by %2$s', 'index-chat'), $added_user['display_name'], $user['display_name']).'.';
 				}
 				else if (isset($added_user) && !empty($added_user)){
-					$message = sprintf(__('%s has been added to the conversation', 'wp-chat'), $added_user['display_name']).'.';
+					$message = sprintf(__('%s has been added to the conversation', 'index-chat'), $added_user['display_name']).'.';
 				}
 				else if (isset($user) && !empty($user)) {
-					$message = sprintf(__( 'Somebody has been added to the conversation by %s' , 'wp-chat' ), $user['display_name']).'.';
+					$message = sprintf(__( 'Somebody has been added to the conversation by %s' , 'index-chat' ), $user['display_name']).'.';
 				}
 				else {
-					$message = __( 'Somebody has been added to the conversation' , 'wp-chat' ).'.';
+					$message = __( 'Somebody has been added to the conversation' , 'index-chat' ).'.';
 				}
 				$this->model->send_system_message($room->id, $message);
 
@@ -438,7 +438,7 @@ class Wp_Chat_Public {
 				die(json_encode($response));
 			}
 			else {
-				throw new Exception(__( 'An error occured, please try again' , 'wp-chat' ).'.');
+				throw new Exception(__( 'An error occured, please try again' , 'index-chat' ).'.');
 			}
 
 		}
@@ -447,53 +447,53 @@ class Wp_Chat_Public {
 		}
 	}
 
-	public function wp_chat_remove_room_participant(){
+	public function index_chat_remove_room_participant(){
 		try {
 			$this->is_user_logged_in();
 
 			$user = $this->model->get_user_by_id($this->user_id);
 
 			if (!isset($user) || empty($user)){
-				throw new Exception(__( 'User is not existing' , 'wp-chat' ).'.');
+				throw new Exception(__( 'User is not existing' , 'index-chat' ).'.');
 			}
 
 			if (!isset($_REQUEST['removed_user_id']) || empty($_REQUEST['removed_user_id'])){
-				throw new Exception(__( 'Missing informations' , 'wp-chat' ).'.');
+				throw new Exception(__( 'Missing informations' , 'index-chat' ).'.');
 			}
 			$removed_user = $this->model->get_user_by_id($_REQUEST['removed_user_id']);
 			if (!isset($removed_user) || empty($removed_user)){
-				throw new Exception(__( 'User is not existing' , 'wp-chat' ).'.');
+				throw new Exception(__( 'User is not existing' , 'index-chat' ).'.');
 			}
 
 			if (!isset($_REQUEST['room_id']) || empty($_REQUEST['room_id'])){
-				throw new Exception(__( 'Missing informations' , 'wp-chat' ).'.');
+				throw new Exception(__( 'Missing informations' , 'index-chat' ).'.');
 			}
 			$room = $this->model->get_room_by_id(esc_attr($_REQUEST['room_id']));
 			if (!isset($room) || empty($room)){
-				throw new Exception(__( 'Conversation cannot be found' , 'wp-chat' ).'.');
+				throw new Exception(__( 'Conversation cannot be found' , 'index-chat' ).'.');
 			}
 
 			if ($room->ownerID != $this->user_id){
-				throw new Exception(__( 'You are not the owner of this conversation' , 'wp-chat' ).'.');
+				throw new Exception(__( 'You are not the owner of this conversation' , 'index-chat' ).'.');
 			}
 
 			if ($room->ownerID == esc_attr($_REQUEST['removed_user_id'])){
-				throw new Exception(__( 'The owner of the conversation cannot be removed from it' , 'wp-chat' ).'.');
+				throw new Exception(__( 'The owner of the conversation cannot be removed from it' , 'index-chat' ).'.');
 			}
 
 			if ($this->model->remove_participant_from_room($room->id, esc_attr($_REQUEST['removed_user_id']))){
 				$message = '';
 				if (isset($removed_user) && !empty($removed_user) && isset($user) && !empty($user)){
-					$message = sprintf(__('%1$s has been removed from the conversation by %2$s', 'wp-chat'), $removed_user['display_name'], $user['display_name']).'.';
+					$message = sprintf(__('%1$s has been removed from the conversation by %2$s', 'index-chat'), $removed_user['display_name'], $user['display_name']).'.';
 				}
 				else if (isset($removed_user) && !empty($removed_user)){
-					$message = sprintf(__('%s has been removed from the conversation', 'wp-chat'), $removed_user['display_name']).'.';
+					$message = sprintf(__('%s has been removed from the conversation', 'index-chat'), $removed_user['display_name']).'.';
 				}
 				else if (isset($user) && !empty($user)) {
-					$message = sprintf(__( 'Somebody has been removed from the conversation by %s' , 'wp-chat' ), $user['display_name']).'.';
+					$message = sprintf(__( 'Somebody has been removed from the conversation by %s' , 'index-chat' ), $user['display_name']).'.';
 				}
 				else {
-					$message = __( 'Somebody has been removed from the conversation' , 'wp-chat' ).'.';
+					$message = __( 'Somebody has been removed from the conversation' , 'index-chat' ).'.';
 				}
 				$this->model->send_system_message($room->id, $message);
 				$response = array(
@@ -501,7 +501,7 @@ class Wp_Chat_Public {
 				);
 			}
 			else {
-				throw new Exception(__( 'An error occured, please try again' , 'wp-chat' ).'.');
+				throw new Exception(__( 'An error occured, please try again' , 'index-chat' ).'.');
 			}
 
 			die(json_encode($response));
@@ -513,36 +513,36 @@ class Wp_Chat_Public {
 
 	}
 
-	public function wp_chat_open_room(){
+	public function index_chat_open_room(){
 		try {
 			$this->is_user_logged_in();
 
 			if (!isset($_REQUEST['room_id']) || empty($_REQUEST['room_id'])){
-				throw new Exception(__( 'Missing informations' , 'wp-chat' ).'.');
+				throw new Exception(__( 'Missing informations' , 'index-chat' ).'.');
 			}
 	
 			$user = $this->model->get_user_by_id($this->user_id);
 	
 			if (!isset($user) || empty($user)){
-				throw new Exception(__( 'User is not existing' , 'wp-chat' ).'.');
+				throw new Exception(__( 'User is not existing' , 'index-chat' ).'.');
 			}
 	
 			$room = $this->model->get_room_by_id(esc_attr($_REQUEST['room_id']));
 	
 			if (!isset($room) || empty($room)){
-				throw new Exception(__( 'Conversation cannot be found' , 'wp-chat' ).'.');
+				throw new Exception(__( 'Conversation cannot be found' , 'index-chat' ).'.');
 			}
 	
 			if ($room->public == '0'){
 				if (!$this->model->is_participant_in_room($room->id, $this->user_id)){
-					throw new Exception(__( 'You are not allowed to see this conversation' , 'wp-chat' ).'.');
+					throw new Exception(__( 'You are not allowed to see this conversation' , 'index-chat' ).'.');
 				}
 			}
 			else {
 				if (!$this->model->is_participant_in_room($room->id, $this->user_id)){
 					$this->model->create_participant($room->id, $this->user_id);
 					$user = get_user_by('id', $this->user_id);
-					$message = sprintf(__( '%s joined the room' , 'wp-chat' ), $user->data->display_name).'.';
+					$message = sprintf(__( '%s joined the room' , 'index-chat' ), $user->data->display_name).'.';
 					$this->model->send_system_message($room->id, $message);
 				}
 			}		
@@ -569,33 +569,33 @@ class Wp_Chat_Public {
 
 	}
 
-	public function wp_chat_leave_room(){
+	public function index_chat_leave_room(){
 		try {
 			$this->is_user_logged_in();
 
 			$user = $this->model->get_user_by_id($this->user_id);
 
 			if (!isset($user) || empty($user)){
-				throw new Exception(__( 'User is not existing' , 'wp-chat' ).'.');
+				throw new Exception(__( 'User is not existing' , 'index-chat' ).'.');
 			}
 
 			if (!isset($_REQUEST['room_id']) || empty($_REQUEST['room_id'])){
-				throw new Exception(__( 'Missing informations' , 'wp-chat' ).'.');
+				throw new Exception(__( 'Missing informations' , 'index-chat' ).'.');
 			}
 
 			$room = $this->model->get_room_by_id(esc_attr($_REQUEST['room_id']));
 			if (!isset($room) || empty($room)){
-				throw new Exception(__( 'Conversation cannot be found' , 'wp-chat' ).'.');
+				throw new Exception(__( 'Conversation cannot be found' , 'index-chat' ).'.');
 			}
 
 			if ($this->model->is_participant_in_room($room->id, $this->user_id)){
 				if ($this->model->remove_participant_from_room($room->id, $this->user_id)){
 					$message = '';
 					if (isset($user) && !empty($user)){
-						$message = sprintf(__( '%s left the conversation' , 'wp-chat' ), $user['display_name']).'.';
+						$message = sprintf(__( '%s left the conversation' , 'index-chat' ), $user['display_name']).'.';
 					}
 					else {
-						$message = __( 'Somebody left the conversation' , 'wp-chat' ).'.';
+						$message = __( 'Somebody left the conversation' , 'index-chat' ).'.';
 					}
 					$message.= '.';
 					$this->model->send_system_message($room->id, $message);
@@ -604,12 +604,12 @@ class Wp_Chat_Public {
 					);
 				}
 				else {
-					throw new Exception(__( 'An error occured, please try again' , 'wp-chat' ).'.');
+					throw new Exception(__( 'An error occured, please try again' , 'index-chat' ).'.');
 				}
 
 			}
 			else {
-				throw new Exception(__( 'You are not in this conversation' , 'wp-chat' ).'.');
+				throw new Exception(__( 'You are not in this conversation' , 'index-chat' ).'.');
 			}
 			die(json_encode($response));
 
@@ -619,37 +619,37 @@ class Wp_Chat_Public {
 		}
 	}
 
-	public function wp_chat_remove_room(){
+	public function index_chat_remove_room(){
 		try {
 			$this->is_user_logged_in();
 
 			$user = $this->model->get_user_by_id($this->user_id);
 			if (!isset($user) || empty($user)){
-				throw new Exception(__( 'User is not existing' , 'wp-chat' ).'.');
+				throw new Exception(__( 'User is not existing' , 'index-chat' ).'.');
 			}
 
 			if (!isset($_REQUEST['room_id']) || empty($_REQUEST['room_id'])){
-				throw new Exception(__( 'Missing informations' , 'wp-chat' ).'.');
+				throw new Exception(__( 'Missing informations' , 'index-chat' ).'.');
 			}
 
 			$room = $this->model->get_room_by_id(esc_attr($_REQUEST['room_id']));
 			if (!isset($room) || empty($room)){
-				throw new Exception(__( 'Conversation cannot be found' , 'wp-chat' ).'.');
+				throw new Exception(__( 'Conversation cannot be found' , 'index-chat' ).'.');
 			}
 
 			if ($this->model->is_room_owner($room->id, $this->user_id)){
 				if ($this->model->remove_room($room->id)){
 					$response = array(
 						'success' => true,
-						'message' => __( "Room removed successfully." , 'wp-chat' ).'.',
+						'message' => __( "Room removed successfully." , 'index-chat' ).'.',
 					);
 				}
 				else {
-					throw new Exception(__( "Failed to remove the room. Please try again." , 'wp-chat' ).'.');
+					throw new Exception(__( "Failed to remove the room. Please try again." , 'index-chat' ).'.');
 				}
 			}
 			else {
-				throw new Exception(__( "You must be the owner of the conversation to do this." , 'wp-chat' ).'.');
+				throw new Exception(__( "You must be the owner of the conversation to do this." , 'index-chat' ).'.');
 			}
 			die(json_encode($response));
 
@@ -698,7 +698,7 @@ class Wp_Chat_Public {
 		}
 	}
 
-	public function wp_chat_refresh_view(){
+	public function index_chat_refresh_view(){
 		try {
 			$this->model->check_tables();
 			$this->user_id = get_current_user_id();
@@ -706,7 +706,7 @@ class Wp_Chat_Public {
 			if (!isset($this->user_id) || empty($this->user_id)){
 				$response = array(
 					'success' => false,
-					'message' => __( 'You must be connected to be able to do that', 'wp-chat' ).'.',
+					'message' => __( 'You must be connected to be able to do that', 'index-chat' ).'.',
 				);
 				die(json_encode($response));
 			}
@@ -792,15 +792,15 @@ class Wp_Chat_Public {
 		}
 	}
 
-	public function wp_chat_get_room_details(){
+	public function index_chat_get_room_details(){
 		try {
 			$this->is_user_logged_in();
 			if (!isset($_REQUEST['room_id']) || empty($_REQUEST['room_id'])){
-				throw new Exception(__( 'Missing informations' , 'wp-chat' ).'.');
+				throw new Exception(__( 'Missing informations' , 'index-chat' ).'.');
 			}
 			$room = $this->model->get_room_by_id(esc_attr($_REQUEST['room_id']));
 			if (!isset($room) || empty($room)){
-				throw new Exception(__( 'Conversation cannot be found' , 'wp-chat' ).'.');
+				throw new Exception(__( 'Conversation cannot be found' , 'index-chat' ).'.');
 			}
 			if (!isset($room->name) || empty($room->name)){
 				$room_details = $this->model->get_room_details_by_id(esc_attr($_REQUEST['room_id']), $this->user_id);
@@ -820,22 +820,22 @@ class Wp_Chat_Public {
 
 	}
 
-	public function wp_chat_edit_room_details(){
+	public function index_chat_edit_room_details(){
 		try {
 			$this->is_user_logged_in();
 
 			$user = $this->model->get_user_by_id($this->user_id);
 
 			if (!isset($user) || empty($user)){
-				throw new Exception(__( 'User is not existing' , 'wp-chat' ).'.');
+				throw new Exception(__( 'User is not existing' , 'index-chat' ).'.');
 			}
 	
 			if (!isset($_REQUEST['room_name'])){
-				throw new Exception(__( 'Conversation name is required' , 'wp-chat' ).'.');
+				throw new Exception(__( 'Conversation name is required' , 'index-chat' ).'.');
 			}
 
 			if (!isset($_REQUEST['room_id']) || empty($_REQUEST['room_id'])){
-				throw new Exception(__( 'Missing informations' , 'wp-chat' ).'.');
+				throw new Exception(__( 'Missing informations' , 'index-chat' ).'.');
 			}
 			
 			$room = $this->model->get_room_by_id(esc_attr($_REQUEST['room_id']));
@@ -853,7 +853,7 @@ class Wp_Chat_Public {
 			// }
 	
 			if (!isset($room) || empty($room)){
-				throw new Exception(__( 'Conversation cannot be found' , 'wp-chat' ).'.');
+				throw new Exception(__( 'Conversation cannot be found' , 'index-chat' ).'.');
 			}
 	
 			$public = '0';
@@ -870,31 +870,31 @@ class Wp_Chat_Public {
 			$this->model->edit_room_details($room->id, stripcslashes($_REQUEST['room_name']), $public, $archived );
 		
 			if (empty($_REQUEST['room_name'])){
-				$message = sprintf(__( '%s has removed the title of this conversation' , 'wp-chat' ), $user['display_name']).'.';
+				$message = sprintf(__( '%s has removed the title of this conversation' , 'index-chat' ), $user['display_name']).'.';
 				$this->model->send_system_message($room->id, $message);
 			}
 
 			if ($room->name != esc_attr($_REQUEST['room_name'])){
-				$message = sprintf(__('%1$s has changed the title of this conversation for "%2$s"', 'wp-chat'), $user['display_name'], $_REQUEST['room_name']).'.';
+				$message = sprintf(__('%1$s has changed the title of this conversation for "%2$s"', 'index-chat'), $user['display_name'], $_REQUEST['room_name']).'.';
 				$this->model->send_system_message($room->id, $message);
 			}
 
 			if ($room->public != $public){
 				if ($room->public == '0'){
-					$message = __( 'This conversation is now public' , 'wp-chat' ).'.';
+					$message = __( 'This conversation is now public' , 'index-chat' ).'.';
 				}
 				if ($room->public == '1'){
-					$message = __( 'This conversation is now private' , 'wp-chat' ).'.';
+					$message = __( 'This conversation is now private' , 'index-chat' ).'.';
 				}
 				$this->model->send_system_message($room->id, $message);
 			}
 
 			if ($room->archived != $archived){
 				if ($room->archived == '0'){
-					$message = sprintf(__( 'This conversation has been archived by %s' , 'wp-chat' ), $user['display_name']).'.';
+					$message = sprintf(__( 'This conversation has been archived by %s' , 'index-chat' ), $user['display_name']).'.';
 				}
 				if ($room->archived == '1'){
-					$message = __( 'This conversation is no longer archived' , 'wp-chat' );
+					$message = __( 'This conversation is no longer archived' , 'index-chat' );
 				}
 				$this->model->send_system_message($room->id, $message);
 			}

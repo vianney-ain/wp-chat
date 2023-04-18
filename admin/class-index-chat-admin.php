@@ -5,7 +5,7 @@
 * Defines the plugin name, version, and two examples hooks for how to
 * enqueue the admin-specific stylesheet and JavaScript.
 */
-class Wp_Chat_Admin {
+class index_chat_Admin {
 
 	/**
 	* The ID of this plugin.
@@ -34,14 +34,14 @@ class Wp_Chat_Admin {
 	* Register the stylesheets for the admin area.
 	*/
 	public function enqueue_styles() {
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/wp-chat-admin.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/index-chat-admin.css', array(), $this->version, 'all' );
 	}
 
 	/**
 	* Register the JavaScript for the admin area.
 	*/
 	public function enqueue_scripts() {
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/wp-chat-admin.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/index-chat-admin.js', array( 'jquery' ), $this->version, false );
 
 	}
 
@@ -50,20 +50,20 @@ class Wp_Chat_Admin {
 	*/
 	public function register_settings_page() {
 		add_menu_page(
-			__( 'Home', 'wp-chat' ),//page title
-			__( 'WP Chat', 'wp-chat' ), //menu title
+			__( 'Home', 'index-chat' ),//page title
+			__( 'WP Chat', 'index-chat' ), //menu title
 			'manage_options',//capability
 			$this->plugin_name,//menu slug
 			array( $this, 'display_general_settings_page' ), // callable function
-			plugins_url( '/wp-chat/public/img/wp-chat.png' ),//icon url
+			plugins_url( '/index-chat/public/img/index-chat.png' ),//icon url
 			999//position
 		);
 
 		// Create our settings page as a submenu page.
 		add_submenu_page(
 			$this->plugin_name,                            // parent slug
-			__( 'Theme', 'wp-chat' ),      				// page title
-			__( 'Theme', 'wp-chat' ),     			  // menu title
+			__( 'Theme', 'index-chat' ),      				// page title
+			__( 'Theme', 'index-chat' ),     			  // menu title
 			'manage_options',                       // capability
 			$this->plugin_name.'-theme',                              // menu_slug
 			array( $this, 'display_theme_settings_page' ) // callable function
@@ -71,11 +71,11 @@ class Wp_Chat_Admin {
 	}
 
 	public function display_general_settings_page() {
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/wp-chat-admin-general-display.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/index-chat-admin-general-display.php';
 	}
 
 	public function display_theme_settings_page() {
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/wp-chat-admin-theme-display.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/index-chat-admin-theme-display.php';
 	}
 
 	public function register_settings() {
@@ -84,7 +84,7 @@ class Wp_Chat_Admin {
 	}
 
 	public function register_general_settings(){
-		$general_settings_defaults = $this->options['wp-chat-general-settings-default'];
+		$general_settings_defaults = $this->options['index-chat-general-settings-default'];
 		if (isset($_POST['reset-settings']) && !empty($_POST['reset-settings'])){
 			delete_option($this->plugin_name .'-general-settings');
 		}
@@ -99,19 +99,19 @@ class Wp_Chat_Admin {
 		// Here we are going to add a section for our setting.
 		add_settings_section(
 			$this->plugin_name . '-general-settings-section', // id
-			__( 'Settings', 'wp-chat' ), // title
+			__( 'Settings', 'index-chat' ), // title
 			array( $this, 'sandbox_add_settings_section' ), // type, sanitize_callback
 			$this->plugin_name . '-general-settings' // page, the slug-name of the settings page on which to show the section
 		);
 
 		add_settings_field(
-			'wp-chat-disable-plugin', // slug
-			__( 'Disable WP-Chat', 'wp-chat' ), // title
+			'index-chat-disable-plugin', // slug
+			__( 'Disable index-chat', 'index-chat' ), // title
 			array( $this, 'sandbox_add_settings_field_single_checkbox' ), // callback, sanitize function
 			$this->plugin_name . '-general-settings', // page setting slug
 			$this->plugin_name . '-general-settings-section', // setting section slug
 			array( //extra parameters
-				'label_for' => 'wp-chat-disable-plugin-checkbox', // label for
+				'label_for' => 'index-chat-disable-plugin-checkbox', // label for
 				'section_slug' => '-general-settings',
 				'description' => __( 'If checked, it will turn off the WP Chat plugin.', $this->plugin_name ), // description
 				'options_defaults' => $general_settings_defaults
@@ -119,13 +119,13 @@ class Wp_Chat_Admin {
 		);
 
 		add_settings_field(
-			'wp-chat-disable-ajax', // slug
-			__( 'Disable Ajax refresh', 'wp-chat' ), // title
+			'index-chat-disable-ajax', // slug
+			__( 'Disable Ajax refresh', 'index-chat' ), // title
 			array( $this, 'sandbox_add_settings_field_single_checkbox' ), // callback, sanitize function
 			$this->plugin_name . '-general-settings', // page setting slug
 			$this->plugin_name . '-general-settings-section', // setting section slug
 			array( //extra parameters
-				'label_for' => 'wp-chat-disable-ajax-checkbox', // label for
+				'label_for' => 'index-chat-disable-ajax-checkbox', // label for
 				'section_slug' => '-general-settings',
 				'description' => __( 'If checked, will no longer allow plugin to refresh conversations with ajax.', $this->plugin_name ), // description
 				'options_defaults' => $general_settings_defaults,
@@ -133,13 +133,13 @@ class Wp_Chat_Admin {
 		);
 
 		add_settings_field(
-			'wp-chat-refresh-rate',
-			__( 'Ajax refresh rate (in milliseconds)', 'wp-chat' ),
+			'index-chat-refresh-rate',
+			__( 'Ajax refresh rate (in milliseconds)', 'index-chat' ),
 			array( $this, 'sandbox_add_settings_field_input_number' ),
 			$this->plugin_name . '-general-settings',
 			$this->plugin_name . '-general-settings-section',
 			array(
-				'label_for' => 'wp-chat-refresh-rate-input',
+				'label_for' => 'index-chat-refresh-rate-input',
 				'section_slug' => '-general-settings',
 				'options_defaults' => $general_settings_defaults,
 			)
@@ -158,32 +158,32 @@ class Wp_Chat_Admin {
 		// Here we are going to add a section for our setting.
 		add_settings_section(
 			$this->plugin_name . '-theme-settings-section', // id
-			__( 'Settings', 'wp-chat' ), // title
+			__( 'Settings', 'index-chat' ), // title
 			array( $this, 'sandbox_add_settings_section' ), // type, sanitize_callback
 			$this->plugin_name . '-theme-settings' // page, the slug-name of the settings page on which to show the section
 		);
 
 		add_settings_field(
-			'wp-chat-disable-plugin', // slug
-			__( 'Disable WP-Chat', 'wp-chat' ), // title
+			'index-chat-disable-plugin', // slug
+			__( 'Disable index-chat', 'index-chat' ), // title
 			array( $this, 'sandbox_add_settings_field_single_checkbox' ), // callback, sanitize function
 			$this->plugin_name . '-theme-settings', // page setting slug
 			$this->plugin_name . '-theme-settings-section', // setting section slug
 			array( //extra parameters
-				'label_for' => 'disable-wp-chat', // label for
+				'label_for' => 'disable-index-chat', // label for
 				'section_slug' => '-theme-settings',
-				'description' => __( 'If checked, it will turn off the WP Chat plugin.', 'wp-chat' ) // description
+				'description' => __( 'If checked, it will turn off the WP Chat plugin.', 'index-chat' ) // description
 			)
 		);
 
 		add_settings_field(
-			'wp-chat-refresh-rate',
-			__( 'WP Chat refresh rate (in milliseconds)', 'wp-chat' ),
+			'index-chat-refresh-rate',
+			__( 'WP Chat refresh rate (in milliseconds)', 'index-chat' ),
 			array( $this, 'sandbox_add_settings_field_input_text' ),
 			$this->plugin_name . '-theme-settings',
 			$this->plugin_name . '-general-settings-section',
 			array(
-				'label_for' => 'wp-chat-refresh-rate',
+				'label_for' => 'index-chat-refresh-rate',
 				'section_slug' => '-theme-settings',
 				'default'   => 1000,
 			)

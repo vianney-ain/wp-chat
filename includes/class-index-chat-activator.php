@@ -4,7 +4,7 @@
  *
  * This class defines all code necessary to run during the plugin's activation.
  */
-class Wp_Chat_Activator {
+class index_chat_Activator {
 
 	/**
 	 * Short Description. (use period)

@@ -8,7 +8,7 @@
  * run function to execute the list of actions and filters.
  *
  */
-class Wp_Chat_Loader {
+class index_chat_Loader {
 
 	/**
 	 * The array of actions registered with WordPress.

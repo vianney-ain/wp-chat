@@ -22,7 +22,7 @@
  * @link       https://https://vianneyain.com/
  * @since      1.0.0
  *
- * @package    Wp_Chat
+ * @package    index_chat
  */
 
 // If uninstall not called from WordPress, then exit.
